@@ -14,6 +14,7 @@
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
+    background-color: #e0e0e0;
 }
 
 .post-header__text {
@@ -24,6 +25,7 @@
 .post-header__username {
     font-weight: 600;
     font-size: 14px;
+    color: #333;
 }
 
 .post-header__timestamp {

@@ -8,6 +8,12 @@
     margin-bottom: 12px;
     white-space: pre-wrap;
     word-break: break-word;
+    color: #333;
+    text-align: left;
+}
+
+.post-content {
+    text-align: left;
 }
 
 .post-content__images {
