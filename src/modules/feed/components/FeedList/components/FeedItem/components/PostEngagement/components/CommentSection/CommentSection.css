@@ -1,0 +1,45 @@
+.comment-section {
+    padding: 12px;
+    border-top: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+.comment-section__divider {
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 16px 0;
+}
+
+.comment-section__count {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.comment-section__empty {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    margin: 12px 0;
+    font-style: italic;
+}
+
+.comment-section__list {
+    margin-top: 8px;
+}
+
+.comment-section__item {
+    margin-bottom: 8px;
+}
+
+.comment-section__item:last-child {
+    margin-bottom: 0;
+}
+
+.comment-section__reply-input {
+    margin-left: 44px;
+    margin-top: 8px;
+    border-left: 2px solid #e0e0e0;
+    padding-left: 12px;
+}

@@ -1,12 +1,15 @@
 import type Post from "@/types/post.types";
+import CommentSection from "./components/CommentSection/CommentSection";
 import "./PostEngagement.css";
 
 interface PostEngagementProps {
     engagement: Post["engagement"];
     currentUserId: string;
     onLike: () => void;
-    onComment: () => void;
+    onComment: (content: string) => void;
     onShare: () => void;
+    onLikeComment: (commentId: string) => void;
+    onReplyToComment: (commentId: string, content: string) => void;
 }
 
 const PostEngagement = ({
@@ -15,6 +18,8 @@ const PostEngagement = ({
     onLike,
     onComment,
     onShare,
+    onLikeComment,
+    onReplyToComment,
 }: PostEngagementProps) => {
     const { likes, comments, shares } = engagement;
     const isLiked = likes.includes(currentUserId);
@@ -24,9 +29,6 @@ const PostEngagement = ({
             <div className="post-engagement__stats">
                 <span className="post-engagement__stat">
                     {likes.length} likes
-                </span>
-                <span className="post-engagement__stat">
-                    {comments.length} comments
                 </span>
                 <span className="post-engagement__stat">{shares} shares</span>
             </div>
@@ -40,13 +42,18 @@ const PostEngagement = ({
                 >
                     {isLiked ? "Liked" : "Like"}
                 </button>
-                <button className="post-engagement__button" onClick={onComment}>
-                    Comment
-                </button>
                 <button className="post-engagement__button" onClick={onShare}>
                     Share
                 </button>
             </div>
+
+            <CommentSection
+                comments={comments}
+                currentUserId={currentUserId}
+                onAddComment={onComment}
+                onLikeComment={onLikeComment}
+                onReplyToComment={onReplyToComment}
+            />
         </div>
     );
 };
