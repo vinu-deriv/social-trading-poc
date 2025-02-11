@@ -1,0 +1,51 @@
+.post-engagement {
+    padding: 12px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.post-engagement__stats {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    color: #666;
+    font-size: 14px;
+}
+
+.post-engagement__stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.post-engagement__actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.post-engagement__button {
+    background: none;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s ease;
+}
+
+.post-engagement__button:hover {
+    color: #333;
+}
+
+.post-engagement__button--liked {
+    color: #1a73e8;
+}
+
+.post-engagement__button--liked:hover {
+    color: #1557b0;
+}

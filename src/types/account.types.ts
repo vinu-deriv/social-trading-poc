@@ -1,6 +1,6 @@
-import { TradingStrategy } from "./strategy.types.ts";
+import TradingStrategy from "./strategy.types";
 
-export interface CurrencyAccount {
+interface CurrencyAccount {
     id: string;
     userId: string;
     currency: string; // e.g., 'USD', 'EUR'
@@ -10,3 +10,5 @@ export interface CurrencyAccount {
     createdAt: string;
     updatedAt: string;
 }
+
+export default CurrencyAccount;

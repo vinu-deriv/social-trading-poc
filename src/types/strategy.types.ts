@@ -1,4 +1,4 @@
-export interface TradingStrategy {
+interface TradingStrategy {
     id: string;
     leaderId: string;
     accountId: string; // Reference to the currency account
@@ -16,3 +16,5 @@ export interface TradingStrategy {
     createdAt: string;
     updatedAt: string;
 }
+
+export default TradingStrategy;

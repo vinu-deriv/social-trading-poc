@@ -1,0 +1,36 @@
+.post-content {
+    padding: 12px;
+}
+
+.post-content__text {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.post-content__images {
+    display: grid;
+    gap: 4px;
+    margin-top: 12px;
+}
+
+.post-content__images--single {
+    grid-template-columns: 1fr;
+}
+
+.post-content__images--multiple {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.post-content__image {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.post-content__image--single {
+    max-height: 400px;
+    width: 100%;
+}
