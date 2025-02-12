@@ -125,13 +125,13 @@
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
   position: relative;
 }
 
-.form-group label {
+.form-group label:not(.market-option){
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   font-weight: 500;
   color: #1f2937;
 }
@@ -213,18 +213,54 @@ input[type="range"]:focus {
 .market-option {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: #f3f4f6;
+  border-radius: 20px;
+  font-size: 0.875rem;
   color: #4b5563;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.market-option:hover {
+  background: #e5e7eb;
 }
 
 .market-option input[type="checkbox"] {
-  width: 1rem;
-  height: 1rem;
+  margin: 0;
+  margin-right: 0.5rem;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #d1d5db;
   border-radius: 4px;
-  border: 2px solid #ff444f;
+  background-color: white;
   cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.market-option input[type="checkbox"]:checked {
+  background-color: white;
+  border-color: #00d0ff;
+}
+
+.market-option input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border: solid #00d0ff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.market-option input[type="checkbox"]:hover {
+  border-color: #00d0ff;
 }
 
 .helper-text {
@@ -306,6 +342,31 @@ input[type="range"]:focus {
   width: 24px;
   height: 24px;
   color: #00d0ff;
+}
+
+/* Markets grid styles */
+.markets-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.market-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #f3f4f6;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.market-option:hover {
+  background: #e5e7eb;
 }
 
 @media (max-width: 768px) {
