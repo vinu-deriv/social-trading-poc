@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Avatar from "../../components/user/Avatar";
-import Button from "../../components/input/Button";
 import AiGif from "../../assets/icons/ai.gif";
+import Tick from "../../assets/icons/Tick";
+import Plus from "../../assets/icons/Plus";
 import "./Discover.css";
 
 type Leader = {
@@ -24,6 +24,16 @@ type User = {
 export default function Discover() {
   const [topLeaders, setTopLeaders] = useState<Leader[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const handleFollowToggle = (leaderId: string) => {
+    setTopLeaders((prevLeaders) =>
+      prevLeaders.map((leader) =>
+        leader.id === leaderId
+          ? { ...leader, isFollowing: !leader.isFollowing }
+          : leader
+      )
+    );
+  };
 
   useEffect(() => {
     const fetchLeaders = async () => {
@@ -75,7 +85,7 @@ export default function Discover() {
 
   console.log("first", topLeaders);
   if (loading) {
-    return <div className="discover">Loading...</div>;
+    return <div className="discover discover--loading"></div>;
   }
 
   return (
@@ -94,12 +104,28 @@ export default function Discover() {
       <div className="discover__leaders">
         {topLeaders.map((leader) => (
           <div key={leader.id} className="leader-card">
-            <div className="leader-card__avatar">
-              <Avatar
-                size="large"
-                username={leader.username}
-                src={leader.avatar}
-              />
+            <div className="leader-card__banner">
+              <div className="leader-card__avatar">
+                <div className="leader-card__avatar-wrapper">
+                  {leader.avatar ? (
+                    <img
+                      src={leader.avatar}
+                      alt={leader.username}
+                      className="leader-card__avatar-img"
+                    />
+                  ) : (
+                    <div className="leader-card__avatar-placeholder">
+                      {leader.username.slice(0, 2).toUpperCase()}
+                    </div>
+                  )}
+                  <button
+                    className="leader-card__follow-icon"
+                    onClick={() => handleFollowToggle(leader.id)}
+                  >
+                    {leader.isFollowing ? <Tick /> : <Plus />}
+                  </button>
+                </div>
+              </div>
             </div>
             <div className="leader-card__info">
               <h3 className="leader-card__name">{leader.username}</h3>
@@ -117,12 +143,6 @@ export default function Discover() {
                   </span>
                 </div>
               </div>
-              <Button
-                variant={leader.isFollowing ? "secondary" : "primary"}
-                className="leader-card__follow-btn"
-              >
-                {leader.isFollowing ? "Following" : "Follow"}
-              </Button>
             </div>
           </div>
         ))}
