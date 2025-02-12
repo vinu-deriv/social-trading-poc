@@ -1,0 +1,98 @@
+.welcome-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: #f5f7fa;
+}
+
+.welcome-content {
+    max-width: 900px;
+    width: 100%;
+    padding: 3rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.welcome-logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.5rem;
+}
+
+.welcome-content h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 3rem;
+}
+
+.welcome-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    text-align: left;
+    padding: 1.5rem;
+    border-radius: 12px;
+    background-color: #f8f9fb;
+    transition: transform 0.2s ease;
+}
+
+.step:hover {
+    transform: translateX(8px);
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ff444f;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.step-content h3 {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.step-content p {
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.get-started-button {
+    margin-top: 2rem;
+    min-width: 200px;
+}
+
+@media (max-width: 768px) {
+    .welcome-content {
+        padding: 2rem;
+    }
+
+    .welcome-content h1 {
+        font-size: 2rem;
+    }
+
+    .step {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
