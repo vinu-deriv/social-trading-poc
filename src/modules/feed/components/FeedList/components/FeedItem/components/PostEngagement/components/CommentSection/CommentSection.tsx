@@ -8,7 +8,7 @@ interface CommentSectionProps {
     comments: Comment[];
     currentUserId: string;
     onAddComment: (content: string) => void;
-    onLikeComment: (commentId: string) => void;
+    onLikeComment?: (commentId: string) => void;
     onReplyToComment: (commentId: string, content: string) => void;
 }
 
@@ -50,7 +50,12 @@ const CommentSection = ({
                         <CommentItem
                             comment={comment}
                             currentUserId={currentUserId}
-                            onLike={() => onLikeComment(comment.id)}
+                            onLike={
+                                onLikeComment
+                                    ? () => onLikeComment(comment.id)
+                                    : undefined
+                            }
+                            onLikeComment={onLikeComment}
                             onReply={() => handleReply(comment.id)}
                         />
                         {replyingTo === comment.id && (

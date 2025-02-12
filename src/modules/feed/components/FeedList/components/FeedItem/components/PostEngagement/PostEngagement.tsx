@@ -3,12 +3,13 @@ import CommentSection from "./components/CommentSection/CommentSection";
 import "./PostEngagement.css";
 
 interface PostEngagementProps {
+    postId: string;
     engagement: Post["engagement"];
     currentUserId: string;
     onLike: () => void;
     onComment: (content: string) => void;
     onShare: () => void;
-    onLikeComment: (commentId: string) => void;
+    onLikeComment?: (commentId: string) => void;
     onReplyToComment: (commentId: string, content: string) => void;
 }
 
