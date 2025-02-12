@@ -3,12 +3,22 @@ import FeedList from "@modules/feed/components/FeedList";
 import PostForm from "@modules/feed/components/PostForm";
 import useCurrentUser from "@modules/feed/hooks/useCurrentUser";
 import { createPost } from "@modules/feed/services/postService";
+import { useAuth } from "@/context/AuthContext";
 import "./Feed.css";
 
 const Feed = () => {
-    // TODO: Get current user ID from auth context
-    const currentUserId = "copier1"; // Temporary hardcoded user
-    const { user, loading, error } = useCurrentUser(currentUserId);
+    const { user, loading: authLoading } = useAuth();
+    const { user: userDetails, loading, error } = useCurrentUser(user?.id || '');
+
+    if (authLoading) {
+        return (
+            <div className="feed-page">
+                <div className="feed-page__container">
+                    <div className="feed-page__loading">Loading...</div>
+                </div>
+            </div>
+        );
+    }
     const [isRefreshing, setIsRefreshing] = useState(false);
 
     const handlePostSubmit = async (content: {
@@ -16,8 +26,9 @@ const Feed = () => {
         images: string[];
     }) => {
         try {
+            if (!user?.id) return;
             await createPost({
-                userId: currentUserId,
+                userId: user.id,
                 content,
             });
             setIsRefreshing(true);
@@ -39,7 +50,7 @@ const Feed = () => {
         );
     }
 
-    if (error || !user) {
+    if (error || !user || !userDetails) {
         return (
             <div className="feed-page">
                 <div className="feed-page__container">
@@ -59,9 +70,9 @@ const Feed = () => {
                     <h1 className="feed-page__title">Social Trading Feed</h1>
                 </header>
                 <main>
-                    <PostForm currentUser={user} onSubmit={handlePostSubmit} />
+                    <PostForm currentUser={userDetails!} onSubmit={handlePostSubmit} />
                     <FeedList
-                        currentUserId={currentUserId}
+                        currentUserId={user.id}
                         key={isRefreshing ? "refreshing" : "normal"}
                     />
                 </main>
