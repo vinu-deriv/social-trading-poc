@@ -1,11 +1,18 @@
 import type Post from "@/types/post.types";
+import type User from "@/types/user.types";
 import CommentSection from "./components/CommentSection/CommentSection";
+import PostAIInsights from "../PostAIInsights";
 import "./PostEngagement.css";
 
 interface PostEngagementProps {
     postId: string;
+    content: {
+        text: string;
+        images?: string[];
+    };
     engagement: Post["engagement"];
     currentUserId: string;
+    currentUser: User;
     onLike: () => void;
     onComment: (content: string) => void;
     onShare: () => void;
@@ -14,8 +21,11 @@ interface PostEngagementProps {
 }
 
 const PostEngagement = ({
+    postId,
+    content,
     engagement,
     currentUserId,
+    currentUser,
     onLike,
     onComment,
     onShare,
@@ -47,6 +57,14 @@ const PostEngagement = ({
                     Share
                 </button>
             </div>
+
+            <PostAIInsights
+                postId={postId}
+                content={content}
+                comments={comments}
+                userType={currentUser.userType}
+                onCopyTrader={() => console.log("Copy trader:", currentUser.id)}
+            />
 
             <CommentSection
                 comments={comments}

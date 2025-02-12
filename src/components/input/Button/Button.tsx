@@ -14,6 +14,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     count?: number;
     isActive?: boolean;
     isLoading?: boolean;
+    rounded?: boolean;
     children?: ReactNode;
 }
 
@@ -23,6 +24,7 @@ const Button = ({
     count,
     isActive = false,
     isLoading = false,
+    rounded = false,
     children,
     className = "",
     disabled,
@@ -34,6 +36,7 @@ const Button = ({
         `${baseClass}--${variant}`,
         isActive && `${baseClass}--active`,
         isLoading && `${baseClass}--loading`,
+        rounded && `${baseClass}--rounded`,
         className,
     ]
         .filter(Boolean)
