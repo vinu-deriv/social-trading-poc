@@ -1,0 +1,83 @@
+@import '../../styles/variables.css';
+
+.header {
+    display: flex;
+    background-color: #fff;
+    border-bottom: 1px solid #e9ecef;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header__content {
+    padding: 5px;
+    display: flex;
+    height: 36px;
+}
+
+.header__left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.header__logo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.header__logo-image {
+    height: 22px;
+    width: auto;
+}
+
+.header__nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+.header__nav a {
+    color: #495057;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.header__nav a:hover {
+    color: #007bff;
+}
+
+.header__nav a.active {
+    color: #007bff;
+    font-weight: var(--font-weight-semibold);
+}
+
+.header__right {
+    display: flex;
+    align-items: center;
+}
+
+.header__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: var(--font-size-sm);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header__content {
+        height: 56px;
+    }
+
+    .header__logo-image {
+        height: 24px;
+    }
+
+    .header__left {
+        gap: 1rem;
+    }
+}

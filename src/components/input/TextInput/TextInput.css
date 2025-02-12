@@ -7,8 +7,9 @@
 .text-input {
     width: 100%;
     padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
-    line-height: 1.5;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
     color: #495057;
     background-color: #fff;
     border: 1px solid #ced4da;
@@ -37,13 +38,13 @@
 }
 
 .text-input__label {
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
     color: #495057;
 }
 
 .text-input__helper-text {
-    font-size: 0.75rem;
+    font-size: var(--font-size-xs);
     color: #6c757d;
 }
 

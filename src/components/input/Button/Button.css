@@ -6,8 +6,9 @@
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 0.25rem;
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
     cursor: pointer;
     transition: all 0.2s ease;
 }
