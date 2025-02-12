@@ -1,15 +1,13 @@
 @import '../../styles/variables.css';
 
 .app-content {
-    min-height: calc(100vh - 64px - 200px); /* viewport height - header - footer */
-    padding: 2rem 0;
+    flex: 1;
     background-color: #f8f9fa;
     font-family: var(--font-family-base);
 }
 
 .app-content__inner {
     display: flex;
-    flex-direction: column;
     gap: 2rem;
 }
 

@@ -8,7 +8,13 @@ import "./Feed.css";
 
 const Feed = () => {
     const { user, loading: authLoading } = useAuth();
-    const { user: userDetails, loading, error } = useCurrentUser(user?.id || '');
+    const {
+        user: userDetails,
+        loading,
+        error,
+    } = useCurrentUser(user?.id || "");
+
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     if (authLoading) {
         return (
@@ -19,7 +25,6 @@ const Feed = () => {
             </div>
         );
     }
-    const [isRefreshing, setIsRefreshing] = useState(false);
 
     const handlePostSubmit = async (content: {
         text: string;
@@ -66,11 +71,11 @@ const Feed = () => {
     return (
         <div className="feed-page">
             <div className="feed-page__container">
-                <header className="feed-page__header">
-                    <h1 className="feed-page__title">Social Trading Feed</h1>
-                </header>
                 <main>
-                    <PostForm currentUser={userDetails!} onSubmit={handlePostSubmit} />
+                    <PostForm
+                        currentUser={userDetails!}
+                        onSubmit={handlePostSubmit}
+                    />
                     <FeedList
                         currentUserId={user.id}
                         key={isRefreshing ? "refreshing" : "normal"}

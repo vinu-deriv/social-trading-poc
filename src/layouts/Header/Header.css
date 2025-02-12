@@ -1,57 +1,70 @@
 @import '../../styles/variables.css';
 
 .header {
-    display: flex;
     background-color: #fff;
     border-bottom: 1px solid #e9ecef;
     position: sticky;
     top: 0;
     z-index: 1000;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .header__content {
-    padding: 5px;
     display: flex;
-    height: 36px;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+    padding: 0 1.5rem;
 }
 
 .header__left {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 2.5rem;
 }
 
 .header__logo {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 0.75rem;
+    text-decoration: none;
 }
 
 .header__logo-image {
-    height: 22px;
+    height: 24px;
     width: auto;
+}
+
+.header__logo-text {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: #00d0ff;
+    letter-spacing: -0.01em;
 }
 
 .header__nav {
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
 }
 
-.header__nav a {
+.header__nav-link {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
     color: #495057;
     text-decoration: none;
-    transition: color 0.2s ease;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
 }
 
-.header__nav a:hover {
-    color: #007bff;
+.header__nav-link:hover,
+.header__nav-link--active {
+    color: #00d0ff;
+    background-color: rgba(0, 208, 255, 0.1);
 }
 
-.header__nav a.active {
-    color: #007bff;
+.header__nav-link--active {
     font-weight: var(--font-weight-semibold);
 }
 
@@ -63,21 +76,35 @@
 .header__actions {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    font-size: var(--font-size-sm);
+    gap: 0.5rem;
+}
+
+.header__action-btn {
+    color: #495057 !important;
+    font-weight: var(--font-weight-medium) !important;
+}
+
+.header__action-btn:hover {
+    color: #00d0ff !important;
+    background-color: rgba(0, 208, 255, 0.1) !important;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .header__content {
         height: 56px;
-    }
-
-    .header__logo-image {
-        height: 24px;
+        padding: 0 1rem;
     }
 
     .header__left {
-        gap: 1rem;
+        gap: 1.5rem;
+    }
+
+    .header__logo-image {
+        height: 20px;
+    }
+
+    .header__logo-text {
+        font-size: var(--font-size-base);
     }
 }
