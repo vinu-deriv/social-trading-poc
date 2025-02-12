@@ -1,98 +1,344 @@
 .welcome-page {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    background-color: #f5f7fa;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #00d0ff 0%, #00d0ff 100%);
+  padding: 2rem;
+}
+
+.progress-bar {
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  padding: 0 1rem;
+}
+
+.progress-bar::before {
+  content: "";
+  position: absolute;
+  top: 25px;
+  left: calc(16.66% + 1rem);
+  right: calc(16.66% + 1rem);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.3);
+  z-index: 1;
+}
+
+.progress-step {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  text-align: center;
+  color: #b3ffffff;
+  transition: all 0.3s ease;
+}
+
+.progress-step.active {
+  color: #ffffff;
+}
+
+.progress-step.completed .step-indicator {
+  background: #b3ffffff;
+  border-color: #b3ffffff;
+  color: #00d0ff;
+}
+
+.step-indicator {
+  width: 50px;
+  height: 50px;
+  background: #b3ffffff;
+  border: 2px solid #b3ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  color: #00d0ff;
+  font-weight: 600;
+  font-size: 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.progress-step.active .step-indicator {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #00d0ff;
+}
+
+.step-details h3 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.step-details p {
+  font-size: 0.875rem;
+  margin: 0;
+  color: #b3ffffff;
+}
+
+.progress-step.active .step-details p {
+  color: #ffffff;
 }
 
 .welcome-content {
-    max-width: 900px;
-    width: 100%;
-    padding: 3rem;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
-    text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px #0d0d0d0a, 0 2px 4px -1px #0d0d0d06;
 }
 
-.welcome-logo {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 1.5rem;
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
 }
 
-.welcome-content h1 {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 3rem;
+.feature-card {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
 }
 
-.welcome-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    margin: 3rem 0;
+.feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px #0d0d0d0a, 0 2px 4px -1px #0d0d0d06;
 }
 
-.step {
-    display: flex;
-    align-items: flex-start;
-    gap: 1.5rem;
-    text-align: left;
-    padding: 1.5rem;
-    border-radius: 12px;
-    background-color: #f8f9fb;
-    transition: transform 0.2s ease;
+.feature-card h3 {
+  color: #0f172a;
+  margin: 0 0 1rem;
 }
 
-.step:hover {
-    transform: translateX(8px);
+.feature-card p {
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
 }
 
-.step-number {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #ff444f;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    font-weight: bold;
-    flex-shrink: 0;
+.preferences-form {
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.step-content h3 {
-    color: #333;
-    margin-bottom: 0.5rem;
+.form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
 }
 
-.step-content p {
-    color: #666;
-    margin: 0;
-    line-height: 1.5;
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #1f2937;
 }
 
-.get-started-button {
-    margin-top: 2rem;
-    min-width: 200px;
+/* Only apply to text inputs and selects */
+.form-group input:not([type="checkbox"]):not([type="range"]),
+.form-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #1f2937;
+  background-color: #ffffff;
+  transition: all 0.2s;
+  appearance: none;
+}
+
+.form-group select {
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+}
+
+/* Focus styles only for text inputs and selects */
+.form-group select:focus,
+.form-group input:not([type="checkbox"]):not([type="range"]):focus {
+  outline: none;
+  border-color: #1f2937;
+  box-shadow: 0 0 0 3px rgba(31, 41, 55, 0.1);
+}
+
+.form-group .helper-text {
+  display: block;
+  font-size: 0.875rem;
+  color: #6B7280;
+  margin-top: 0.25rem;
+}
+
+/* Original range input styles */
+input[type="range"] {
+  width: 100%;
+  margin: 1rem 0;
+  background: transparent;
+  -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: #00d0ff;
+  margin-top: -6px;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 2px;
+  border: none;
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+/* Original checkbox styles */
+.checkbox {
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+.market-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+  cursor: pointer;
+}
+
+.market-option input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 4px;
+  border: 2px solid #ff444f;
+  cursor: pointer;
+}
+
+.helper-text {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: normal;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.helper-box {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+.helper-box p {
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+
+.range-value {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: #f3f4f6;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-left: 1rem;
+}
+
+.next-step-button {
+  background-color: #ff444f;
+  color: #ffffff;
+  padding: 1rem 2.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 3rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 200px;
+  box-shadow: 0 4px 6px -1px #ff444f1a, 0 2px 4px -1px #ff444f0d;
+}
+
+.next-step-button:hover {
+  background-color: #ff2b37;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 8px -1px #ff444f25, 0 3px 6px -1px #ff444f15;
+}
+
+.next-step-button:active {
+  background-color: #ff1f2c;
+  transform: translateY(0);
+  box-shadow: 0 2px 4px -1px #ff444f1a, 0 1px 2px -1px #ff444f0d;
+}
+
+.next-step-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #ff444f1a;
+}
+
+.next-step-button:disabled {
+  background-color: #fca5a5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.tick-icon {
+  width: 24px;
+  height: 24px;
+  color: #00d0ff;
 }
 
 @media (max-width: 768px) {
-    .welcome-content {
-        padding: 2rem;
-    }
+  .welcome-page {
+    padding: 1rem;
+  }
 
-    .welcome-content h1 {
-        font-size: 2rem;
-    }
+  .progress-bar {
+    flex-direction: column;
+    gap: 2rem;
+  }
 
-    .step {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
+  .progress-bar::before {
+    left: 25px;
+    right: auto;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    height: auto;
+  }
+
+  .progress-step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+  }
+
+  .step-indicator {
+    margin: 0;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
 }
