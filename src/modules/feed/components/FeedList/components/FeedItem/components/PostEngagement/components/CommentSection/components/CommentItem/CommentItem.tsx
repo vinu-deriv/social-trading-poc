@@ -5,7 +5,8 @@ import "./CommentItem.css";
 interface CommentItemProps {
     comment: Comment;
     currentUserId: string;
-    onLike: () => void;
+    onLike?: () => void;
+    onLikeComment?: (commentId: string) => void;
     onReply: () => void;
 }
 
@@ -13,6 +14,7 @@ const CommentItem = ({
     comment,
     currentUserId,
     onLike,
+    onLikeComment,
     onReply,
 }: CommentItemProps) => {
     const [showReplies, setShowReplies] = useState(false);
@@ -50,14 +52,17 @@ const CommentItem = ({
                 </div>
                 <p className="comment-item__text">{comment.content}</p>
                 <div className="comment-item__actions">
-                    <button
-                        className={`comment-item__action ${
-                            isLiked ? "comment-item__action--liked" : ""
-                        }`}
-                        onClick={onLike}
-                    >
-                        {isLiked ? "Liked" : "Like"} · {comment.likes.length}
-                    </button>
+                    {onLike && (
+                        <button
+                            className={`comment-item__action ${
+                                isLiked ? "comment-item__action--liked" : ""
+                            }`}
+                            onClick={onLike}
+                        >
+                            {isLiked ? "Liked" : "Like"} ·{" "}
+                            {comment.likes.length}
+                        </button>
+                    )}
                     <button className="comment-item__action" onClick={onReply}>
                         Reply
                     </button>
@@ -78,8 +83,13 @@ const CommentItem = ({
                                 key={reply.id}
                                 comment={reply}
                                 currentUserId={currentUserId}
-                                onLike={() => {}}
-                                onReply={() => {}}
+                                onLike={
+                                    onLikeComment
+                                        ? () => onLikeComment(reply.id)
+                                        : undefined
+                                }
+                                onLikeComment={onLikeComment}
+                                onReply={onReply}
                             />
                         ))}
                     </div>

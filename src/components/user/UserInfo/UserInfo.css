@@ -1,0 +1,82 @@
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.user-info__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+}
+
+.user-info__primary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.user-info__username {
+    font-weight: 500;
+    color: #212529;
+}
+
+.user-info__timestamp {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+.user-info__subtitle {
+    font-size: 0.875rem;
+    color: #495057;
+}
+
+/* Size variants */
+.user-info--small {
+    gap: 0.5rem;
+}
+
+.user-info--small .user-info__username {
+    font-size: 0.875rem;
+}
+
+.user-info--small .user-info__timestamp {
+    font-size: 0.75rem;
+}
+
+.user-info--small .user-info__subtitle {
+    font-size: 0.75rem;
+}
+
+.user-info--medium .user-info__username {
+    font-size: 1rem;
+}
+
+.user-info--medium .user-info__timestamp {
+    font-size: 0.875rem;
+}
+
+.user-info--medium .user-info__subtitle {
+    font-size: 0.875rem;
+}
+
+.user-info--large {
+    gap: 1rem;
+}
+
+.user-info--large .user-info__username {
+    font-size: 1.125rem;
+}
+
+.user-info--large .user-info__timestamp {
+    font-size: 0.875rem;
+}
+
+.user-info--large .user-info__subtitle {
+    font-size: 1rem;
+}
+
+/* Hover state */
+.user-info:hover .user-info__username {
+    color: #007bff;
+}

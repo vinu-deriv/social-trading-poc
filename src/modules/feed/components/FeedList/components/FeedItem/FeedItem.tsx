@@ -4,6 +4,11 @@ import type User from "@/types/user.types";
 import PostHeader from "./components/PostHeader";
 import PostContent from "./components/PostContent";
 import PostEngagement from "./components/PostEngagement";
+import {
+    addComment,
+    addReply,
+    likeComment,
+} from "@/modules/feed/services/postService";
 import "./FeedItem.css";
 
 interface FeedItemProps {
@@ -27,9 +32,42 @@ const FeedItem = ({ post, user, currentUserId }: FeedItemProps) => {
         });
     };
 
-    const handleComment = () => {
-        // TODO: Implement comment functionality
-        console.log("Comment clicked");
+    const handleComment = async (content: string) => {
+        try {
+            const updatedPost = await addComment(post.id, {
+                userId: currentUserId,
+                content,
+            });
+            setEngagement(updatedPost.engagement);
+        } catch (error) {
+            console.error("Failed to add comment:", error);
+        }
+    };
+
+    const handleLikeComment = async (commentId: string) => {
+        try {
+            const updatedPost = await likeComment(
+                post.id,
+                commentId,
+                currentUserId
+            );
+            setEngagement(updatedPost.engagement);
+        } catch (error) {
+            console.error("Failed to like comment:", error);
+        }
+    };
+
+    const handleReplyToComment = async (commentId: string, content: string) => {
+        try {
+            const updatedPost = await addReply(post.id, {
+                userId: currentUserId,
+                content,
+                commentId,
+            });
+            setEngagement(updatedPost.engagement);
+        } catch (error) {
+            console.error("Failed to add reply:", error);
+        }
     };
 
     const handleShare = () => {
@@ -44,10 +82,13 @@ const FeedItem = ({ post, user, currentUserId }: FeedItemProps) => {
             <PostHeader user={user} timestamp={post.createdAt} />
             <PostContent content={post.content} />
             <PostEngagement
+                postId={post.id}
                 engagement={engagement}
                 currentUserId={currentUserId}
                 onLike={handleLike}
                 onComment={handleComment}
+                onReplyToComment={handleReplyToComment}
+                onLikeComment={handleLikeComment}
                 onShare={handleShare}
             />
         </article>
