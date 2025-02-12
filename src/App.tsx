@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
 import { routes } from "@/routes";
 import { AuthProvider } from "@/context/AuthContext";
 import Header from "@/layouts/Header";
@@ -7,19 +7,25 @@ import Footer from "@/layouts/Footer";
 import "./App.css";
 
 function App() {
-    const router = createBrowserRouter(routes);
+    const router = createBrowserRouter([
+        {
+            path: "/",
+            element: (
+                <div className="app">
+                    <AuthProvider>
+                        <Header />
+                        <AppContent>
+                            <Outlet />
+                        </AppContent>
+                        <Footer />
+                    </AuthProvider>
+                </div>
+            ),
+            children: routes,
+        },
+    ]);
 
-    return (
-        <div className="app">
-            <AuthProvider>
-                <Header />
-                <AppContent>
-                    <RouterProvider router={router} />
-                </AppContent>
-                <Footer />
-            </AuthProvider>
-        </div>
-    );
+    return <RouterProvider router={router} />;
 }
 
 export default App;

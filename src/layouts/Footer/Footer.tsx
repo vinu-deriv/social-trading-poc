@@ -7,13 +7,6 @@ const Footer = () => {
         <footer className="footer">
             <div className="footer__content">
                 <div className="footer__left">
-                    <div className="footer__logo">
-                        <img
-                            src="/src/assets/champion-logo.svg"
-                            alt="Champion Logo"
-                            className="footer__logo-image"
-                        />
-                    </div>
                     <p className="footer__copyright">
                         © {currentYear} Champion. All rights reserved.
                     </p>
