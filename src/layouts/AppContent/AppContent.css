@@ -1,39 +1,42 @@
-@import '../../styles/variables.css';
+@import "../../styles/variables.css";
 
 .app-content {
-    flex: 1;
-    font-family: var(--font-family-base);
+  flex: 1;
+  font-family: var(--font-family-base);
+  background-color: rgba(0, 208, 255, 0.05);
 }
 
 .app-content__inner {
-    display: flex;
-    gap: 2rem;
+  display: flex;
+  gap: 2rem;
 }
 
 /* Typography within app content */
-.app-content h1, 
-.app-content h2, 
-.app-content h3, 
-.app-content h4, 
-.app-content h5, 
+.app-content h1,
+.app-content h2,
+.app-content h3,
+.app-content h4,
+.app-content h5,
 .app-content h6 {
-    font-weight: var(--font-weight-semibold);
-    line-height: var(--line-height-tight);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
 }
 
 .app-content p {
-    font-size: var(--font-size-base);
-    line-height: var(--line-height-relaxed);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .app-content {
-        min-height: calc(100vh - 56px - 160px); /* Adjusted for smaller header and footer */
-        padding: 1rem 0;
-    }
+  .app-content {
+    min-height: calc(
+      100vh - 56px - 160px
+    ); /* Adjusted for smaller header and footer */
+    padding: 1rem 0;
+  }
 
-    .app-content__inner {
-        gap: 1rem;
-    }
+  .app-content__inner {
+    gap: 1rem;
+  }
 }

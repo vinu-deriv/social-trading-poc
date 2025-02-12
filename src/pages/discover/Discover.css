@@ -6,6 +6,7 @@
   font-size: 2rem;
   margin-bottom: 2rem;
   color: var(--text-primary);
+  text-align: center;
 }
 
 .discover__search {
@@ -20,12 +21,12 @@
 .discover__search-input {
   width: 100%;
   padding: 0.75rem 2.5rem 0.75rem 1rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid transparent;
   border-radius: 24px;
   font-size: 1rem;
   background-color: #ffffff;
   color: var(--text-primary);
-  transition: box-shadow 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .discover__search-input:hover {
@@ -75,7 +76,6 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  background-color: white;
 }
 
 @media (max-width: 768px) {
@@ -116,6 +116,39 @@
   transform: translateY(50%);
   width: 120px;
   height: 120px;
+}
+
+@media (max-width: 768px) {
+  .leader-card__avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .leader-card__info {
+    padding-top: 2.75rem !important;
+  }
+
+  .leader-card__follow-icon {
+    width: 24px !important;
+    height: 24px !important;
+    right: -8px !important;
+    bottom: -4px !important;
+    border-width: 2px !important;
+  }
+
+  .leader-card__follow-icon svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  .leader-card__name {
+    font-size: 1rem !important;
+    margin-top: 0.5rem !important;
+  }
+
+  .leader-card__banner {
+    height: 60px !important;
+  }
 }
 
 .leader-card__avatar-wrapper {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AiGif from "../../assets/icons/ai.gif";
 import Tick from "../../assets/icons/Tick";
 import Plus from "../../assets/icons/Plus";
+import SkeletonCard from "../../components/layout/SkeletonCard";
 import "./Discover.css";
 
 type Leader = {
@@ -83,11 +84,6 @@ export default function Discover() {
     }).format(count);
   };
 
-  console.log("first", topLeaders);
-  if (loading) {
-    return <div className="discover discover--loading"></div>;
-  }
-
   return (
     <div className="discover">
       <h1 className="discover__title">Top Leaders</h1>
@@ -95,57 +91,61 @@ export default function Discover() {
         <input
           type="search"
           className="discover__search-input"
-          placeholder="Search leaders, strategies, or markets..."
+          placeholder="AI powered search..."
         />
         <button className="discover__search-ai">
           <img src={AiGif} alt="AI Search" />
         </button>
       </div>
       <div className="discover__leaders">
-        {topLeaders.map((leader) => (
-          <div key={leader.id} className="leader-card">
-            <div className="leader-card__banner">
-              <div className="leader-card__avatar">
-                <div className="leader-card__avatar-wrapper">
-                  {leader.avatar ? (
-                    <img
-                      src={leader.avatar}
-                      alt={leader.username}
-                      className="leader-card__avatar-img"
-                    />
-                  ) : (
-                    <div className="leader-card__avatar-placeholder">
-                      {leader.username.slice(0, 2).toUpperCase()}
+        {loading
+          ? [...Array(12)].map((_, index) => <SkeletonCard key={index} />)
+          : topLeaders.map((leader) => (
+              <div key={leader.id} className="leader-card">
+                <div className="leader-card__banner">
+                  <div className="leader-card__avatar">
+                    <div className="leader-card__avatar-wrapper">
+                      {leader.avatar ? (
+                        <img
+                          src={leader.avatar}
+                          alt={leader.username}
+                          className="leader-card__avatar-img"
+                        />
+                      ) : (
+                        <div className="leader-card__avatar-placeholder">
+                          {leader.username.slice(0, 2).toUpperCase()}
+                        </div>
+                      )}
+                      <button
+                        className="leader-card__follow-icon"
+                        onClick={() => handleFollowToggle(leader.id)}
+                      >
+                        {leader.isFollowing ? <Tick /> : <Plus />}
+                      </button>
                     </div>
-                  )}
-                  <button
-                    className="leader-card__follow-icon"
-                    onClick={() => handleFollowToggle(leader.id)}
-                  >
-                    {leader.isFollowing ? <Tick /> : <Plus />}
-                  </button>
+                  </div>
+                </div>
+                <div className="leader-card__info">
+                  <h3 className="leader-card__name">{leader.username}</h3>
+                  <div className="leader-card__stats">
+                    <div className="leader-card__stat">
+                      <span className="leader-card__stat-label">Copiers</span>
+                      <span className="leader-card__stat-value">
+                        {formatCopiers(leader.copiers)}
+                      </span>
+                    </div>
+                    <div className="leader-card__stat">
+                      <span className="leader-card__stat-label">
+                        Total Profit
+                      </span>
+                      <span className="leader-card__stat-value leader-card__stat-value--profit">
+                        {formatProfit(leader.totalProfit)}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="leader-card__info">
-              <h3 className="leader-card__name">{leader.username}</h3>
-              <div className="leader-card__stats">
-                <div className="leader-card__stat">
-                  <span className="leader-card__stat-label">Copiers</span>
-                  <span className="leader-card__stat-value">
-                    {formatCopiers(leader.copiers)}
-                  </span>
-                </div>
-                <div className="leader-card__stat">
-                  <span className="leader-card__stat-label">Total Profit</span>
-                  <span className="leader-card__stat-value leader-card__stat-value--profit">
-                    {formatProfit(leader.totalProfit)}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
+            ))}
       </div>
     </div>
   );

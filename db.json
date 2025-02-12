@@ -2,7 +2,8 @@
   "users": [
     {
       "id": "leader1",
-      "username": "Sarah Johnson | FX Pro",
+      "username": "newTrader",
+      "displayName": "Sarah Johnson | FX Pro",
       "email": "expert@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
       "userType": "leader",
@@ -14,7 +15,8 @@
     },
     {
       "id": "leader2",
-      "username": "Michael Chen | Crypto Expert",
+      "username": "michaelCryptoExpert",
+      "displayName": "Michael Chen | Crypto Expert",
       "email": "pro@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
       "userType": "leader",
@@ -26,7 +28,8 @@
     },
     {
       "id": "copier1",
-      "username": "Alex Turner | Learning",
+      "username": "alexLearning",
+      "displayName": "Alex Turner | Learning",
       "email": "new@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
       "userType": "copier",
@@ -38,7 +41,8 @@
     },
     {
       "id": "copier2",
-      "username": "Emma Davis | Student",
+      "username": "emmaStudent",
+      "displayName": "Emma Davis | Student",
       "email": "learn@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80",
       "userType": "copier",
@@ -50,7 +54,8 @@
     },
     {
       "id": "copier3",
-      "username": "David Kim | Investor",
+      "username": "davidInvestor",
+      "displayName": "David Kim | Investor",
       "email": "invest@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e",
       "userType": "copier",
@@ -62,7 +67,8 @@
     },
     {
       "id": "leader3",
-      "username": "Maria Garcia | Forex Master",
+      "username": "mariaForexMaster",
+      "displayName": "Maria Garcia | Forex Master",
       "email": "forex@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1544005313-94ddf0286df2",
       "userType": "leader",
@@ -74,7 +80,8 @@
     },
     {
       "id": "leader4",
-      "username": "James Wilson | Crypto King",
+      "username": "jamesCryptoKing",
+      "displayName": "James Wilson | Crypto King",
       "email": "crypto@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7",
       "userType": "leader",
@@ -86,7 +93,8 @@
     },
     {
       "id": "leader5",
-      "username": "Lisa Wang | Tech Analyst",
+      "username": "lisaTechAnalyst",
+      "displayName": "Lisa Wang | Tech Analyst",
       "email": "tech@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f",
       "userType": "leader",
@@ -98,7 +106,8 @@
     },
     {
       "id": "leader6",
-      "username": "Robert Brown | Swing Expert",
+      "username": "robertSwingExpert",
+      "displayName": "Robert Brown | Swing Expert",
       "email": "swing@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d",
       "userType": "leader",
@@ -110,7 +119,8 @@
     },
     {
       "id": "leader7",
-      "username": "Sophie Miller | Day Trading Pro",
+      "username": "sophieDayTrading",
+      "displayName": "Sophie Miller | Day Trading Pro",
       "email": "day@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb",
       "userType": "leader",
@@ -122,7 +132,8 @@
     },
     {
       "id": "leader8",
-      "username": "Daniel Lee | Options Master",
+      "username": "danielOptionsMaster",
+      "displayName": "Daniel Lee | Options Master",
       "email": "options@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
       "userType": "leader",
@@ -134,7 +145,8 @@
     },
     {
       "id": "leader9",
-      "username": "Isabella Martinez | Scalping Pro",
+      "username": "isabellaScalping",
+      "displayName": "Isabella Martinez | Scalping Pro",
       "email": "scalp@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce",
       "userType": "leader",
@@ -146,7 +158,8 @@
     },
     {
       "id": "leader10",
-      "username": "William Taylor | Commodity Expert",
+      "username": "williamCommodity",
+      "displayName": "William Taylor | Commodity Expert",
       "email": "commodity@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
       "userType": "leader",
@@ -158,7 +171,8 @@
     },
     {
       "id": "leader11",
-      "username": "Olivia Anderson | Index Specialist",
+      "username": "oliviaIndexSpecialist",
+      "displayName": "Olivia Anderson | Index Specialist",
       "email": "index@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
       "userType": "leader",
@@ -170,7 +184,8 @@
     },
     {
       "id": "leader12",
-      "username": "Thomas Wright | Global Markets",
+      "username": "thomasGlobalMarkets",
+      "displayName": "Thomas Wright | Global Markets",
       "email": "global@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
       "userType": "leader",
@@ -182,7 +197,8 @@
     },
     {
       "id": "leader13",
-      "username": "Sophia Park | Hedge Fund Pro",
+      "username": "sophiaHedgeFund",
+      "displayName": "Sophia Park | Hedge Fund Pro",
       "email": "hedge@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1544005313-94ddf0286df2",
       "userType": "leader",
@@ -194,7 +210,8 @@
     },
     {
       "id": "leader14",
-      "username": "Ryan Cooper | Algo Trading",
+      "username": "ryanAlgoTrading",
+      "displayName": "Ryan Cooper | Algo Trading",
       "email": "algo@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7",
       "userType": "leader",
@@ -206,7 +223,8 @@
     },
     {
       "id": "leader15",
-      "username": "Emily White | Value Investor",
+      "username": "emilyValueInvestor",
+      "displayName": "Emily White | Value Investor",
       "email": "value@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f",
       "userType": "leader",
@@ -218,7 +236,8 @@
     },
     {
       "id": "leader16",
-      "username": "Lucas Bennett | Trend Master",
+      "username": "lucasTrendMaster",
+      "displayName": "Lucas Bennett | Trend Master",
       "email": "trend@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d",
       "userType": "leader",
@@ -230,7 +249,8 @@
     },
     {
       "id": "leader17",
-      "username": "Victoria Chang | Pattern Expert",
+      "username": "victoriaPatternExpert",
+      "displayName": "Victoria Chang | Pattern Expert",
       "email": "pattern@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb",
       "userType": "leader",
