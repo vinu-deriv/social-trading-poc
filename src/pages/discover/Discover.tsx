@@ -1,92 +1,62 @@
+import { useEffect, useState } from "react";
 import Avatar from "../../components/user/Avatar";
 import Button from "../../components/input/Button";
+import AiGif from "../../assets/icons/ai.gif";
 import "./Discover.css";
 
-// Mock data for top leaders
-const topLeaders = [
-  {
-    id: 1,
-    username: "Sarah Johnson",
-    avatar: undefined,
-    copiers: 1245,
-    totalProfit: 125000,
-    isFollowing: false,
-  },
-  {
-    id: 2,
-    username: "Michael Chen",
-    avatar: undefined,
-    copiers: 892,
-    totalProfit: 98500,
-    isFollowing: true,
-  },
-  {
-    id: 3,
-    username: "Emma Davis",
-    avatar: undefined,
-    copiers: 756,
-    totalProfit: 87600,
-    isFollowing: false,
-  },
-  {
-    id: 4,
-    username: "Alex Turner",
-    avatar: undefined,
-    copiers: 654,
-    totalProfit: 76400,
-    isFollowing: false,
-  },
-  {
-    id: 5,
-    username: "David Kim",
-    avatar: undefined,
-    copiers: 543,
-    totalProfit: 65300,
-    isFollowing: true,
-  },
-  {
-    id: 6,
-    username: "Lisa Wang",
-    avatar: undefined,
-    copiers: 432,
-    totalProfit: 54200,
-    isFollowing: false,
-  },
-  {
-    id: 7,
-    username: "James Wilson",
-    avatar: undefined,
-    copiers: 321,
-    totalProfit: 43100,
-    isFollowing: false,
-  },
-  {
-    id: 8,
-    username: "Maria Garcia",
-    avatar: undefined,
-    copiers: 210,
-    totalProfit: 32000,
-    isFollowing: false,
-  },
-  {
-    id: 9,
-    username: "John Smith",
-    avatar: undefined,
-    copiers: 198,
-    totalProfit: 21900,
-    isFollowing: false,
-  },
-  {
-    id: 10,
-    username: "Sophie Brown",
-    avatar: undefined,
-    copiers: 187,
-    totalProfit: 19800,
-    isFollowing: false,
-  },
-];
+type Leader = {
+  id: string;
+  username: string;
+  avatar?: string;
+  copiers: number;
+  totalProfit: number;
+  winRate: number;
+  isFollowing: boolean;
+};
+
+type User = {
+  id: string;
+  username: string;
+  profilePicture?: string;
+  userType: string;
+};
 
 export default function Discover() {
+  const [topLeaders, setTopLeaders] = useState<Leader[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLeaders = async () => {
+      try {
+        const res = await fetch("http://localhost:3001/users");
+        const users: User[] = await res.json();
+        console.log(users);
+
+        // Get leaders with random stats
+        const leaders = users
+          .filter((user) => user.userType === "leader")
+          .map((leader) => ({
+            id: leader.id,
+            username: leader.username,
+            avatar: leader.profilePicture,
+            copiers: Math.floor(Math.random() * 2000) + 500, // Random copiers between 500-2500
+            totalProfit: Math.floor(Math.random() * 900000) + 100000, // Random profit between 100k-1M
+            winRate: Math.floor(Math.random() * 20) + 70, // Random win rate between 70-90%
+            isFollowing: false,
+          }))
+          .sort((a, b) => b.totalProfit - a.totalProfit);
+
+        setTopLeaders(leaders);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching leaders:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchLeaders();
+  }, []);
+
   const formatProfit = (profit: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -103,6 +73,11 @@ export default function Discover() {
     }).format(count);
   };
 
+  console.log("first", topLeaders);
+  if (loading) {
+    return <div className="discover">Loading...</div>;
+  }
+
   return (
     <div className="discover">
       <h1 className="discover__title">Top Leaders</h1>
@@ -112,6 +87,9 @@ export default function Discover() {
           className="discover__search-input"
           placeholder="Search leaders, strategies, or markets..."
         />
+        <button className="discover__search-ai">
+          <img src={AiGif} alt="AI Search" />
+        </button>
       </div>
       <div className="discover__leaders">
         {topLeaders.map((leader) => (
