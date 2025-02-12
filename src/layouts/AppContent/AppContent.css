@@ -1,0 +1,42 @@
+@import '../../styles/variables.css';
+
+.app-content {
+    min-height: calc(100vh - 64px - 200px); /* viewport height - header - footer */
+    padding: 2rem 0;
+    background-color: #f8f9fa;
+    font-family: var(--font-family-base);
+}
+
+.app-content__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Typography within app content */
+.app-content h1, 
+.app-content h2, 
+.app-content h3, 
+.app-content h4, 
+.app-content h5, 
+.app-content h6 {
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+}
+
+.app-content p {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .app-content {
+        min-height: calc(100vh - 56px - 160px); /* Adjusted for smaller header and footer */
+        padding: 1rem 0;
+    }
+
+    .app-content__inner {
+        gap: 1rem;
+    }
+}
