@@ -1,0 +1,52 @@
+@import '../../../styles/variables.css';
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 2rem;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+}
+
+.badge__icon {
+    font-size: var(--font-size-sm);
+    display: flex;
+    align-items: center;
+}
+
+.badge__text {
+    line-height: 1.2;
+}
+
+/* Variants */
+.badge--success {
+    color: #198754;
+    background-color: rgba(25, 135, 84, 0.1);
+}
+
+.badge--failed {
+    color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+.badge--warning {
+    color: #ffc107;
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+.badge--info {
+    color: #0dcaf0;
+    background-color: rgba(13, 202, 240, 0.1);
+}
+
+.badge--neutral {
+    color: #6c757d;
+    background-color: rgba(108, 117, 125, 0.1);
+}
+
+.badge--brand {
+    color: #00d0ff;
+    background-color: rgba(0, 208, 255, 0.1);
+}

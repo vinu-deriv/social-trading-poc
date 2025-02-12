@@ -83,8 +83,10 @@ const FeedItem = ({ post, user, currentUserId }: FeedItemProps) => {
             <PostContent content={post.content} />
             <PostEngagement
                 postId={post.id}
+                content={post.content}
                 engagement={engagement}
                 currentUserId={currentUserId}
+                currentUser={user}
                 onLike={handleLike}
                 onComment={handleComment}
                 onReplyToComment={handleReplyToComment}

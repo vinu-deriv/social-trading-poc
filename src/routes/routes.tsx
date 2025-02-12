@@ -1,12 +1,21 @@
 import Feed from "@pages/feed";
 import Login from "@pages/login";
-import Discover from "@pages/discover";
+import Welcome from "@pages/welcome";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Discover from "@/pages/discover/Discover";
 
 export const routes = [
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/welcome",
+    element: (
+      <ProtectedRoute>
+        <Welcome />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/",

@@ -1,11 +1,23 @@
 import type Post from "@/types/post.types";
+import type User from "@/types/user.types";
 import CommentSection from "./components/CommentSection/CommentSection";
+import PostAIInsights from "../PostAIInsights";
+import Button from "@/components/input/Button";
 import "./PostEngagement.css";
+import {
+    LabelPairedThumbsUpCaptionBoldIcon,
+    LegacyShare1pxIcon,
+} from "@deriv/quill-icons";
 
 interface PostEngagementProps {
     postId: string;
+    content: {
+        text: string;
+        images?: string[];
+    };
     engagement: Post["engagement"];
     currentUserId: string;
+    currentUser: User;
     onLike: () => void;
     onComment: (content: string) => void;
     onShare: () => void;
@@ -14,8 +26,11 @@ interface PostEngagementProps {
 }
 
 const PostEngagement = ({
+    postId,
+    content,
     engagement,
     currentUserId,
+    currentUser,
     onLike,
     onComment,
     onShare,
@@ -35,18 +50,33 @@ const PostEngagement = ({
             </div>
 
             <div className="post-engagement__actions">
-                <button
+                <Button
                     className={`post-engagement__button ${
                         isLiked ? "post-engagement__button--liked" : ""
                     }`}
                     onClick={onLike}
+                    variant="text"
+                    icon={<LabelPairedThumbsUpCaptionBoldIcon />}
                 >
                     {isLiked ? "Liked" : "Like"}
-                </button>
-                <button className="post-engagement__button" onClick={onShare}>
+                </Button>
+                <Button
+                    className="post-engagement__button"
+                    onClick={onShare}
+                    variant="text"
+                    icon={<LegacyShare1pxIcon iconSize="xs" />}
+                >
                     Share
-                </button>
+                </Button>
             </div>
+
+            <PostAIInsights
+                postId={postId}
+                content={content}
+                comments={comments}
+                userType={currentUser.userType}
+                onCopyTrader={() => console.log("Copy trader:", currentUser.id)}
+            />
 
             <CommentSection
                 comments={comments}
