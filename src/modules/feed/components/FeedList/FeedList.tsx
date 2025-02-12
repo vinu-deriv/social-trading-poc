@@ -2,13 +2,15 @@ import { useState, useEffect } from "react";
 import type Post from "@/types/post.types";
 import type User from "@/types/user.types";
 import FeedItem from "./components/FeedItem";
+import { getFollowingPosts } from "../../services/postService";
 import "./FeedList.css";
 
 interface FeedListProps {
     currentUserId: string;
+    activeTab: string;
 }
 
-const FeedList = ({ currentUserId }: FeedListProps) => {
+const FeedList = ({ currentUserId, activeTab }: FeedListProps) => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [users, setUsers] = useState<{ [key: string]: User }>({});
     const [loading, setLoading] = useState(true);
@@ -17,17 +19,11 @@ const FeedList = ({ currentUserId }: FeedListProps) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch posts and users in parallel
-                const [postsResponse, usersResponse] = await Promise.all([
-                    fetch("http://localhost:3001/posts"),
-                    fetch("http://localhost:3001/users"),
-                ]);
-
-                if (!postsResponse.ok || !usersResponse.ok) {
-                    throw new Error("Failed to fetch data");
+                // Always fetch users for lookup
+                const usersResponse = await fetch("http://localhost:3001/users");
+                if (!usersResponse.ok) {
+                    throw new Error("Failed to fetch users");
                 }
-
-                const postsData: Post[] = await postsResponse.json();
                 const usersData: User[] = await usersResponse.json();
 
                 // Create a map of users for quick lookup
@@ -36,8 +32,21 @@ const FeedList = ({ currentUserId }: FeedListProps) => {
                     return acc;
                 }, {} as { [key: string]: User });
 
-                setPosts(postsData);
                 setUsers(usersMap);
+
+                // Fetch posts based on active tab
+                let postsData: Post[];
+                if (activeTab === "For you") {
+                    const postsResponse = await fetch("http://localhost:3001/posts");
+                    if (!postsResponse.ok) {
+                        throw new Error("Failed to fetch posts");
+                    }
+                    postsData = await postsResponse.json();
+                } else {
+                    postsData = await getFollowingPosts(currentUserId);
+                }
+
+                setPosts(postsData);
             } catch (err) {
                 setError(
                     err instanceof Error ? err.message : "An error occurred"
@@ -48,7 +57,7 @@ const FeedList = ({ currentUserId }: FeedListProps) => {
         };
 
         fetchData();
-    }, []);
+    }, [activeTab, currentUserId]);
 
     if (loading) {
         return <div className="feed-list__loading">Loading posts...</div>;
@@ -60,14 +69,30 @@ const FeedList = ({ currentUserId }: FeedListProps) => {
 
     return (
         <div className="feed-list">
-            {posts.map((post) => (
-                <FeedItem
-                    key={post.id}
-                    post={post}
-                    user={users[post.userId]}
-                    currentUserId={currentUserId}
-                />
-            ))}
+            {posts.length > 0 ? (
+                posts.map((post) => (
+                    <FeedItem
+                        key={post.id}
+                        post={post}
+                        user={users[post.userId]}
+                        currentUserId={currentUserId}
+                    />
+                ))
+            ) : (
+                <div className="feed-list__empty">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M4 11a9 9 0 0 1 9 9"></path>
+                        <path d="M4 4a16 16 0 0 1 16 16"></path>
+                        <circle cx="5" cy="19" r="1"></circle>
+                    </svg>
+                    <p>No posts to show</p>
+                    {activeTab === "Following" && (
+                        <p className="feed-list__empty-subtitle">
+                            Follow other traders to see their posts here
+                        </p>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
