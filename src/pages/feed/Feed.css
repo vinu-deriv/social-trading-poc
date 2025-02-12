@@ -1,10 +1,9 @@
 .feed-page {
-    min-height: 100vh;
-    padding: 5px;
+    height: 100vh;
 }
 
 .feed-page__container {
-    max-width: 600px;
+    max-width: 720px;
     margin: 0 auto;
 }
 
@@ -36,5 +35,5 @@
 main {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 2rem;
 }
