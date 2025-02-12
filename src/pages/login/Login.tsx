@@ -1,6 +1,8 @@
 import { useState, FormEvent } from "react";
 import { useNavigate, useLocation, Navigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
+import TextInput from "@/components/input/TextInput";
+import Button from "@/components/input/Button";
 import "./Login.css";
 
 interface LocationState {
@@ -19,7 +21,7 @@ const Login = () => {
 
     // If user is already authenticated, redirect to home
     if (isAuthenticated) {
-        return <Navigate to="/" replace />;
+        return <Navigate to="/feed" replace />;
     }
 
     const from = (location.state as LocationState)?.from?.pathname || "/";
@@ -33,7 +35,7 @@ const Login = () => {
             clearError();
             await login(username, password);
             navigate(from, { replace: true });
-        } catch (err) {
+        } catch {
             // Error is handled by the auth context
             setIsSubmitting(false);
         }
@@ -63,39 +65,35 @@ const Login = () => {
                             {error && (
                                 <div className="login-error">{error}</div>
                             )}
-                            <div className="input-wrapper">
-                                <input
-                                    id="username"
-                                    type="text"
-                                    value={username}
-                                    onChange={(e) =>
-                                        setUsername(e.target.value)
-                                    }
-                                    placeholder="Enter your username"
-                                    required
-                                    disabled={isSubmitting}
-                                />
-                            </div>
-                            <div className="input-wrapper">
-                                <input
-                                    id="password"
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) =>
-                                        setPassword(e.target.value)
-                                    }
-                                    placeholder="Enter your password"
-                                    required
-                                    disabled={isSubmitting}
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                className="login-button"
+                            <TextInput
+                                id="username"
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                placeholder="Enter your username"
+                                required
                                 disabled={isSubmitting}
+                                error={error ? " " : undefined}
+                            />
+                            <TextInput
+                                id="password"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="Enter your password"
+                                required
+                                disabled={isSubmitting}
+                                error={error ? " " : undefined}
+                            />
+                            <Button
+                                type="submit"
+                                variant="primary"
+                                disabled={isSubmitting}
+                                isLoading={isSubmitting}
+                                className="login-button"
                             >
-                                {isSubmitting ? "Logging in..." : "Log in"}
-                            </button>
+                                Log in
+                            </Button>
                         </form>
                     </div>
                 </div>
