@@ -45,13 +45,12 @@ const Login = () => {
                 <div className="login-branding">
                     <div className="branding-content">
                         <img src="/vite.svg" alt="Logo" className="logo" />
-                        <h1>Social Trading</h1>
+                        <h1>Champion Social Trade</h1>
                         <p>Connect with expert traders and copy their strategies</p>
                     </div>
                 </div>
                 <div className="login-form-container">
                     <div className="form-wrapper">
-                        <img src="/vite.svg" alt="Logo" className="form-logo" />
                         <h2>Log in to your account</h2>
                         <form className="login-form" onSubmit={handleSubmit}>
                             {error && (
@@ -59,33 +58,27 @@ const Login = () => {
                                     {error}
                                 </div>
                             )}
-                            <div className="form-group">
-                                <label htmlFor="username">Username</label>
-                                <div className="input-wrapper">
-                                    <input
-                                        id="username"
-                                        type="text"
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
-                                        placeholder="Enter your username"
-                                        required
-                                        disabled={isSubmitting}
-                                    />
-                                </div>
+                            <div className="input-wrapper">
+                                <input
+                                    id="username"
+                                    type="text"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    placeholder="Enter your username"
+                                    required
+                                    disabled={isSubmitting}
+                                />
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="password">Password</label>
-                                <div className="input-wrapper">
-                                    <input
-                                        id="password"
-                                        type="password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        placeholder="Enter your password"
-                                        required
-                                        disabled={isSubmitting}
-                                    />
-                                </div>
+                            <div className="input-wrapper">
+                                <input
+                                    id="password"
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="Enter your password"
+                                    required
+                                    disabled={isSubmitting}
+                                />
                             </div>
                             <button 
                                 type="submit" 
