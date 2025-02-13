@@ -5,6 +5,8 @@ import MainLayout from "@/layouts/MainLayout";
 import Feed from "@pages/feed";
 import Login from "@pages/login";
 import Welcome from "@/pages/welcome";
+import Profile from "@/pages/profile";
+import NotFound from "@/pages/not-found";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Discover from "@/pages/discover/Discover";
 
@@ -39,25 +41,30 @@ export const routes: RouteObject[] = [
             <MainLayout />
           </ProtectedRoute>
         ),
+        errorElement: <NotFound />,
         children: [
           {
             path: "/",
-            element: <Feed />,
+            element: <Feed />
           },
           {
             path: "/feed",
-            element: <Feed />,
+            element: <Feed />
           },
           {
             path: "/discover",
-            element: (
-              <ProtectedRoute>
-                <Discover />
-              </ProtectedRoute>
-            ),
+            element: <Discover />
           },
-        ],
-      },
-    ],
-  },
+          {
+            path: "/profile/:username",
+            element: <Profile />,
+          },
+          {
+            path: "*",
+            element: <NotFound />
+          }
+        ]
+      }
+    ]
+  }
 ];

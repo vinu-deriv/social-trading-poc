@@ -10,7 +10,8 @@
       "followers": [
         "copier1",
         "copier2",
-        "copier3"
+        "copier3",
+        "leader1"
       ],
       "following": [
         "leader11",
@@ -22,6 +23,12 @@
         "acc1",
         "acc2"
       ],
+      "performance": {
+        "winRate": 78.5,
+        "totalPnL": 245.8,
+        "monthlyReturn": 12.5,
+        "totalTrades": 156
+      },
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
     },
@@ -35,12 +42,21 @@
       "followers": [
         "copier1",
         "copier3",
-        "leader1"
+        "leader1",
+        "leader2"
       ],
-      "following": [],
+      "following": [
+        "copier1"
+      ],
       "accounts": [
         "acc3"
       ],
+      "performance": {
+        "winRate": 68.5,
+        "totalPnL": 185.2,
+        "monthlyReturn": 8.7,
+        "totalTrades": 98
+      },
       "createdAt": "2024-01-02T00:00:00Z",
       "updatedAt": "2024-01-02T00:00:00Z"
     },
@@ -51,7 +67,10 @@
       "email": "new@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
       "userType": "copier",
-      "followers": [],
+      "followers": [
+        "leader1",
+        "leader2"
+      ],
       "following": [
         "leader1",
         "leader2"
@@ -591,7 +610,7 @@
       "content": {
         "text": "🎯 EUR/USD Technical Analysis\n\nKey levels to watch:\n- Resistance: 1.2150\n- Support: 1.2050\n\nBullish momentum building on 4H chart with strong RSI divergence.",
         "images": [
-          "https://example.com/charts/eurusd-analysis1.jpg"
+          "https://images.unsplash.com/photo-1642790106117-e829e14a795f"
         ]
       },
       "engagement": {
@@ -642,7 +661,7 @@
       "content": {
         "text": "📊 Monthly Performance Update\n\nUSD Position Trading Strategy:\n✅ Win Rate: 68%\n✅ Profit Factor: 2.3\n✅ Average Hold Time: 12 days\n\nConsistency is key! 🎯",
         "images": [
-          "https://example.com/charts/performance-stats.jpg"
+          "https://images.unsplash.com/photo-1543286386-2e659306cd6c"
         ]
       },
       "engagement": {
@@ -674,7 +693,7 @@
       "content": {
         "text": "🚨 Trade Alert: EUR/JPY Breakout\n\nKey Points:\n- Breaking 4-hour resistance\n- Volume confirmation\n- Strong momentum indicators\n\nWatching 158.50 as next target. 🎯",
         "images": [
-          "https://example.com/charts/eurjpy-breakout.jpg"
+          "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3"
         ]
       },
       "engagement": {
@@ -725,8 +744,8 @@
       "content": {
         "text": "📚 Trading Education: Position Sizing\n\nKey principles:\n1. Never risk more than 2% per trade\n2. Account for market volatility\n3. Consider correlation between positions\n\nSwipe for examples ➡️",
         "images": [
-          "https://example.com/education/position-sizing1.jpg",
-          "https://example.com/education/position-sizing2.jpg"
+          "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f",
+          "https://images.unsplash.com/photo-1551288049-bebda4e38f71"
         ]
       },
       "engagement": {
@@ -760,7 +779,7 @@
       "content": {
         "text": "💡 Strategy Update: EUR Scalping\n\nAdjusted parameters for current volatility:\n- Tighter stops\n- Faster exits\n- Focus on London session\n\nCheck performance tab for results 📊",
         "images": [
-          "https://example.com/charts/strategy-update.jpg"
+          "https://images.unsplash.com/photo-1560221328-12fe60f83ab8"
         ]
       },
       "engagement": {
@@ -821,7 +840,7 @@
       "content": {
         "text": "🎯 GBP/USD Trade Setup\n\nPotential reversal forming at key support:\n- Double bottom pattern\n- Bullish divergence on RSI\n- Strong institutional buying\n\nWatching for confirmation...",
         "images": [
-          "https://example.com/charts/gbpusd-setup.jpg"
+          "https://images.unsplash.com/photo-1559526324-593bc073d938"
         ]
       },
       "engagement": {
@@ -842,9 +861,9 @@
       "content": {
         "text": "📈 Weekly Market Outlook\n\nKey themes:\n1. USD weakness likely to continue\n2. Watch ECB speakers this week\n3. Major tech earnings impact\n\nSwipe for charts ➡️",
         "images": [
-          "https://example.com/charts/weekly-outlook1.jpg",
-          "https://example.com/charts/weekly-outlook2.jpg",
-          "https://example.com/charts/weekly-outlook3.jpg"
+          "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3",
+          "https://images.unsplash.com/photo-1535320903710-d993d3d77d29",
+          "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f"
         ]
       },
       "engagement": {
@@ -878,7 +897,7 @@
       "content": {
         "text": "📊 My First Month Results\n\nFollowing multiple strategies:\n- @expertTrader's EUR Scalping\n- @proTrader's Position Trading\n\nDiversification really helps! Up 8% this month 🎉",
         "images": [
-          "https://example.com/charts/results-month1.jpg"
+          "https://images.unsplash.com/photo-1551288049-bebda4e38f71"
         ]
       },
       "engagement": {
@@ -942,8 +961,8 @@
       "content": {
         "text": "🚨 USD/JPY Trade Exit\n\nClosing our position from last week:\n✅ +120 pips profit\n✅ 1.5:1 reward ratio\n✅ Clean technical exit\n\nCheck the charts for analysis ➡️",
         "images": [
-          "https://example.com/charts/usdjpy-exit1.jpg",
-          "https://example.com/charts/usdjpy-exit2.jpg"
+          "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3",
+          "https://images.unsplash.com/photo-1559526324-593bc073d938"
         ]
       },
       "engagement": {
@@ -974,7 +993,7 @@
       "content": {
         "text": "📱 New Feature Alert!\n\nJust added risk calculators to my Conservative USD Strategy dashboard. Check it out in the strategy tab! 🔢",
         "images": [
-          "https://example.com/features/risk-calculator.jpg"
+          "https://images.unsplash.com/photo-1554224155-6726b3ff858f"
         ]
       },
       "engagement": {
@@ -1036,7 +1055,7 @@
       "content": {
         "text": "🔍 Market Analysis: Gold\n\nKey technical levels for next week:\n- Resistance: $2050\n- Support: $2020\n\nWatch correlation with DXY and real yields 📈",
         "images": [
-          "https://example.com/charts/gold-analysis.jpg"
+          "https://images.unsplash.com/photo-1610375461246-83df859d849d"
         ]
       },
       "engagement": {
