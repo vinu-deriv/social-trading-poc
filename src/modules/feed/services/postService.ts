@@ -224,6 +224,18 @@ export const addReply = async (postId: string, data: AddReplyData) => {
     return updateResponse.json();
 };
 
+export const getPosts = async (activeTab: string, userId: string) => {
+    if (activeTab === "For you") {
+        const response = await fetch("http://localhost:3001/posts");
+        if (!response.ok) {
+            throw new Error("Failed to fetch posts");
+        }
+        return response.json();
+    } else {
+        return getFollowingPosts(userId);
+    }
+};
+
 export const getFollowingPosts = async (userId: string) => {
     try {
         // Get current user to get following list

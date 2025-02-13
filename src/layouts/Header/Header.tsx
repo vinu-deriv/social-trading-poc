@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import Button from "@/components/input/Button";
 import "./Header.css";

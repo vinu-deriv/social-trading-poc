@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import type Post from "@/types/post.types";
 import type User from "@/types/user.types";
 import FeedItem from "./components/FeedItem";
-import { getFollowingPosts } from "../../services/postService";
+import { getPosts } from "../../services/postService";
 import "./FeedList.css";
 
 interface FeedListProps {
@@ -12,52 +12,57 @@ interface FeedListProps {
 
 const FeedList = ({ currentUserId, activeTab }: FeedListProps) => {
     const [posts, setPosts] = useState<Post[]>([]);
-    const [users, setUsers] = useState<{ [key: string]: User }>({});
+    const [usersCache, setUsersCache] = useState<{ [key: string]: User } | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    // Fetch and cache users only when currentUserId changes
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Always fetch users for lookup
-                const usersResponse = await fetch("http://localhost:3001/users");
-                if (!usersResponse.ok) {
-                    throw new Error("Failed to fetch users");
-                }
-                const usersData: User[] = await usersResponse.json();
-
-                // Create a map of users for quick lookup
-                const usersMap = usersData.reduce((acc, user) => {
-                    acc[user.id] = user;
-                    return acc;
-                }, {} as { [key: string]: User });
-
-                setUsers(usersMap);
-
-                // Fetch posts based on active tab
-                let postsData: Post[];
-                if (activeTab === "For you") {
-                    const postsResponse = await fetch("http://localhost:3001/posts");
-                    if (!postsResponse.ok) {
-                        throw new Error("Failed to fetch posts");
+        async function fetchUsers() {
+            if (!usersCache) {
+                try {
+                    setLoading(true);
+                    const response = await fetch("http://localhost:3001/users");
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch users");
                     }
-                    postsData = await postsResponse.json();
-                } else {
-                    postsData = await getFollowingPosts(currentUserId);
-                }
+                    const usersData: User[] = await response.json();
 
+                    // Create a map of users for quick lookup
+                    const usersMap = usersData.reduce((acc, user) => {
+                        acc[user.id] = user;
+                        return acc;
+                    }, {} as { [key: string]: User });
+
+                    setUsersCache(usersMap);
+                } catch (err) {
+                    setError(err instanceof Error ? err.message : "An error occurred");
+                } finally {
+                    setLoading(false);
+                }
+            }
+        }
+        fetchUsers();
+    }, [currentUserId]);
+
+    // Only fetch posts when activeTab changes
+    useEffect(() => {
+        async function fetchPosts() {
+            try {
+                setLoading(true);
+                const postsData = await getPosts(activeTab, currentUserId);
                 setPosts(postsData);
             } catch (err) {
-                setError(
-                    err instanceof Error ? err.message : "An error occurred"
-                );
+                setError(err instanceof Error ? err.message : "An error occurred");
             } finally {
                 setLoading(false);
             }
-        };
-
-        fetchData();
-    }, [activeTab, currentUserId]);
+        }
+        // Only fetch posts if we have the users cache
+        if (usersCache) {
+            fetchPosts();
+        }
+    }, [activeTab, currentUserId, usersCache]);
 
     if (loading) {
         return <div className="feed-list__loading">Loading posts...</div>;
@@ -74,7 +79,7 @@ const FeedList = ({ currentUserId, activeTab }: FeedListProps) => {
                     <FeedItem
                         key={post.id}
                         post={post}
-                        user={users[post.userId]}
+                        user={usersCache?.[post.userId]}
                         currentUserId={currentUserId}
                     />
                 ))
