@@ -1,21 +1,31 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { CopyRelationship } from "../../types/copy.types";
-import AiGif from "../../assets/icons/ai.gif";
-import SkeletonCard from "./components/SkeletonCard";
-import LeaderCard from "./components/LeaderCard";
-import StrategyCard from "./components/StrategyCard";
 import TabNavigation from "../../components/navigation/TabNavigation";
+import Search from "./components/Search";
+import LeadersSection from "./components/LeadersSection";
+import StrategiesSection from "./components/StrategiesSection";
 import "./Discover.css";
 
-interface Leader {
+interface TradingStrategy {
   id: string;
-  username: string;
-  avatar?: string;
-  copiers: number;
-  totalProfit: number;
-  winRate: number;
-  isFollowing: boolean;
+  leaderId: string;
+  accountId: string;
+  name: string;
+  description: string;
+  tradeType: string;
+  riskLevel: string;
+  copiers: string[];
+  isActive: boolean;
+}
+
+interface CurrencyAccount {
+  id: string;
+  userId: string;
+  currency: string;
+  balance: number;
+  tradingStrategies: string[];
+  isActive: boolean;
 }
 
 interface User {
@@ -28,25 +38,14 @@ interface User {
   followers: string[];
 }
 
-interface CurrencyAccount {
+interface Leader {
   id: string;
-  userId: string;
-  currency: string;
-  balance: number;
-  tradingStrategies: string[];
-  isActive: boolean;
-}
-
-interface TradingStrategy {
-  id: string;
-  leaderId: string;
-  accountId: string;
-  name: string;
-  description: string;
-  tradeType: string;
-  riskLevel: string;
-  copiers: string[];
-  isActive: boolean;
+  username: string;
+  avatar?: string;
+  copiers: number;
+  totalProfit: number;
+  winRate: number;
+  isFollowing: boolean;
 }
 
 interface Strategy {
@@ -232,40 +231,6 @@ export default function Discover() {
     [user]
   );
 
-  // Memoized sections
-  const topLeaders = useMemo(() => {
-    return [...leaders]
-      .sort((a, b) => b.totalProfit - a.totalProfit)
-      .slice(0, 3);
-  }, [leaders]);
-
-  const aiSuggestedLeaders = useMemo(() => {
-    return [...leaders].sort(() => Math.random() - 0.5).slice(0, 5);
-  }, [leaders]);
-
-  const topEarners = useMemo(() => {
-    return [...leaders].sort(() => Math.random() - 0.5).slice(0, 5);
-  }, [leaders]);
-
-  const mostPopular = useMemo(() => {
-    return [...leaders].sort(() => Math.random() - 0.5).slice(0, 5);
-  }, [leaders]);
-
-  // Strategy sections
-  const topStrategies = useMemo(() => {
-    return [...strategies]
-      .sort((a, b) => b.copiers.length - a.copiers.length)
-      .slice(0, 3);
-  }, [strategies]);
-
-  const aiSuggestedStrategies = useMemo(() => {
-    return [...strategies].sort(() => Math.random() - 0.5).slice(0, 5);
-  }, [strategies]);
-
-  const popularStrategies = useMemo(() => {
-    return [...strategies].sort(() => Math.random() - 0.5).slice(0, 5);
-  }, [strategies]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -355,164 +320,25 @@ export default function Discover() {
   return (
     <div className="discover">
       <h1 className="discover__title">Discover</h1>
-      <div className="discover__search">
-        <input
-          type="search"
-          className="discover__search-input"
-          placeholder="AI powered search..."
-        />
-        <button className="discover__search-ai">
-          <img src={AiGif} alt="AI Search" />
-        </button>
-      </div>
+      <Search />
       <TabNavigation
         tabs={tabs}
         activeTab={activeTab}
         onTabChange={handleTabChange}
       />
       {activeTab === "Leaders" ? (
-        loading ? (
-          <>
-            <h2 className="discover__section-title">Top 3 Leaders</h2>
-            <div className="discover__top-leaders">
-              {[...Array(3)].map((_, index) => (
-                <SkeletonCard key={index} large showRank />
-              ))}
-            </div>
-
-            <h2 className="discover__section-title">AI Suggested Leaders</h2>
-            <div className="discover__leaders-grid">
-              {[...Array(5)].map((_, index) => (
-                <SkeletonCard key={`ai-${index}`} />
-              ))}
-            </div>
-
-            <h2 className="discover__section-title">Top Earners</h2>
-            <div className="discover__leaders-grid">
-              {[...Array(5)].map((_, index) => (
-                <SkeletonCard key={`earners-${index}`} />
-              ))}
-            </div>
-
-            <h2 className="discover__section-title">Most Popular</h2>
-            <div className="discover__leaders-grid">
-              {[...Array(5)].map((_, index) => (
-                <SkeletonCard key={`popular-${index}`} />
-              ))}
-            </div>
-          </>
-        ) : (
-          <>
-            <h2 className="discover__section-title">Top 3 Leaders</h2>
-            <div className="discover__top-leaders">
-              {topLeaders.map((leader, index) => (
-                <LeaderCard
-                  key={leader.id}
-                  leader={leader}
-                  rank={index + 1}
-                  onFollow={handleFollowToggle}
-                  large
-                />
-              ))}
-            </div>
-
-            <h2 className="discover__section-title">AI Suggested Leaders</h2>
-            <div className="discover__leaders-grid">
-              {aiSuggestedLeaders.map((leader) => (
-                <LeaderCard
-                  key={leader.id}
-                  leader={leader}
-                  onFollow={handleFollowToggle}
-                />
-              ))}
-            </div>
-
-            <h2 className="discover__section-title">Top Earners</h2>
-            <div className="discover__leaders-grid">
-              {topEarners.map((leader) => (
-                <LeaderCard
-                  key={leader.id}
-                  leader={leader}
-                  onFollow={handleFollowToggle}
-                />
-              ))}
-            </div>
-
-            <h2 className="discover__section-title">Most Popular</h2>
-            <div className="discover__leaders-grid">
-              {mostPopular.map((leader) => (
-                <LeaderCard
-                  key={leader.id}
-                  leader={leader}
-                  onFollow={handleFollowToggle}
-                />
-              ))}
-            </div>
-          </>
-        )
-      ) : loading ? (
-        <>
-          <h2 className="discover__section-title">Top Strategies</h2>
-          <div className="discover__top-leaders">
-            {[...Array(3)].map((_, index) => (
-              <SkeletonCard key={index} large showRank />
-            ))}
-          </div>
-
-          <h2 className="discover__section-title">AI Suggested Strategies</h2>
-          <div className="discover__leaders-grid">
-            {[...Array(5)].map((_, index) => (
-              <SkeletonCard key={`ai-${index}`} />
-            ))}
-          </div>
-
-          <h2 className="discover__section-title">Popular Strategies</h2>
-          <div className="discover__leaders-grid">
-            {[...Array(5)].map((_, index) => (
-              <SkeletonCard key={`popular-${index}`} />
-            ))}
-          </div>
-        </>
+        <LeadersSection
+          loading={loading}
+          leaders={leaders}
+          onFollow={handleFollowToggle}
+        />
       ) : (
-        <>
-          <h2 className="discover__section-title">Top Strategies</h2>
-          <div className="discover__top-leaders">
-            {topStrategies.map((strategy, index) => (
-              <StrategyCard
-                key={strategy.id}
-                strategy={strategy}
-                rank={index + 1}
-                onFollow={handleFollowToggle}
-                onCopy={handleCopyStrategy}
-                large
-              />
-            ))}
-          </div>
-
-          <h2 className="discover__section-title">AI Suggested Strategies</h2>
-          <div className="discover__leaders-grid">
-            {aiSuggestedStrategies.map((strategy) => (
-              <StrategyCard
-                key={strategy.id}
-                strategy={strategy}
-                onFollow={handleFollowToggle}
-                onCopy={handleCopyStrategy}
-              />
-            ))}
-          </div>
-
-          <h2 className="discover__section-title">Popular Strategies</h2>
-          <div className="discover__leaders-grid">
-            {popularStrategies.map((strategy) => (
-              <StrategyCard
-                key={strategy.id}
-                strategy={strategy}
-                onFollow={handleFollowToggle}
-                onCopy={handleCopyStrategy}
-              />
-            ))}
-          </div>
-        </>
+        <StrategiesSection
+          loading={loading}
+          strategies={strategies}
+          onFollow={handleFollowToggle}
+          onCopy={handleCopyStrategy}
+        />
       )}
     </div>
   );
