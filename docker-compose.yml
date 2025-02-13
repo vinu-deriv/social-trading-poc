@@ -1,0 +1,57 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      target: ${NODE_ENV:-development}
+    ports:
+      - "5173:5173"  # Development port
+      - "80:80"      # Production port
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=${VITE_API_URL:-http://localhost:3000}
+      - VITE_JSON_SERVER_URL=${VITE_JSON_SERVER_URL:-http://localhost:3001}
+    depends_on:
+      - llm-server
+      - json-server
+
+  llm-server:
+    build:
+      context: ./llm-server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./llm-server/src:/app/src
+      - ./llm-server/package.json:/app/package.json
+      - ./llm-server/tsconfig.json:/app/tsconfig.json
+      - /app/node_modules
+      - /app/dist
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - PORT=3000
+      - JSON_SERVER_URL=http://json-server:3001
+    env_file:
+      - ./llm-server/.env
+    command: >
+      sh -c "npm install &&
+             npm run build &&
+             npm start"
+
+  json-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.jsonserver
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./db.json:/app/db.json
+      - ./data:/app/data
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+    command: json-server --watch db.json --host 0.0.0.0 --port 3001
+
+volumes:
+  data:
