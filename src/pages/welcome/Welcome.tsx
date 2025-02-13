@@ -129,13 +129,15 @@ const Welcome = () => {
 
   return (
     <div className="welcome-page">
-      <div className="progress-bar">
+      <div className={`progress-bar step-${currentStep}`}>
         {STEPS.map((step, index) => (
           <div
             key={step.key}
             className={`progress-step ${getStepClassName(step.key)}`}
           >
-            <div className="step-indicator">{index + 1}</div>
+            <div className="step-indicator">
+              {isStepCompleted(step.key) ? "✓" : index + 1}
+            </div>
             <div className="step-details">
               <h3>{step.title}</h3>
               <p>{step.description}</p>
