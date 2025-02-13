@@ -1,5 +1,14 @@
 import { UserType } from "../types/user";
 
+interface RawUser {
+  id: string;
+  username: string;
+  email: string;
+  displayName?: string;
+  userType?: UserType;
+  isFirstLogin?: boolean;
+}
+
 interface LoginCredentials {
   username: string;
   password: string;
@@ -10,6 +19,7 @@ interface AuthResponse {
     id: string;
     username: string;
     email: string;
+    displayName: string;
     userType: UserType;
     isFirstLogin?: boolean;
   };
@@ -32,7 +42,7 @@ export const login = async (
 
     // Mock authentication - in real app this would be a proper API call
     const user = users.find(
-      (u: any) =>
+      (u: RawUser) =>
         u.username === credentials.username &&
         credentials.password === "password"
     );
@@ -46,6 +56,7 @@ export const login = async (
       ...user,
       userType: user.userType || UserType.COPIER, // Default to copier if not set
       isFirstLogin: user.isFirstLogin ?? true, // Default to true if not set
+      displayName: user.displayName || user.username, // Default to username if displayName not set
     };
 
     // Mock token generation
