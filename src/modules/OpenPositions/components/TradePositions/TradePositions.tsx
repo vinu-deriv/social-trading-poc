@@ -1,8 +1,8 @@
 import React from "react";
+import Table from "@/components/Table";
 import { Contract } from "@/types/contract.types";
 import { positionsTableColumns, TradeType } from "../../constants";
-import Table from "@/components/Table";
-import { TradePositionsDataMapper } from "./TradePositionsDataMapper";
+import { useTradePositionsDataMapper } from "../../hooks";
 import { ContractCard } from "./ContractCard";
 import { useViewport } from "@/hooks";
 import "./TradePositions.css";
@@ -14,16 +14,14 @@ interface PositionsTableProps {
 
 const TradePositions = ({ contracts, tradeType }: PositionsTableProps) => {
   const columns = positionsTableColumns[tradeType];
+  const data = useTradePositionsDataMapper(contracts, tradeType);
   const { isDesktop } = useViewport();
 
   return isDesktop ? (
-    <Table
-      columns={columns}
-      data={TradePositionsDataMapper(contracts, tradeType)}
-    />
+    <Table columns={columns} data={data} />
   ) : (
     <div className="contract-card-container">
-      {TradePositionsDataMapper(contracts, tradeType).map((item) => {
+      {data.map((item) => {
         const items = columns.map((column, idx) => {
           return {
             title: column,

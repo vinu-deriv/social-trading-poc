@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import CountdownTimer from "@/components/CountdownTimer";
 import RandomValue from "@/components/RandomValue";
-import { tradeTypes, TradeType } from "../../../constants";
+import { tradeTypes, TradeType } from "../constants";
 import { Contract } from "@/types/contract.types";
 
-const TradePositionsDataMapper = (
+const useTradePositionsDataMapper = (
   contracts: Contract[],
   tradeType: TradeType
 ) => {
@@ -85,4 +85,4 @@ const TradePositionsDataMapper = (
   }
 };
 
-export default TradePositionsDataMapper;
+export default useTradePositionsDataMapper;
