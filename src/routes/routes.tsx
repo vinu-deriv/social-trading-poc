@@ -1,44 +1,63 @@
+import { RouteObject, Outlet } from "react-router-dom";
+import { AuthProvider } from "@/context/AuthContext";
+import AuthLayout from "@/layouts/AuthLayout";
+import MainLayout from "@/layouts/MainLayout";
 import Feed from "@pages/feed";
 import Login from "@pages/login";
-import Welcome from "@pages/welcome";
+import Welcome from "@/pages/welcome";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Discover from "@/pages/discover/Discover";
 
-export const routes = [
+export const routes: RouteObject[] = [
   {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/welcome",
     element: (
-      <ProtectedRoute>
-        <Welcome />
-      </ProtectedRoute>
+      <AuthProvider>
+        <Outlet />
+      </AuthProvider>
     ),
-  },
-  {
-    path: "/",
-    element: (
-      <ProtectedRoute>
-        <Feed />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/feed",
-    element: (
-      <ProtectedRoute>
-        <Feed />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: "/discover",
-    element: (
-      <ProtectedRoute>
-        <Discover />
-      </ProtectedRoute>
-    ),
+    children: [
+      {
+        element: <AuthLayout />,
+        children: [
+          {
+            path: "/login",
+            element: <Login />,
+          },
+          {
+            path: "/welcome",
+            element: (
+              <ProtectedRoute>
+                <Welcome />
+              </ProtectedRoute>
+            ),
+          },
+        ],
+      },
+      {
+        element: (
+          <ProtectedRoute>
+            <MainLayout />
+          </ProtectedRoute>
+        ),
+        children: [
+          {
+            path: "/",
+            element: <Feed />,
+          },
+          {
+            path: "/feed",
+            element: <Feed />,
+          },
+          {
+            path: "/discover",
+            element: (
+              <ProtectedRoute>
+                <Discover />
+              </ProtectedRoute>
+            ),
+          },
+        ],
+      },
+    ],
   },
 ];

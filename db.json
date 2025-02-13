@@ -15,7 +15,6 @@
       "following": [
         "leader11",
         "leader9",
-        "leader8",
         "leader2",
         "leader13"
       ],
@@ -195,8 +194,7 @@
       "profilePicture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
       "userType": "leader",
       "followers": [
-        "copier12",
-        "leader1"
+        "copier12"
       ],
       "following": [],
       "accounts": [
