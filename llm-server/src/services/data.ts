@@ -1,6 +1,6 @@
 import { Post, User, TradingStrategy } from "../types";
 
-const JSON_SERVER_URL = process.env.JSON_SERVER_URL || 'http://json-server:3001';
+const JSON_SERVER_URL = (process.env.JSON_SERVER_URL || 'http://json-server:3001') + '/api';
 
 export class DataService {
     async getUser(userId: string): Promise<User | null> {

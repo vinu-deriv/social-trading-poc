@@ -2,10 +2,16 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-RUN npm install -g json-server
+# Copy package files
+COPY json-server/package*.json ./
 
-COPY db.json /app/db.json
+# Install dependencies
+RUN npm install
+
+# Copy server code and database
+COPY json-server/server.js ./
+COPY db.json ../db.json
 
 EXPOSE 3001
 
-CMD ["json-server", "--watch", "db.json", "--host", "0.0.0.0", "--port", "3001"]
+CMD ["npm", "start"]
