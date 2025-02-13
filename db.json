@@ -13,10 +13,11 @@
         "copier3"
       ],
       "following": [
-        "leader14",
         "leader11",
         "leader9",
-        "leader5"
+        "leader8",
+        "leader2",
+        "leader13"
       ],
       "accounts": [
         "acc1",
@@ -34,7 +35,8 @@
       "userType": "leader",
       "followers": [
         "copier1",
-        "copier3"
+        "copier3",
+        "leader1"
       ],
       "following": [],
       "accounts": [
@@ -141,8 +143,7 @@
       "userType": "leader",
       "followers": [
         "copier7",
-        "copier8",
-        "leader1"
+        "copier8"
       ],
       "following": [],
       "accounts": [
@@ -194,7 +195,8 @@
       "profilePicture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
       "userType": "leader",
       "followers": [
-        "copier12"
+        "copier12",
+        "leader1"
       ],
       "following": [],
       "accounts": [
@@ -284,7 +286,8 @@
       "userType": "leader",
       "followers": [
         "copier19",
-        "copier20"
+        "copier20",
+        "leader1"
       ],
       "following": [],
       "accounts": [
@@ -301,8 +304,7 @@
       "profilePicture": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7",
       "userType": "leader",
       "followers": [
-        "copier21",
-        "leader1"
+        "copier21"
       ],
       "following": [],
       "accounts": [

@@ -4,7 +4,14 @@
 
 .discover__title {
   font-size: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.discover__section-title {
+  font-size: 1.5rem;
+  margin: 2rem 0 1.5rem;
   color: var(--text-primary);
   text-align: center;
 }
@@ -69,20 +76,76 @@
   transform: scale(1.1);
 }
 
-.discover__leaders {
+.discover__top-leaders {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 0 auto 3rem;
+  padding: 0 2rem;
+}
+
+.discover__leaders-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+  margin: 0 auto 2rem;
+  max-width: 1400px;
+  padding: 0 2rem;
+}
+
+.discover__top-leaders {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Responsive styles */
+@media (max-width: 1400px) {
+  .discover__leaders-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .discover__leaders-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
-  .discover__leaders {
-    grid-template-columns: 1fr;
+  .discover__top-leaders {
+    grid-template-columns: repeat(2, 1fr);
     padding: 1rem;
     gap: 1.5rem;
+  }
+
+  .discover__leaders-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 1rem;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .discover {
+    padding: 1rem;
+  }
+
+  .discover__title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .discover__search {
+    margin-bottom: 1.5rem;
+  }
+
+  .discover__top-leaders,
+  .discover__leaders-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 
@@ -95,6 +158,19 @@
   overflow: hidden;
   position: relative;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.leader-card__rank {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  z-index: 1;
 }
 
 .leader-card:hover {

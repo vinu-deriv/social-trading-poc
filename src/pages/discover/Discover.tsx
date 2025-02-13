@@ -1,9 +1,8 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { useAuth } from "../../context/AuthContext";
 import AiGif from "../../assets/icons/ai.gif";
-import Tick from "../../assets/icons/Tick";
-import Plus from "../../assets/icons/Plus";
-import SkeletonCard from "../../components/layout/SkeletonCard";
+import SkeletonCard from "./components/SkeletonCard";
+import LeaderCard from "./components/LeaderCard";
 import "./Discover.css";
 
 type Leader = {
@@ -24,7 +23,7 @@ type User = {
 };
 
 export default function Discover() {
-  const [topLeaders, setTopLeaders] = useState<Leader[]>([]);
+  const [leaders, setLeaders] = useState<Leader[]>([]);
   const [loading, setLoading] = useState(true);
 
   const { user } = useAuth();
@@ -74,8 +73,8 @@ export default function Discover() {
         ]);
 
         // Update local state
-        setTopLeaders((prevLeaders) =>
-          prevLeaders.map((leader) =>
+        setLeaders((prevLeaders: Leader[]) =>
+          prevLeaders.map((leader: Leader) =>
             leader.id === leaderId
               ? { ...leader, isFollowing: !leader.isFollowing }
               : leader
@@ -87,6 +86,28 @@ export default function Discover() {
     },
     [user]
   );
+
+  // Top 3 leaders sorted by profit
+  const topLeaders = useMemo(() => {
+    return [...leaders]
+      .sort((a, b) => b.totalProfit - a.totalProfit)
+      .slice(0, 3);
+  }, [leaders]);
+
+  // AI Suggested Leaders (random selection)
+  const aiSuggestedLeaders = useMemo(() => {
+    return [...leaders].sort(() => Math.random() - 0.5).slice(0, 5);
+  }, [leaders]);
+
+  // Top Earners (random selection)
+  const topEarners = useMemo(() => {
+    return [...leaders].sort(() => Math.random() - 0.5).slice(0, 5);
+  }, [leaders]);
+
+  // Most Popular (random selection)
+  const mostPopular = useMemo(() => {
+    return [...leaders].sort(() => Math.random() - 0.5).slice(0, 5);
+  }, [leaders]);
 
   useEffect(() => {
     const fetchLeaders = async () => {
@@ -119,7 +140,7 @@ export default function Discover() {
           }))
           .sort((a, b) => b.totalProfit - a.totalProfit);
 
-        setTopLeaders(leaders);
+        setLeaders(leaders);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching leaders:", error);
@@ -129,22 +150,6 @@ export default function Discover() {
 
     fetchLeaders();
   }, []);
-
-  const formatProfit = (profit: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(profit);
-  };
-
-  const formatCopiers = (count: number) => {
-    return new Intl.NumberFormat("en-US", {
-      notation: "compact",
-      compactDisplay: "short",
-    }).format(count);
-  };
 
   return (
     <div className="discover">
@@ -159,56 +164,93 @@ export default function Discover() {
           <img src={AiGif} alt="AI Search" />
         </button>
       </div>
-      <div className="discover__leaders">
-        {loading
-          ? [...Array(12)].map((_, index) => <SkeletonCard key={index} />)
-          : topLeaders.map((leader) => (
-              <div key={leader.id} className="leader-card">
-                <div className="leader-card__banner">
-                  <div className="leader-card__avatar">
-                    <div className="leader-card__avatar-wrapper">
-                      {leader.avatar ? (
-                        <img
-                          src={leader.avatar}
-                          alt={leader.username}
-                          className="leader-card__avatar-img"
-                        />
-                      ) : (
-                        <div className="leader-card__avatar-placeholder">
-                          {leader.username.slice(0, 2).toUpperCase()}
-                        </div>
-                      )}
-                      <button
-                        className="leader-card__follow-icon"
-                        onClick={() => handleFollowToggle(leader.id)}
-                      >
-                        {leader.isFollowing ? <Tick /> : <Plus />}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="leader-card__info">
-                  <h3 className="leader-card__name">{leader.username}</h3>
-                  <div className="leader-card__stats">
-                    <div className="leader-card__stat">
-                      <span className="leader-card__stat-label">Copiers</span>
-                      <span className="leader-card__stat-value">
-                        {formatCopiers(leader.copiers)}
-                      </span>
-                    </div>
-                    <div className="leader-card__stat">
-                      <span className="leader-card__stat-label">
-                        Total Profit
-                      </span>
-                      <span className="leader-card__stat-value leader-card__stat-value--profit">
-                        {formatProfit(leader.totalProfit)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      {loading ? (
+        <>
+          {/* Top 3 Leaders */}
+          <h2 className="discover__section-title">Top 3 Leaders</h2>
+          <div className="discover__top-leaders">
+            {[...Array(3)].map((_, index) => (
+              <SkeletonCard key={index} large showRank />
             ))}
-      </div>
+          </div>
+
+          {/* AI Suggested Leaders */}
+          <h2 className="discover__section-title">AI Suggested Leaders</h2>
+          <div className="discover__leaders-grid">
+            {[...Array(5)].map((_, index) => (
+              <SkeletonCard key={`ai-${index}`} />
+            ))}
+          </div>
+
+          {/* Top Earners */}
+          <h2 className="discover__section-title">Top Earners</h2>
+          <div className="discover__leaders-grid">
+            {[...Array(5)].map((_, index) => (
+              <SkeletonCard key={`earners-${index}`} />
+            ))}
+          </div>
+
+          {/* Most Popular */}
+          <h2 className="discover__section-title">Most Popular</h2>
+          <div className="discover__leaders-grid">
+            {[...Array(5)].map((_, index) => (
+              <SkeletonCard key={`popular-${index}`} />
+            ))}
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Top 3 Leaders */}
+          <h2 className="discover__section-title">Top 3 Leaders</h2>
+          <div className="discover__top-leaders">
+            {topLeaders.map((leader, index) => (
+              <LeaderCard
+                key={leader.id}
+                leader={leader}
+                rank={index + 1}
+                onFollow={handleFollowToggle}
+                large
+              />
+            ))}
+          </div>
+
+          {/* AI Suggested Leaders */}
+          <h2 className="discover__section-title">AI Suggested Leaders</h2>
+          <div className="discover__leaders-grid">
+            {aiSuggestedLeaders.map((leader) => (
+              <LeaderCard
+                key={leader.id}
+                leader={leader}
+                onFollow={handleFollowToggle}
+              />
+            ))}
+          </div>
+
+          {/* Top Earners */}
+          <h2 className="discover__section-title">Top Earners</h2>
+          <div className="discover__leaders-grid">
+            {topEarners.map((leader) => (
+              <LeaderCard
+                key={leader.id}
+                leader={leader}
+                onFollow={handleFollowToggle}
+              />
+            ))}
+          </div>
+
+          {/* Most Popular */}
+          <h2 className="discover__section-title">Most Popular</h2>
+          <div className="discover__leaders-grid">
+            {mostPopular.map((leader) => (
+              <LeaderCard
+                key={leader.id}
+                leader={leader}
+                onFollow={handleFollowToggle}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
