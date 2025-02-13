@@ -57,7 +57,7 @@ const FeedList = ({ currentUserId, activeTab }: FeedListProps) => {
             if (!usersCache) {
                 try {
                     setLoading(true);
-                    const response = await fetch("http://localhost:3001/users");
+                    const response = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users`);
                     if (!response.ok) {
                         throw new Error("Failed to fetch users");
                     }

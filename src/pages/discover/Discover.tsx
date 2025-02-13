@@ -35,8 +35,8 @@ export default function Discover() {
       try {
         // Get current leader and user data
         const [leaderRes, currentUserRes] = await Promise.all([
-          fetch(`http://localhost:3001/users/${leaderId}`),
-          fetch(`http://localhost:3001/users/${user.id}`),
+          fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${leaderId}`),
+          fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${user.id}`),
         ]);
 
         const leader = await leaderRes.json();
@@ -60,12 +60,12 @@ export default function Discover() {
 
         // Update both users in database
         await Promise.all([
-          fetch(`http://localhost:3001/users/${leaderId}`, {
+          fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${leaderId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(leader),
           }),
-          fetch(`http://localhost:3001/users/${user.id}`, {
+          fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${user.id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(currentUser),
@@ -112,14 +112,14 @@ export default function Discover() {
   useEffect(() => {
     const fetchLeaders = async () => {
       try {
-        const res = await fetch("http://localhost:3001/users");
+        const res = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users`);
         const users: User[] = await res.json();
         console.log(users);
 
         // Get leaders with random stats
         // Get current user data to check following status
         const currentUserRes = user
-          ? await fetch(`http://localhost:3001/users/${user.id}`)
+          ? await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${user.id}`)
           : null;
         const currentUserData = currentUserRes
           ? await currentUserRes.json()

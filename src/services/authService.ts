@@ -37,7 +37,7 @@ export const login = async (
   credentials: LoginCredentials
 ): Promise<AuthResponse> => {
   try {
-    const response = await fetch("http://localhost:3001/users");
+    const response = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users`);
     const users = await response.json();
 
     // Mock authentication - in real app this would be a proper API call
