@@ -4,6 +4,9 @@ services:
       context: .
       dockerfile: Dockerfile.frontend
       target: ${NODE_ENV:-development}
+      args:
+        - VITE_API_URL=${VITE_API_URL:-http://localhost:3000}
+        - VITE_JSON_SERVER_URL=${VITE_JSON_SERVER_URL:-http://localhost:3001}
     ports:
       - "5173:5173"  # Development port
       - "80:80"      # Production port
