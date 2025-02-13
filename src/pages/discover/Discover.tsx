@@ -5,6 +5,7 @@ import TabNavigation from "../../components/navigation/TabNavigation";
 import Search from "./components/Search";
 import LeadersSection from "./components/LeadersSection";
 import StrategiesSection from "./components/StrategiesSection";
+import TrendingAssets from "./components/TrendingAssets";
 import "./Discover.css";
 
 interface TradingStrategy {
@@ -48,6 +49,15 @@ interface Leader {
   isFollowing: boolean;
 }
 
+interface Asset {
+  symbol: string;
+  name: string;
+  imageUrl: string;
+  currentPrice: number;
+  changePercentage: number;
+  direction: "up" | "down";
+}
+
 interface Strategy {
   id: string;
   leaderId: string;
@@ -70,11 +80,12 @@ export default function Discover() {
   const [activeTab, setActiveTab] = useState("Leaders");
   const [leaders, setLeaders] = useState<Leader[]>([]);
   const [strategies, setStrategies] = useState<Strategy[]>([]);
+  const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
 
   const { user } = useAuth();
 
-  const tabs = ["Leaders", "Strategies"];
+  const tabs = ["Leaders", "Strategies", "Trending Assets"];
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -235,21 +246,24 @@ export default function Discover() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [usersRes, strategiesRes, currencyAccountsRes] =
+        const [usersRes, strategiesRes, currencyAccountsRes, assetsRes] =
           await Promise.all([
             fetch("http://localhost:3001/users"),
             fetch("http://localhost:3001/tradingStrategies"),
             fetch("http://localhost:3001/currencyAccounts"),
+            fetch("http://localhost:3001/assets"),
           ]);
 
-        const [users, strategiesData, accounts]: [
+        const [users, strategiesData, accounts, assetsData]: [
           User[],
           TradingStrategy[],
-          CurrencyAccount[]
+          CurrencyAccount[],
+          Asset[]
         ] = await Promise.all([
           usersRes.json(),
           strategiesRes.json(),
           currencyAccountsRes.json(),
+          assetsRes.json(),
         ]);
 
         // Get current user data to check following status
@@ -307,6 +321,7 @@ export default function Discover() {
 
         setLeaders(leaders);
         setStrategies(processedStrategies);
+        setAssets(assetsData);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -332,13 +347,15 @@ export default function Discover() {
           leaders={leaders}
           onFollow={handleFollowToggle}
         />
-      ) : (
+      ) : activeTab === "Strategies" ? (
         <StrategiesSection
           loading={loading}
           strategies={strategies}
           onFollow={handleFollowToggle}
           onCopy={handleCopyStrategy}
         />
+      ) : (
+        <TrendingAssets loading={loading} assets={assets} />
       )}
     </div>
   );

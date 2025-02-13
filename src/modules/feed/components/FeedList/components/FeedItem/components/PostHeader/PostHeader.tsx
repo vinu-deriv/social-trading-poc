@@ -1,13 +1,23 @@
 import type User from "@/types/user.types";
 import Avatar from "@/components/user/Avatar";
+import AIButton from "@/components/AIButton";
 import "./PostHeader.css";
 
 interface PostHeaderProps {
     user: User;
     timestamp: string;
+    onAnalyze: () => void;
+    isAnalyzing?: boolean;
+    showAnalyzeButton?: boolean;
 }
 
-const PostHeader = ({ user, timestamp }: PostHeaderProps) => {
+const PostHeader = ({
+    user,
+    timestamp,
+    onAnalyze,
+    isAnalyzing,
+    showAnalyzeButton = true,
+}: PostHeaderProps) => {
     const formatTimestamp = (timestamp: string) => {
         const date = new Date(timestamp);
         return date.toLocaleDateString("en-US", {
@@ -35,6 +45,16 @@ const PostHeader = ({ user, timestamp }: PostHeaderProps) => {
                     </span>
                 </div>
             </div>
+            {showAnalyzeButton && (
+                <AIButton
+                    onClick={onAnalyze}
+                    isLoading={isAnalyzing}
+                    disabled={isAnalyzing}
+                    loadingText="Analyzing..."
+                >
+                    Ask AI
+                </AIButton>
+            )}
         </div>
     );
 };
