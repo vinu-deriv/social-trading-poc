@@ -4,8 +4,27 @@
 
 .discover__title {
   font-size: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   color: var(--text-primary);
+  text-align: center;
+}
+
+.discover .tab-navigation {
+  margin: 0 auto 2rem;
+  max-width: 400px;
+  padding: 0 1rem;
+}
+
+.discover__strategies {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.discover__empty-message {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
   text-align: center;
 }
 
