@@ -35,7 +35,6 @@ const Feed = () => {
                     <FeedList
                         currentUserId={user.id}
                         activeTab={activeTab}
-                        key={activeTab}
                     />
                 </main>
             </div>
