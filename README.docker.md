@@ -135,7 +135,7 @@ In development:
 
 ## Data Persistence
 
-The JSON server data is persisted through Docker volumes:
+The JSON server data is persisted using Docker volumes. Note: the initial db.json file is copied into the container (not mounted as a live link) to ensure data persistence across container restarts.
 - The db.json file is mounted from the host system
 - A named volume 'data' is used for additional persistence
 
