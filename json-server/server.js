@@ -13,7 +13,9 @@ app.use(cors());
 // Use json-server defaults (logger, static, etc)
 app.use(middlewares);
 
-// Mount json-server router under /api
+// In development, mount json-server router at root and /api
+// This allows both localhost:3001/users and localhost:3001/api/users to work
+app.use('/', router);
 app.use('/api', router);
 
 const port = process.env.PORT || 3001;

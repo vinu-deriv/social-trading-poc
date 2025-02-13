@@ -7,7 +7,7 @@ interface AIResponse {
 export const getPostInsights = async (userId: string): Promise<AIInsight[]> => {
     try {
         const response = await fetch(
-            `${import.meta.env.VITE_JSON_SERVER_URL}/api/ai/feed-insights/${userId}`
+            `${import.meta.env.VITE_JSON_SERVER_URL}/ai/feed-insights/${userId}`
         );
         if (!response.ok) {
             console.warn(`AI insights service error: ${response.status}`);
