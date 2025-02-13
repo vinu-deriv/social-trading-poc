@@ -153,7 +153,6 @@ export default function Discover() {
 
   return (
     <div className="discover">
-      <h1 className="discover__title">Top Leaders</h1>
       <div className="discover__search">
         <input
           type="search"

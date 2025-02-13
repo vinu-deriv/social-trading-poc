@@ -52,7 +52,12 @@ const ProfileHeader = ({
                 />
                 <div className="profile-header__info">
                     <div className="profile-header__name-row">
-                        <h1 className="profile-header__username">{username}</h1>
+                        <div className="profile-header__name">
+                            <h1 className="profile-header__display-name">
+                                {profile.displayName?.split('|')[0].trim() || username}
+                            </h1>
+                            <span className="profile-header__username">@{username}</span>
+                        </div>
                         {!isOwnProfile && (
                             <Button
                                 onClick={isFollowing ? onUnfollow : onFollow}
