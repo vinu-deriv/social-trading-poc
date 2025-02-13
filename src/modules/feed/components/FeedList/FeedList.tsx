@@ -12,7 +12,9 @@ interface FeedListProps {
 
 const FeedList = ({ currentUserId, activeTab }: FeedListProps) => {
     const [posts, setPosts] = useState<Post[]>([]);
-    const [usersCache, setUsersCache] = useState<{ [key: string]: User } | null>(null);
+    const [usersCache, setUsersCache] = useState<{
+        [key: string]: User;
+    } | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -36,7 +38,9 @@ const FeedList = ({ currentUserId, activeTab }: FeedListProps) => {
 
                     setUsersCache(usersMap);
                 } catch (err) {
-                    setError(err instanceof Error ? err.message : "An error occurred");
+                    setError(
+                        err instanceof Error ? err.message : "An error occurred"
+                    );
                 } finally {
                     setLoading(false);
                 }
@@ -53,7 +57,9 @@ const FeedList = ({ currentUserId, activeTab }: FeedListProps) => {
                 const postsData = await getPosts(activeTab, currentUserId);
                 setPosts(postsData);
             } catch (err) {
-                setError(err instanceof Error ? err.message : "An error occurred");
+                setError(
+                    err instanceof Error ? err.message : "An error occurred"
+                );
             } finally {
                 setLoading(false);
             }
@@ -85,7 +91,16 @@ const FeedList = ({ currentUserId, activeTab }: FeedListProps) => {
                 ))
             ) : (
                 <div className="feed-list__empty">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                        width="48"
+                        height="48"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
                         <path d="M4 11a9 9 0 0 1 9 9"></path>
                         <path d="M4 4a16 16 0 0 1 16 16"></path>
                         <circle cx="5" cy="19" r="1"></circle>

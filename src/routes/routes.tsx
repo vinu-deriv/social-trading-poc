@@ -3,10 +3,13 @@ import { AuthProvider } from "@/context/AuthContext";
 import AuthLayout from "@/layouts/AuthLayout";
 import MainLayout from "@/layouts/MainLayout";
 import Feed from "@pages/feed";
-import Reports from "@/pages/reports";
 import Login from "@pages/login";
 import Welcome from "@/pages/welcome";
+import Profile from "@/pages/profile";
+import NotFound from "@/pages/not-found";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Discover from "@/pages/discover/Discover";
+import Reports from "@/pages/reports";
 
 export const routes: RouteObject[] = [
   {
@@ -39,6 +42,7 @@ export const routes: RouteObject[] = [
             <MainLayout />
           </ProtectedRoute>
         ),
+        errorElement: <NotFound />,
         children: [
           {
             path: "/",
@@ -49,8 +53,20 @@ export const routes: RouteObject[] = [
             element: <Feed />,
           },
           {
+            path: "/discover",
+            element: <Discover />,
+          },
+          {
             path: "/reports",
             element: <Reports />,
+          },
+          {
+            path: "/profile/:username",
+            element: <Profile />,
+          },
+          {
+            path: "*",
+            element: <NotFound />,
           },
         ],
       },

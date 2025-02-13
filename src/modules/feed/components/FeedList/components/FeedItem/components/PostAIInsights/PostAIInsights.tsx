@@ -1,85 +1,100 @@
+import { forwardRef } from "react";
 import Button from "@/components/input/Button";
 import Badge from "@/components/feedback/Badge";
-import type { Comment } from "@/types/post.types";
-import { PostSentiment, getSentimentDetails } from "./config";
+import { getSentimentDetails } from "./config";
+import type { AIInsight } from "@/types/ai.types";
 import "./PostAIInsights.css";
 
 interface PostAIInsightsProps {
-    postId: string;
-    content: {
-        text: string;
-        images?: string[];
-    };
-    comments: Comment[];
+    insight: AIInsight;
     userType: "leader" | "copier";
     onCopyTrader?: () => void;
 }
 
-const PostAIInsights = ({
-    postId, // Will be used for AI analysis caching
-    content, // Will be used for content analysis
-    comments, // Will be used for sentiment analysis
-    userType,
-    onCopyTrader,
-}: PostAIInsightsProps) => {
-    // Placeholder values - these would come from AI service
-    const isLegitimate = content.text.length > 0; // Simple validation for now
-    const summary = `Analysis of post ${postId}: ${content.text.substring(
-        0,
-        100
-    )}...`;
-    // This would be determined by AI service in production
-    const sentiment: PostSentiment =
-        comments.length > 0 ? "consistent" : "analysis";
-    const sentimentDetails = getSentimentDetails(sentiment);
+const PostAIInsights = forwardRef<HTMLDivElement, PostAIInsightsProps>(
+    ({ insight, userType, onCopyTrader }, ref) => {
+        // Return null if insight is not valid
+        if (!insight || !insight.sentiment) {
+            return null;
+        }
 
-    return (
-        <div className="post-ai-insights">
-            {/* Header */}
-            <h4 className="post-ai-insights__title">✦ AI Insights</h4>
+        const sentimentDetails = getSentimentDetails(insight.sentiment);
 
-            {/* Summary */}
-            <p className="post-ai-insights__summary">{summary}</p>
+        return (
+            <div ref={ref} className="post-ai-insights">
+                {/* Header */}
+                <h4 className="post-ai-insights__title">✦ AI Insights</h4>
 
-            {/* Badges Row */}
-            <div className="post-ai-insights__badges">
-                <Badge
-                    variant={isLegitimate ? "success" : "warning"}
-                    icon={isLegitimate ? "✓" : "⚠️"}
-                >
-                    {isLegitimate ? "Verified" : "Needs Verification"}
-                </Badge>
-                <Badge
-                    variant={sentimentDetails.variant}
-                    icon={sentimentDetails.icon}
-                >
-                    {sentimentDetails.text}
-                </Badge>
-            </div>
+                {/* Summary */}
+                <p className="post-ai-insights__summary">{insight.summary}</p>
 
-            {/* Quick Actions */}
-            <div className="post-ai-insights__actions">
-                <h4 className="post-ai-insights__actions-title">
-                    Quick Actions
-                </h4>
-                <div className="post-ai-insights__actions-grid">
-                    {userType === "copier" ? (
-                        <Button
-                            variant="primary"
-                            onClick={onCopyTrader}
-                            rounded
-                        >
-                            Copy Trader
-                        </Button>
-                    ) : (
-                        <Button variant="primary" rounded>
-                            Trade Now
-                        </Button>
-                    )}
+                {/* Badges Row */}
+                <div className="post-ai-insights__badges">
+                    <Badge
+                        variant={insight.isLegitimate ? "success" : "warning"}
+                        icon={insight.isLegitimate ? "✓" : "⚠️"}
+                    >
+                        {insight.isLegitimate
+                            ? "Verified"
+                            : "Needs Verification"}
+                    </Badge>
+                    <Badge
+                        variant={sentimentDetails.variant}
+                        icon={sentimentDetails.icon}
+                    >
+                        {sentimentDetails.text}
+                    </Badge>
+                    <Badge
+                        variant={
+                            insight.riskLevel === "low"
+                                ? "success"
+                                : insight.riskLevel === "medium"
+                                ? "warning"
+                                : "failed"
+                        }
+                        icon={
+                            insight.riskLevel === "low"
+                                ? "🛡️"
+                                : insight.riskLevel === "medium"
+                                ? "⚠️"
+                                : "⚡"
+                        }
+                    >
+                        {`${insight.riskLevel
+                            .charAt(0)
+                            .toUpperCase()}${insight.riskLevel.slice(1)} Risk`}
+                    </Badge>
+                </div>
+
+                {/* Recommendation */}
+                <p className="post-ai-insights__recommendation">
+                    {insight.recommendation}
+                </p>
+
+                {/* Quick Actions */}
+                <div className="post-ai-insights__actions">
+                    <h4 className="post-ai-insights__actions-title">
+                        Quick Actions
+                    </h4>
+                    <div className="post-ai-insights__actions-grid">
+                        {userType === "copier" ? (
+                            <Button
+                                variant="primary"
+                                onClick={onCopyTrader}
+                                rounded
+                            >
+                                Copy Trader
+                            </Button>
+                        ) : (
+                            <Button variant="primary" rounded>
+                                Trade Now
+                            </Button>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
-    );
-};
+        );
+    }
+);
 
 export default PostAIInsights;

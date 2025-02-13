@@ -1,24 +1,60 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type Post from "@/types/post.types";
 import type User from "@/types/user.types";
+import type { AIInsight } from "@/types/ai.types";
 import PostHeader from "./components/PostHeader";
 import PostContent from "./components/PostContent";
 import PostEngagement from "./components/PostEngagement";
+import PostAIInsights from "./components/PostAIInsights/PostAIInsights";
 import {
     addComment,
     addReply,
     likeComment,
 } from "@/modules/feed/services/postService";
+import { getPostInsight } from "@/modules/feed/services/aiService";
 import "./FeedItem.css";
 
 interface FeedItemProps {
     post: Post;
     user?: User;
     currentUserId: string;
+    insight?: AIInsight;
 }
 
-const FeedItem = ({ post, user, currentUserId }: FeedItemProps) => {
+const FeedItem = ({
+    post,
+    user,
+    currentUserId,
+    insight: initialInsight,
+}: FeedItemProps) => {
     const [engagement, setEngagement] = useState(post.engagement);
+    const [insight, setInsight] = useState<AIInsight | undefined>(
+        initialInsight
+    );
+    const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+    const insightsRef = useRef<HTMLDivElement>(null);
+
+    const handleAnalyze = async () => {
+        setIsAnalyzing(true);
+        try {
+            const newInsight = await getPostInsight(currentUserId, post.id);
+            if (newInsight) {
+                setInsight(newInsight);
+                // Wait for state update and DOM render
+                setTimeout(() => {
+                    insightsRef.current?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center",
+                    });
+                }, 100);
+            }
+        } catch (error) {
+            console.error("Failed to analyze post:", error);
+        } finally {
+            setIsAnalyzing(false);
+        }
+    };
 
     const handleLike = () => {
         const isLiked = engagement.likes.includes(currentUserId);
@@ -79,8 +115,27 @@ const FeedItem = ({ post, user, currentUserId }: FeedItemProps) => {
 
     return (
         <article className="feed-item">
-            {user && <PostHeader user={user} timestamp={post.createdAt} />}
+            {user && (
+                <PostHeader
+                    user={user}
+                    timestamp={post.createdAt}
+                    onAnalyze={handleAnalyze}
+                    isAnalyzing={isAnalyzing}
+                    showAnalyzeButton={!insight}
+                />
+            )}
             <PostContent content={post.content} />
+            {/* Only render PostAIInsights if we have a valid insight */}
+            {insight && insight.sentiment && (
+                <PostAIInsights
+                    ref={insightsRef}
+                    insight={insight}
+                    userType={user?.userType ?? "copier"}
+                    onCopyTrader={() => {
+                        /* TODO: Implement copy trader */
+                    }}
+                />
+            )}
             <PostEngagement
                 postId={post.id}
                 content={post.content}
