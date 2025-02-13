@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { useAuth } from "../../context/AuthContext";
 import AiGif from "../../assets/icons/ai.gif";
 import Tick from "../../assets/icons/Tick";
 import Plus from "../../assets/icons/Plus";
@@ -26,15 +27,66 @@ export default function Discover() {
   const [topLeaders, setTopLeaders] = useState<Leader[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const handleFollowToggle = (leaderId: string) => {
-    setTopLeaders((prevLeaders) =>
-      prevLeaders.map((leader) =>
-        leader.id === leaderId
-          ? { ...leader, isFollowing: !leader.isFollowing }
-          : leader
-      )
-    );
-  };
+  const { user } = useAuth();
+
+  const handleFollowToggle = useCallback(
+    async (leaderId: string) => {
+      if (!user) return;
+
+      try {
+        // Get current leader and user data
+        const [leaderRes, currentUserRes] = await Promise.all([
+          fetch(`http://localhost:3001/users/${leaderId}`),
+          fetch(`http://localhost:3001/users/${user.id}`),
+        ]);
+
+        const leader = await leaderRes.json();
+        const currentUser = await currentUserRes.json();
+
+        // Update following/followers lists
+        const isFollowing = currentUser.following.includes(leaderId);
+        if (isFollowing) {
+          // Unfollow: Remove from lists
+          leader.followers = leader.followers.filter(
+            (id: string) => id !== user.id
+          );
+          currentUser.following = currentUser.following.filter(
+            (id: string) => id !== leaderId
+          );
+        } else {
+          // Follow: Add to lists
+          leader.followers.push(user.id);
+          currentUser.following.push(leaderId);
+        }
+
+        // Update both users in database
+        await Promise.all([
+          fetch(`http://localhost:3001/users/${leaderId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(leader),
+          }),
+          fetch(`http://localhost:3001/users/${user.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(currentUser),
+          }),
+        ]);
+
+        // Update local state
+        setTopLeaders((prevLeaders) =>
+          prevLeaders.map((leader) =>
+            leader.id === leaderId
+              ? { ...leader, isFollowing: !leader.isFollowing }
+              : leader
+          )
+        );
+      } catch (error) {
+        console.error("Error updating follow status:", error);
+      }
+    },
+    [user]
+  );
 
   useEffect(() => {
     const fetchLeaders = async () => {
@@ -44,8 +96,16 @@ export default function Discover() {
         console.log(users);
 
         // Get leaders with random stats
+        // Get current user data to check following status
+        const currentUserRes = user
+          ? await fetch(`http://localhost:3001/users/${user.id}`)
+          : null;
+        const currentUserData = currentUserRes
+          ? await currentUserRes.json()
+          : null;
+
         const leaders = users
-          .filter((user) => user.userType === "leader")
+          .filter((u) => u.userType === "leader")
           .map((leader) => ({
             id: leader.id,
             username: leader.username,
@@ -53,7 +113,9 @@ export default function Discover() {
             copiers: Math.floor(Math.random() * 2000) + 500, // Random copiers between 500-2500
             totalProfit: Math.floor(Math.random() * 900000) + 100000, // Random profit between 100k-1M
             winRate: Math.floor(Math.random() * 20) + 70, // Random win rate between 70-90%
-            isFollowing: false,
+            isFollowing: currentUserData
+              ? currentUserData.following.includes(leader.id)
+              : false,
           }))
           .sort((a, b) => b.totalProfit - a.totalProfit);
 
