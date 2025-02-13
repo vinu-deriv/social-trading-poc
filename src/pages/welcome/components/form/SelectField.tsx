@@ -28,7 +28,10 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const selectedOption = options.find((opt) => opt.value === value);
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+    if (
+      selectRef.current &&
+      !selectRef.current.contains(event.target as Node)
+    ) {
       setIsOpen(false);
     }
   };
@@ -45,17 +48,29 @@ export const SelectField: React.FC<SelectFieldProps> = ({
       <div className="custom-select" ref={selectRef}>
         <div
           className="select-selected"
+          role="button"
+          tabIndex={0}
+          aria-expanded={isOpen}
+          aria-controls="custom-select-options"
           onClick={() => setIsOpen(!isOpen)}
         >
           {selectedOption?.label || "Select an option"}
           <span className="select-arrow"></span>
         </div>
         {isOpen && (
-          <div className="select-options">
+          <div
+            className="select-options"
+            role="listbox"
+            id="custom-select-options"
+          >
             {options.map((option) => (
               <div
                 key={option.value}
-                className={`select-option ${option.value === value ? "selected" : ""}`}
+                role="option"
+                aria-selected={option.value === value}
+                className={`select-option ${
+                  option.value === value ? "selected" : ""
+                }`}
                 onClick={() => {
                   onChange(option.value as TRiskTolerance);
                   setIsOpen(false);

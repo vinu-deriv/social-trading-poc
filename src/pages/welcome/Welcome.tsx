@@ -55,7 +55,8 @@ const Welcome = () => {
     if (user.userType !== UserType.COPIER || user.isFirstLogin !== true) {
       navigate("/feed", { replace: true });
     }
-  }, [user, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handlePreferenceChange = (
     field: keyof TradingPreferences,
@@ -66,6 +67,7 @@ const Welcome = () => {
       [field]: value,
     }));
   };
+
   const handleGetStarted = async () => {
     try {
       // Here you would typically make an API call to update user's isFirstLogin status
@@ -88,8 +90,6 @@ const Welcome = () => {
         parsed.user.tradingPreferences = preferences;
         localStorage.setItem("auth", JSON.stringify(parsed));
       }
-
-      navigate("/feed", { replace: true });
     } catch (error) {
       console.error("Error updating user status:", error);
     }
