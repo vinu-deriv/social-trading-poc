@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import type { Strategy } from "@/types/strategy.types";
 import Button from "@/components/input/Button";
 import "./StrategyList.css";
@@ -9,8 +8,6 @@ interface StrategyListProps {
 }
 
 const StrategyList = ({ strategies, onCopyStrategy }: StrategyListProps) => {
-    const navigate = useNavigate();
-
     return (
         <div className="strategy-list">
             {strategies.map((strategy) => (

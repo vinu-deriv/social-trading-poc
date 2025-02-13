@@ -1,7 +1,7 @@
 import type Post from "@/types/post.types";
 import type User from "@/types/user.types";
 import CommentSection from "./components/CommentSection/CommentSection";
-import PostAIInsights from "../PostAIInsights";
+import PostAIInsights from "../PostAIInsights/PostAIInsights";
 import Button from "@/components/input/Button";
 import "./PostEngagement.css";
 import {
@@ -71,13 +71,22 @@ const PostEngagement = ({
             </div>
 
             {currentUser && (
-                <PostAIInsights
-                    postId={postId}
-                    content={content}
-                    comments={comments}
-                    userType={currentUser.userType}
-                    onCopyTrader={() => console.log("Copy trader:", currentUser.id)}
-                />
+                <div className="post-engagement__ai-insights">
+                    <PostAIInsights
+                        insight={{
+                            postId,
+                            summary: content.text.length > 100 
+                                ? content.text.substring(0, 100) + "..."
+                                : content.text,
+                            sentiment: "analysis",
+                            isLegitimate: true,
+                            riskLevel: "low",
+                            recommendation: "Consider reviewing the trader's past performance and risk management strategy before making any decisions."
+                        }}
+                        userType={currentUser.userType}
+                        onCopyTrader={() => console.log("Copy trader:", currentUser.id)}
+                    />
+                </div>
             )}
 
             <CommentSection
