@@ -1,11 +1,11 @@
 {
-  "name": "json-server",
+  "name": "json-server-app",
   "version": "1.0.0",
   "main": "server.js",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "json-server": "^1.0.0-beta.3"
+    "json-server": "^0.17.4"
   },
   "scripts": {
     "start": "node server.js"

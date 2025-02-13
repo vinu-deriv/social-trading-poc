@@ -2,15 +2,20 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy package files
-COPY json-server/package*.json ./
+# Create directory structure
+RUN mkdir -p /app/data
 
-# Install dependencies
+# Copy package files and install dependencies
+COPY json-server/package*.json ./
 RUN npm install
 
-# Copy server code and database
+# Copy server code
 COPY json-server/server.js ./
-COPY db.json ../db.json
+COPY db.json ./data/db.json
+
+# Set permissions
+RUN chown -R node:node /app
+USER node
 
 EXPOSE 3001
 

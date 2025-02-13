@@ -4,7 +4,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const router = jsonServer.router(path.join(__dirname, '..', 'db.json'));
+const router = jsonServer.router(path.join(__dirname, 'data', 'db.json'));
 const middlewares = jsonServer.defaults();
 
 // Enable CORS for all routes

@@ -47,11 +47,10 @@ services:
     ports:
       - "3001:3001"
     volumes:
-      - ./db.json:/app/db.json
-      - ./data:/app/data
+      - ./db.json:/app/data/db.json
     environment:
       - NODE_ENV=${NODE_ENV:-development}
-    command: json-server --watch db.json --host 0.0.0.0 --port 3001
+      - PORT=3001
 
 volumes:
   data:
