@@ -2,6 +2,8 @@ import { useState } from "react";
 import Dropdown from "@components/Dropdown/Dropdown";
 import { TradePositions } from "./components/TradePositions";
 import { tradeTypes } from "./constants";
+import dbData from "../../../json-server/data/db.json";
+import "./OpenPositions.css";
 
 const OpenPositions = () => {
   const [selectedTradeType, setSelectedTradeType] = useState<
@@ -13,14 +15,16 @@ const OpenPositions = () => {
   };
 
   return (
-    <div>
-      <Dropdown
-        options={Object.values(tradeTypes)}
-        selected={selectedTradeType}
-        onChange={handleTradeTypeChange}
-      />
+    <div className="open-positions">
+      <div className="open-positions-header">
+        <Dropdown
+          options={Object.values(tradeTypes)}
+          selected={selectedTradeType}
+          onSelect={handleTradeTypeChange}
+        />
+      </div>
       <TradePositions
-        contracts={[]}
+        contracts={dbData.contracts || []}
         tradeType={selectedTradeType}
       />
     </div>
