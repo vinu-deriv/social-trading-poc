@@ -77,15 +77,18 @@ interface Strategy {
 }
 
 export default function Discover() {
-  const [activeTab, setActiveTab] = useState("Leaders");
+  const [activeTab, setActiveTab] = useState<string>("");
   const [leaders, setLeaders] = useState<Leader[]>([]);
   const [strategies, setStrategies] = useState<Strategy[]>([]);
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isLeader, setIsLeader] = useState(false);
 
   const { user } = useAuth();
 
-  const tabs = ["Leaders", "Strategies", "Trending Assets"];
+  const tabs = isLeader
+    ? ["Trending Assets"]
+    : ["Leaders", "Strategies", "Trending Assets"];
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -243,6 +246,11 @@ export default function Discover() {
   );
 
   useEffect(() => {
+    // Set initial active tab based on user type
+    setActiveTab(isLeader ? "Trending Assets" : "Leaders");
+  }, [isLeader]);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -265,6 +273,12 @@ export default function Discover() {
           currencyAccountsRes.json(),
           assetsRes.json(),
         ]);
+
+        // Check if current user is a leader
+        if (user) {
+          const currentUser = users.find((u) => u.id === user.id);
+          setIsLeader(currentUser?.userType === "leader");
+        }
 
         // Get current user data to check following status
         const currentUserData = user

@@ -276,6 +276,48 @@
   }
 }
 
+@media (max-width: 480px) {
+  .leader-card__banner {
+    height: 60px;
+  }
+
+  .leader-card__avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .leader-card__info {
+    padding: 3.5rem 0.75rem 1rem;
+  }
+
+  .leader-card__name {
+    font-size: 0.875rem;
+  }
+
+  .leader-card__leader-name {
+    font-size: 0.75rem;
+    padding: 0.25rem 0 0.5rem;
+  }
+
+  .leader-card__description {
+    font-size: 0.75rem;
+    padding: 0 0.25rem;
+  }
+
+  .leader-card__stat-label {
+    font-size: 0.75rem;
+  }
+
+  .leader-card__stat-value {
+    font-size: 1rem;
+  }
+
+  .leader-card__stats {
+    gap: 1rem;
+    margin: 0.5rem 0 1rem;
+  }
+}
+
 .leader-card__stat-value {
   font-weight: 600;
   color: var(--color-text-primary);
