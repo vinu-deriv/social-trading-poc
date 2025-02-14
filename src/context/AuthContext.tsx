@@ -19,7 +19,11 @@ interface AuthState {
   error: string | null;
 }
 
-interface AuthContextType extends AuthState {
+interface AuthContextType {
+  isAuthenticated: boolean;
+  user: User | null;
+  loading: boolean;
+  error: string | null;
   login: (username: string, password: string) => Promise<User>;
   logout: () => void;
   clearError: () => void;
@@ -50,17 +54,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  const login = async (username: string, password: string) => {
+  const login = async (username: string, password: string): Promise<User> => {
     try {
       setState((prev) => ({ ...prev, loading: true, error: null }));
       const authData = await authLogin({ username, password });
+      const user: User = {
+        ...authData.user,
+        followers: [],
+        following: [],
+        accounts: [],
+        strategies: [],
+        performance: {
+          winRate: 0,
+          totalPnL: 0,
+          monthlyReturn: 0,
+          totalTrades: 0
+        },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
       setState({
         isAuthenticated: true,
-        user: authData.user,
+        user,
         loading: false,
         error: null,
       });
-      return authData.user;
+      return user;
     } catch (error) {
       setState((prev) => ({
         ...prev,

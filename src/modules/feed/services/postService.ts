@@ -20,7 +20,7 @@ interface AddReplyData extends AddCommentData {
 }
 
 export const createPost = async (data: CreatePostData) => {
-    const response = await fetch("http://localhost:3001/posts", {
+    const response = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/posts`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -50,7 +50,7 @@ export const createPost = async (data: CreatePostData) => {
 
 export const addComment = async (postId: string, data: AddCommentData) => {
     // First get the current post
-    const getResponse = await fetch(`http://localhost:3001/posts/${postId}`);
+    const getResponse = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/posts/${postId}`);
     if (!getResponse.ok) {
         throw new Error("Failed to fetch post");
     }
@@ -77,7 +77,7 @@ export const addComment = async (postId: string, data: AddCommentData) => {
 
     // Update the post with new comments
     const updateResponse = await fetch(
-        `http://localhost:3001/posts/${postId}`,
+        `${import.meta.env.VITE_JSON_SERVER_URL}/posts/${postId}`,
         {
             method: "PUT",
             headers: {
@@ -128,7 +128,7 @@ export const likeComment = async (
     userId: string
 ) => {
     // First get the current post
-    const getResponse = await fetch(`http://localhost:3001/posts/${postId}`);
+    const getResponse = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/posts/${postId}`);
     if (!getResponse.ok) {
         throw new Error("Failed to fetch post");
     }
@@ -151,7 +151,7 @@ export const likeComment = async (
     };
 
     const updateResponse = await fetch(
-        `http://localhost:3001/posts/${postId}`,
+        `${import.meta.env.VITE_JSON_SERVER_URL}/posts/${postId}`,
         {
             method: "PUT",
             headers: {
@@ -170,7 +170,7 @@ export const likeComment = async (
 
 export const addReply = async (postId: string, data: AddReplyData) => {
     // First get the current post
-    const getResponse = await fetch(`http://localhost:3001/posts/${postId}`);
+    const getResponse = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/posts/${postId}`);
     if (!getResponse.ok) {
         throw new Error("Failed to fetch post");
     }
@@ -207,7 +207,7 @@ export const addReply = async (postId: string, data: AddReplyData) => {
     };
 
     const updateResponse = await fetch(
-        `http://localhost:3001/posts/${postId}`,
+        `${import.meta.env.VITE_JSON_SERVER_URL}/posts/${postId}`,
         {
             method: "PUT",
             headers: {
@@ -225,7 +225,7 @@ export const addReply = async (postId: string, data: AddReplyData) => {
 };
 
 export const getUserPosts = async (userId: string) => {
-    const response = await fetch(`http://localhost:3001/posts?userId=${userId}`);
+    const response = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/posts?userId=${userId}`);
     if (!response.ok) {
         throw new Error("Failed to fetch user posts");
     }
@@ -236,7 +236,7 @@ export const getPosts = async (activeTab: string, userId: string) => {
     if (activeTab === "profile") {
         return getUserPosts(userId);
     } else if (activeTab === "For you") {
-        const response = await fetch("http://localhost:3001/posts");
+        const response = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/posts`);
         if (!response.ok) {
             throw new Error("Failed to fetch posts");
         }
@@ -249,14 +249,14 @@ export const getPosts = async (activeTab: string, userId: string) => {
 export const getFollowingPosts = async (userId: string) => {
     try {
         // Get current user to get following list
-        const userResponse = await fetch(`http://localhost:3001/users/${userId}`);
+        const userResponse = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${userId}`);
         if (!userResponse.ok) {
             throw new Error("Failed to fetch user data");
         }
         const user = await userResponse.json();
 
         // Get all posts
-        const postsResponse = await fetch('http://localhost:3001/posts');
+        const postsResponse = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/posts`);
         if (!postsResponse.ok) {
             throw new Error("Failed to fetch posts");
         }
@@ -264,7 +264,7 @@ export const getFollowingPosts = async (userId: string) => {
 
         // Filter posts by users being followed
         return posts.filter((post: Post) => user.following.includes(post.userId));
-    } catch (error) {
+    } catch {
         throw new Error("Failed to fetch following posts");
     }
 };

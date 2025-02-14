@@ -9,7 +9,7 @@ export const useUser = (userId: string) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await fetch(`http://localhost:3001/users/${userId}`);
+                const response = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${userId}`);
                 if (!response.ok) {
                     throw new Error(`Failed to fetch user: ${response.statusText}`);
                 }

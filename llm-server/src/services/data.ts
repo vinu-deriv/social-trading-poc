@@ -1,37 +1,56 @@
-import fs from "fs";
-import path from "path";
 import { Post, User, TradingStrategy } from "../types";
 
-interface Database {
-    users: User[];
-    posts: Post[];
-    tradingStrategies: TradingStrategy[];
+const JSON_SERVER_URL = process.env.JSON_SERVER_URL;
+if (!JSON_SERVER_URL) {
+    throw new Error('JSON_SERVER_URL environment variable is not set');
 }
 
 export class DataService {
-    private data: Database;
-
-    constructor() {
-        // Go up two levels from src/services to reach root
-        const dbPath = path.join(__dirname, "../../..", "db.json");
-        this.data = JSON.parse(fs.readFileSync(dbPath, "utf-8"));
+    async getUserPosts(): Promise<Post[]> {
+        try {
+            const response = await fetch(`${JSON_SERVER_URL}/posts`);
+            if (!response.ok) throw new Error('Failed to fetch posts');
+            const data = await response.json();
+            return data as Post[];
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+            return [];
+        }
     }
 
-    getUser(userId: string): User | null {
-        return this.data.users.find((u: User) => u.id === userId) || null;
+    async getPost(postId: string): Promise<Post | null> {
+        try {
+            const response = await fetch(`${JSON_SERVER_URL}/posts/${postId}`);
+            if (!response.ok) throw new Error('Failed to fetch post');
+            const data = await response.json();
+            return data as Post;
+        } catch (error) {
+            console.error('Error fetching post:', error);
+            return null;
+        }
     }
 
-    getUserPosts(): Post[] {
-        return this.data.posts;
+    async getUserStrategies(userId: string): Promise<TradingStrategy[]> {
+        try {
+            const response = await fetch(`${JSON_SERVER_URL}/tradingStrategies?copiers_like=${userId}`);
+            if (!response.ok) throw new Error('Failed to fetch strategies');
+            const data = await response.json();
+            return data as TradingStrategy[];
+        } catch (error) {
+            console.error('Error fetching strategies:', error);
+            return [];
+        }
     }
 
-    getPost(postId: string): Post | null {
-        return this.data.posts.find((p: Post) => p.id === postId) || null;
-    }
-
-    getUserStrategies(userId: string): TradingStrategy[] {
-        return this.data.tradingStrategies.filter((s: TradingStrategy) =>
-            s.copiers.includes(userId)
-        );
+    async getUser(userId: string): Promise<User | null> {
+        try {
+            const response = await fetch(`${JSON_SERVER_URL}/users/${userId}`);
+            if (!response.ok) throw new Error('Failed to fetch user');
+            const data = await response.json();
+            return data as User;
+        } catch (error) {
+            console.error('Error fetching user:', error);
+            return null;
+        }
     }
 }
