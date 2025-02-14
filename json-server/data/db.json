@@ -1497,5 +1497,61 @@
       "purchase_time": "2025-02-13T08:05:00Z",
       "symbol": "XYZ"
     }
+  ],
+  "statements": [
+    {
+      "type": "Multipliers",
+      "action_type": "buy",
+      "currency": "USD",
+      "amount": -3,
+      "balance_after": 9969.54,
+      "reference_id": 543129132101,
+      "transaction_time": 1739452884
+    },
+    {
+      "type": "Multipliers",
+      "action_type": "sell",
+      "currency": "USD",
+      "amount": 0,
+      "balance_after": 9972.54,
+      "reference_id": 543129132108,
+      "transaction_time": 1739452745
+    },
+    {
+      "type": "Options",
+      "action_type": "buy",
+      "currency": "USD",
+      "amount": -3,
+      "balance_after": 9972.54,
+      "reference_id": 543129132105,
+      "transaction_time": 1739452677
+    },
+    {
+      "type": "Options",
+      "action_type": "sell",
+      "currency": "USD",
+      "amount": 0,
+      "balance_after": 9975.54,
+      "reference_id": 543112652068,
+      "transaction_time": 1739446842
+    },
+    {
+      "type": "Accumulators",
+      "action_type": "buy",
+      "currency": "USD",
+      "amount": -3,
+      "balance_after": 9975.54,
+      "reference_id": 543129132104,
+      "transaction_time": 1739446776
+    },
+    {
+      "type": "Accumulators",
+      "action_type": "buy",
+      "currency": "USD",
+      "amount": -3,
+      "balance_after": 9975.54,
+      "reference_id": 5431291321082,
+      "transaction_time": 1739446776
+    }
   ]
 }

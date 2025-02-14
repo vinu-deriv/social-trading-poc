@@ -4,6 +4,7 @@ import { positionsTableColumns, TradeType } from "../../constants";
 import { useTradePositionsDataMapper } from "../../hooks";
 import { ContractCard } from "./ContractCard";
 import { useViewport } from "@/hooks";
+import { BREAKPOINTS } from "@/constants";
 import "./TradePositions.css";
 
 interface PositionsTableProps {
@@ -14,9 +15,9 @@ interface PositionsTableProps {
 const TradePositions = ({ contracts, tradeType }: PositionsTableProps) => {
   const columns = positionsTableColumns[tradeType];
   const data = useTradePositionsDataMapper(contracts, tradeType);
-  const { isDesktop } = useViewport();
+  const { width } = useViewport();
 
-  return isDesktop ? (
+  return width >= BREAKPOINTS.DESKTOP ? (
     <Table columns={columns} data={data} />
   ) : (
     <div className="contract-card-container">

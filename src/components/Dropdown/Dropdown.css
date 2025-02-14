@@ -1,21 +1,49 @@
+/* Dropdown component styled to match TextInput styling */
+
 .dropdown {
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  position: relative;
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
 }
 
 .dropdown-header {
-  padding: 10px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color: #f9f9f9;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 16px;
   cursor: pointer;
 }
 
-.dropdown-title {
+.dropdown-header:focus {
+  outline: none;
+  border-color: #999;
+}
+
+.dropdown-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  padding: 0;
+}
+
+.dropdown-item {
+  padding: 8px 12px;
   font-size: 16px;
-  font-weight: 500;
+  cursor: pointer;
+  list-style-type: none;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
 }

@@ -1,3 +1,4 @@
+import { BREAKPOINTS } from "@/constants";
 import { useState, useEffect } from "react";
 
 export const useViewport = () => {
@@ -12,9 +13,9 @@ export const useViewport = () => {
     };
   }, []);
 
-  const isMobile = width < 768;
-  const isTablet = width >= 768 && width < 1024;
-  const isDesktop = width >= 1024;
+  const isMobile = width < BREAKPOINTS.MOBILE;
+  const isTablet = width >= BREAKPOINTS.MOBILE && width < BREAKPOINTS.TABLET;
+  const isDesktop = width >= BREAKPOINTS.TABLET;
 
   return { isMobile, isTablet, isDesktop, width };
 };
