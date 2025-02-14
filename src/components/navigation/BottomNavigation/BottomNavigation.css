@@ -1,85 +1,84 @@
 .bottom-navigation {
-    position: fixed;
-    bottom: 8px;
-    left: 8px;
-    right: 8px;
-    height: 64px;
-    border-radius: 6px;
-    background: white;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 -1px 12px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  backdrop-filter: blur(32px);
+  background: #ffffffed;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1000;
 }
 
 .nav-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #64748b;
-    text-decoration: none;
-    padding: 8px 16px;
-    transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  text-decoration: none;
+  padding: 8px 16px;
+  transition: all 0.2s ease;
 }
 
 .nav-item svg {
-    width: 24px;
-    height: 24px;
-    transition: all 0.2s ease;
+  width: 24px;
+  height: 24px;
+  transition: all 0.2s ease;
 }
 
 .nav-item.active {
-    color: #00d0ff;
+  color: #00d0ff;
 }
 
 .nav-item:not(.disabled):hover {
-    color: #00d0ff;
+  color: #00d0ff;
 }
 
 .nav-item.disabled {
-    opacity: 0.5;
-    pointer-events: none;
-    cursor: default;
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: default;
 }
 
 .fab-placeholder {
-    position: relative;
-    width: 64px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .fab {
-    position: absolute;
-    bottom: 16px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: #00d0ff;
-    border: none;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 208, 255, 0.3);
-    cursor: pointer;
-    transition: all 0.2s ease;
+  position: absolute;
+  bottom: 16px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #00d0ff;
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 208, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .fab:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 208, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 208, 255, 0.4);
 }
 
 .fab:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(0, 208, 255, 0.3);
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 208, 255, 0.3);
 }
 
 /* Add padding to main content to account for bottom navigation */
 main {
-    padding-bottom: calc(64px + env(safe-area-inset-bottom, 16px));
+  padding-bottom: calc(64px + env(safe-area-inset-bottom, 16px));
 }

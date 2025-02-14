@@ -4,8 +4,3 @@
     border-radius: 10px;
     width: 100%;
 }
-
-.feed-item:last-child {
-    border-bottom: none;
-}
-

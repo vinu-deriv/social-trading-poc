@@ -1,7 +1,7 @@
 .profile-stats {
     display: flex;
     gap: 2rem;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
 }
 
 .profile-stats__item {

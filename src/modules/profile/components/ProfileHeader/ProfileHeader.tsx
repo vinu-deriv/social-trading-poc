@@ -1,8 +1,6 @@
 import type User from "@/types/user.types";
 import ProfileBasicInfo from "./components/ProfileBasicInfo";
-import ProfileActions from "./components/ProfileActions";
 import ProfileStats from "./components/ProfileStats";
-import ProfileBadge from "./components/ProfileBadge";
 import ProfilePerformance from "./components/ProfilePerformance";
 import "./ProfileHeader.css";
 
@@ -33,34 +31,27 @@ const ProfileHeader = ({
 
     return (
         <div className="profile-header">
-            <div className="profile-header__main">
                 <div className="profile-header__info">
-                    <div className="profile-header__name-row">
-                        <ProfileBasicInfo
-                            username={username}
-                            displayName={displayName}
-                            profilePicture={profilePicture}
-                        />
-                        <ProfileActions
-                            isOwnProfile={isOwnProfile}
-                            isFollowing={isFollowing}
-                            userType={userType}
-                            onFollow={onFollow}
-                            onUnfollow={onUnfollow}
-                        />
-                    </div>
+                    <ProfileBasicInfo
+                        username={username}
+                        displayName={displayName}
+                        profilePicture={profilePicture}
+                        userType={userType}
+                        isOwnProfile={isOwnProfile}
+                        isFollowing={isFollowing}
+                        onFollow={onFollow}
+                        onUnfollow={onUnfollow}
+                    />
                     <ProfileStats
                         followers={followers}
                         following={following}
                         strategies={strategies}
                         onFollowAction={onFollow}
                     />
-                    <ProfileBadge userType={userType} />
                     {userType === "leader" && profile.performance && (
                         <ProfilePerformance performance={profile.performance} />
                     )}
                 </div>
-            </div>
         </div>
     );
 };

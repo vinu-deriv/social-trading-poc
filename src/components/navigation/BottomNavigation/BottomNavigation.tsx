@@ -31,24 +31,23 @@ const BottomNavigation = ({ onCreatePost }: BottomNavigationProps) => {
       >
         <FeedIcon />
       </Link>
-
-      <Link
-        to="/discover"
-        className={`nav-item ${isActive("/discover") ? "active" : ""}`}
-      >
-        <DiscoverIcon />
-      </Link>
-      <div className="fab-placeholder">
-        <button className="fab" onClick={onCreatePost}>
-          <PlusIcon />
-        </button>
-      </div>
-      <Link
-        to="/reports"
-        className={`nav-item ${isActive("/reports") ? "active" : ""}`}
-      >
-        <ReportIcon />
-      </Link>
+            <Link
+                to="/discover"
+                className={`nav-item ${isActive("/discover") ? "active" : ""}`}
+            >
+                <DiscoverIcon />
+            </Link>
+            <div className="fab-placeholder">
+                <button className="fab" onClick={onCreatePost}>
+                    <PlusIcon />
+                </button>
+            </div>
+            <Link
+                to="/reports"
+                className={`nav-item ${isActive("/reports") ? "active" : ""}`}
+                >
+                <ReportIcon />
+            </Link>
 
       {user ? (
         <Link
