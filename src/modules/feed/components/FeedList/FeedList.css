@@ -3,6 +3,8 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    width: 100%;
+    max-width: 720px;
 }
 
 .feed-list__loading {

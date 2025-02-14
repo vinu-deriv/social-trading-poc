@@ -44,7 +44,7 @@ const BottomNavigation = ({ onCreatePost }: BottomNavigationProps) => {
                 </button>
             </div>
             <Link
-                to="/report"
+                to="/reports"
                 className={`nav-item ${isActive("/report") ? "active" : ""}`}
             >
                 <ReportIcon />

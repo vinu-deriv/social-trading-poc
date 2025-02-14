@@ -16,7 +16,13 @@
 .profile-basic-info__content {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.5rem;
+}
+
+.profile-basic-info__name-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .profile-basic-info__display-name {
@@ -30,6 +36,8 @@
     font-size: 1rem;
     color: #6b7280;
     margin: 0;
+    margin-bottom: 0.5rem;
+    text-align: left;
 }
 
 @media (max-width: 640px) {
@@ -47,5 +55,9 @@
 
     .profile-basic-info__content {
         align-items: center;
+    }
+
+    .profile-basic-info__username {
+        text-align: center;
     }
 }
