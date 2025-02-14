@@ -54,7 +54,7 @@ jobs:
 
     - name: Install Dependencies
       working-directory: ./json-server
-      run: npm ci
+      run: npm i
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
