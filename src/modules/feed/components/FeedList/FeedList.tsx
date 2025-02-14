@@ -3,6 +3,7 @@ import type Post from "@/types/post.types";
 import type User from "@/types/user.types";
 import FeedItem from "./components/FeedItem";
 import { getPosts } from "../../services/postService";
+import Loader from "@/components/layout/Loader/Loader";
 import "./FeedList.css";
 
 interface FeedListProps {
@@ -71,7 +72,7 @@ const FeedList = ({ currentUserId, activeTab }: FeedListProps) => {
     }, [activeTab, currentUserId, usersCache]);
 
     if (loading) {
-        return <div className="feed-list__loading">Loading posts...</div>;
+        return <div className="feed-list__loading"><Loader /></div>;
     }
 
     if (error) {

@@ -2,6 +2,7 @@ import { useState } from "react";
 import type Strategy from "@/types/strategy.types";
 import { useAuth } from "@/context/AuthContext";
 import FullscreenModal from "@/components/modal/FullscreenModal/FullscreenModal";
+import Loader from "@/components/layout/Loader/Loader";
 import UserList from "../../../UserList/UserList";
 import StrategyList from "../../../StrategyList/StrategyList";
 import { useFollowers } from "../../../../hooks/useFollowers";
@@ -68,7 +69,7 @@ const ProfileStats = ({
                 title="Followers"
             >
                 {loadingFollowers ? (
-                    <div className="user-list--loading">Loading followers...</div>
+                    <div className="user-list--loading"><Loader /></div>
                 ) : (
                     <UserList
                         users={followerUsers}
@@ -99,7 +100,7 @@ const ProfileStats = ({
                 title="Following"
             >
                 {loadingFollowing ? (
-                    <div className="user-list--loading">Loading following...</div>
+                    <div className="user-list--loading"><Loader /></div>
                 ) : (
                     <UserList
                         users={followingUsers}

@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useProfile } from "@/modules/profile/hooks/useProfile";
 import ProfileHeader from "../../modules/profile/components/ProfileHeader";
 import FeedList from "@/modules/feed/components/FeedList";
+import Loader from "@/components/layout/Loader/Loader";
 import "./Profile.css";
 
 const Profile = () => {
@@ -19,7 +20,7 @@ const Profile = () => {
     if (loading || !profile) {
         return (
             <div className="profile-page">
-                <div className="profile-page__loading">Loading profile...</div>
+                <div className="profile-page__loading"><Loader /></div>
             </div>
         );
     }

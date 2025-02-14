@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Loader from './layout/Loader/Loader';
 
 interface ProtectedRouteProps {
     children: React.ReactNode;
@@ -10,8 +11,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     const location = useLocation();
 
     if (loading) {
-        // You might want to show a loading spinner here
-        return <div>Loading...</div>;
+        return <Loader />;
     }
 
     if (!isAuthenticated) {
