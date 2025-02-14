@@ -1,50 +1,63 @@
-# React + TypeScript + Vite
+# Social Trading POC
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## GitHub Actions CI/CD
 
-Currently, two official plugins are available:
+The project uses GitHub Actions for continuous integration. On every pull request to the `main` branch, it runs build checks for all three services:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Frontend (Vite + React)
+- JSON Server
+- LLM Server
 
-## Expanding the ESLint configuration
+### Required Secrets
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+The following secrets need to be configured in your GitHub repository settings:
 
-- Configure the top-level `parserOptions` property like this:
+- `ANTHROPIC_API_KEY`: Your Anthropic API key for the LLM server
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Workflow Details
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+The workflow `.github/workflows/build-check.yml` performs the following checks:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+1. **Frontend**:
+   - Installs dependencies
+   - Builds the Vite application
+   - Builds the Docker image with development target
+   - Uses GitHub Actions cache for faster builds
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+2. **JSON Server**:
+   - Installs dependencies
+   - Builds the Docker image
+   - Uses GitHub Actions cache for faster builds
+
+3. **LLM Server**:
+   - Installs dependencies
+   - Builds the TypeScript application
+   - Builds the Docker image
+   - Uses GitHub Actions cache for faster builds
+
+All jobs run in parallel to minimize the total workflow execution time.
+
+### Local Development
+
+For local development, follow these steps:
+
+1. Install dependencies:
+   ```bash
+   npm install
+   cd json-server && npm install
+   cd llm-server && npm install
+   ```
+
+2. Set up environment variables:
+   - Copy `.env.example` to `.env` in the llm-server directory
+   - Set your Anthropic API key in `llm-server/.env`
+
+3. Start the development servers:
+   ```bash
+   docker compose up
+   ```
+
+This will start all three services:
+- Frontend at http://localhost:5173
+- JSON Server at http://localhost:3001
+- LLM Server at http://localhost:3000

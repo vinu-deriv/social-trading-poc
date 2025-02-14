@@ -6,15 +6,18 @@ WORKDIR /app
 RUN mkdir -p /app/data
 
 # Copy package files and install dependencies
-COPY json-server/package*.json ./
+COPY json-server/package.json ./package.json
 RUN npm install
 
-# Copy server code
-COPY json-server/server.js ./
-COPY db.json ./data/db.json
+# Copy server code and data
+COPY json-server/server.js /app/server.js
+COPY db.json /app/data/db.json
 
-# Set permissions
-RUN chown -R node:node /app
+# Create symbolic link for backward compatibility
+RUN ln -s /app/data/db.json /app/db.json && \
+    chmod +x /app/server.js && \
+    chown -R node:node /app
+
 USER node
 
 EXPOSE 3001

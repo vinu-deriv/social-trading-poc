@@ -44,17 +44,20 @@ router.get(
         try {
             const { userId, postId } = req.params;
 
-            const user = dataService.getUser(userId);
+            const [user, post] = await Promise.all([
+                dataService.getUser(userId),
+                dataService.getPost(postId)
+            ]);
+
             if (!user) {
                 return res.status(404).json({ error: "User not found" });
             }
 
-            const post = dataService.getPost(postId);
             if (!post) {
                 return res.status(404).json({ error: "Post not found" });
             }
 
-            const strategies = dataService.getUserStrategies(userId);
+            const strategies = await dataService.getUserStrategies(userId);
             const insight = await llmService.generatePostInsight(
                 post,
                 user,

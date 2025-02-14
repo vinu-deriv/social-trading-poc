@@ -2,7 +2,6 @@ import { useState } from "react";
 import Dropdown from "@components/Dropdown/Dropdown";
 import { TradePositions } from "./components/TradePositions";
 import { tradeTypes } from "./constants";
-import dbData from "../../../db.json";
 
 const OpenPositions = () => {
   const [selectedTradeType, setSelectedTradeType] = useState<
@@ -21,7 +20,7 @@ const OpenPositions = () => {
         onChange={handleTradeTypeChange}
       />
       <TradePositions
-        contracts={dbData.contracts || []}
+        contracts={[]}
         tradeType={selectedTradeType}
       />
     </div>
