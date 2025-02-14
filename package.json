@@ -8,7 +8,8 @@
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "mock-api": "json-server --watch db.json --port 3001"
+        "mock-api": "json-server --watch db.json --port 3001",
+        "start:docker": "docker compose --env-file .env.development up"
     },
     "dependencies": {
         "@deriv-com/quill-ui": "^1.24.4",
