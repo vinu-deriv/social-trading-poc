@@ -1,255 +1,107 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import AiGif from "../../assets/icons/ai.gif";
-import SkeletonCard from "./components/SkeletonCard";
-import LeaderCard from "./components/LeaderCard";
+import TabNavigation from "../../components/navigation/TabNavigation";
+import Search from "./components/Search";
+import LeadersSection from "./components/LeadersSection";
+import StrategiesSection from "./components/StrategiesSection";
+import TrendingAssets from "./components/TrendingAssets";
+import { discoverService, Leader, ExtendedStrategy, Asset } from "../../modules/discover/services/discoverService";
 import "./Discover.css";
 
-type Leader = {
-  id: string;
-  username: string;
-  avatar?: string;
-  copiers: number;
-  totalProfit: number;
-  winRate: number;
-  isFollowing: boolean;
-};
-
-type User = {
-  id: string;
-  username: string;
-  profilePicture?: string;
-  userType: string;
-};
-
 export default function Discover() {
+  const [activeTab, setActiveTab] = useState("Leaders");
   const [leaders, setLeaders] = useState<Leader[]>([]);
+  const [strategies, setStrategies] = useState<ExtendedStrategy[]>([]);
+  const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
 
   const { user } = useAuth();
 
-  const handleFollowToggle = useCallback(
-    async (leaderId: string) => {
-      if (!user) return;
+  const tabs = ["Leaders", "Strategies", "Trending Assets"];
 
-      try {
-        // Get current leader and user data
-        const [leaderRes, currentUserRes] = await Promise.all([
-          fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${leaderId}`),
-          fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${user.id}`),
-        ]);
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+  };
 
-        const leader = await leaderRes.json();
-        const currentUser = await currentUserRes.json();
+  const handleCopyStrategy = async (strategyId: string) => {
+    if (!user) return;
 
-        // Update following/followers lists
-        const isFollowing = currentUser.following.includes(leaderId);
-        if (isFollowing) {
-          // Unfollow: Remove from lists
-          leader.followers = leader.followers.filter(
-            (id: string) => id !== user.id
-          );
-          currentUser.following = currentUser.following.filter(
-            (id: string) => id !== leaderId
-          );
-        } else {
-          // Follow: Add to lists
-          leader.followers.push(user.id);
-          currentUser.following.push(leaderId);
-        }
+    try {
+      const isCopying = await discoverService.toggleCopyStrategy(user.id, strategyId);
+      setStrategies(prevStrategies =>
+        prevStrategies.map(s =>
+          s.id === strategyId ? { ...s, isCopying } : s
+        )
+      );
+    } catch (error) {
+      console.error("Error copying strategy:", error);
+    }
+  };
 
-        // Update both users in database
-        await Promise.all([
-          fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${leaderId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(leader),
-          }),
-          fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${user.id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(currentUser),
-          }),
-        ]);
+  const handleFollowToggle = async (leaderId: string) => {
+    if (!user) return;
 
-        // Update local state
-        setLeaders((prevLeaders: Leader[]) =>
-          prevLeaders.map((leader: Leader) =>
-            leader.id === leaderId
-              ? { ...leader, isFollowing: !leader.isFollowing }
-              : leader
-          )
-        );
-      } catch (error) {
-        console.error("Error updating follow status:", error);
-      }
-    },
-    [user]
-  );
-
-  // Top 3 leaders sorted by profit
-  const topLeaders = useMemo(() => {
-    return [...leaders]
-      .sort((a, b) => b.totalProfit - a.totalProfit)
-      .slice(0, 3);
-  }, [leaders]);
-
-  // AI Suggested Leaders (random selection)
-  const aiSuggestedLeaders = useMemo(() => {
-    return [...leaders].sort(() => Math.random() - 0.5).slice(0, 5);
-  }, [leaders]);
-
-  // Top Earners (random selection)
-  const topEarners = useMemo(() => {
-    return [...leaders].sort(() => Math.random() - 0.5).slice(0, 5);
-  }, [leaders]);
-
-  // Most Popular (random selection)
-  const mostPopular = useMemo(() => {
-    return [...leaders].sort(() => Math.random() - 0.5).slice(0, 5);
-  }, [leaders]);
+    try {
+      const isFollowing = await discoverService.toggleFollow(user.id, leaderId);
+      
+      // Update local state for both leaders and strategies
+      setLeaders(prevLeaders =>
+        prevLeaders.map(leader =>
+          leader.id === leaderId ? { ...leader, isFollowing } : leader
+        )
+      );
+      setStrategies(prevStrategies =>
+        prevStrategies.map(strategy =>
+          strategy.leaderId === leaderId ? { ...strategy, isFollowing } : strategy
+        )
+      );
+    } catch (error) {
+      console.error("Error updating follow status:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchLeaders = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users`);
-        const users: User[] = await res.json();
-        console.log(users);
-
-        // Get leaders with random stats
-        // Get current user data to check following status
-        const currentUserRes = user
-          ? await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${user.id}`)
-          : null;
-        const currentUserData = currentUserRes
-          ? await currentUserRes.json()
-          : null;
-
-        const leaders = users
-          .filter((u) => u.userType === "leader")
-          .map((leader) => ({
-            id: leader.id,
-            username: leader.username,
-            avatar: leader.profilePicture,
-            copiers: Math.floor(Math.random() * 2000) + 500, // Random copiers between 500-2500
-            totalProfit: Math.floor(Math.random() * 900000) + 100000, // Random profit between 100k-1M
-            winRate: Math.floor(Math.random() * 20) + 70, // Random win rate between 70-90%
-            isFollowing: currentUserData
-              ? currentUserData.following.includes(leader.id)
-              : false,
-          }))
-          .sort((a, b) => b.totalProfit - a.totalProfit);
-
-        setLeaders(leaders);
-        setLoading(false);
+        setLoading(true);
+        const data = await discoverService.fetchAllData(user?.id);
+        setLeaders(data.leaders);
+        setStrategies(data.strategies);
+        setAssets(data.assets);
       } catch (error) {
-        console.error("Error fetching leaders:", error);
+        console.error("Error fetching data:", error);
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchLeaders();
-  }, []);
+    fetchData();
+  }, [user]);
 
   return (
     <div className="discover">
-      <h1 className="discover__title">Top Leaders</h1>
-      <div className="discover__search">
-        <input
-          type="search"
-          className="discover__search-input"
-          placeholder="AI powered search..."
+      <h1 className="discover__title">Discover</h1>
+      <Search />
+      <TabNavigation
+        tabs={tabs}
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+      />
+      {activeTab === "Leaders" ? (
+        <LeadersSection
+          loading={loading}
+          leaders={leaders}
+          onFollow={handleFollowToggle}
         />
-        <button className="discover__search-ai">
-          <img src={AiGif} alt="AI Search" />
-        </button>
-      </div>
-      {loading ? (
-        <>
-          {/* Top 3 Leaders */}
-          <h2 className="discover__section-title">Top 3 Leaders</h2>
-          <div className="discover__top-leaders">
-            {[...Array(3)].map((_, index) => (
-              <SkeletonCard key={index} large showRank />
-            ))}
-          </div>
-
-          {/* AI Suggested Leaders */}
-          <h2 className="discover__section-title">AI Suggested Leaders</h2>
-          <div className="discover__leaders-grid">
-            {[...Array(5)].map((_, index) => (
-              <SkeletonCard key={`ai-${index}`} />
-            ))}
-          </div>
-
-          {/* Top Earners */}
-          <h2 className="discover__section-title">Top Earners</h2>
-          <div className="discover__leaders-grid">
-            {[...Array(5)].map((_, index) => (
-              <SkeletonCard key={`earners-${index}`} />
-            ))}
-          </div>
-
-          {/* Most Popular */}
-          <h2 className="discover__section-title">Most Popular</h2>
-          <div className="discover__leaders-grid">
-            {[...Array(5)].map((_, index) => (
-              <SkeletonCard key={`popular-${index}`} />
-            ))}
-          </div>
-        </>
+      ) : activeTab === "Strategies" ? (
+        <StrategiesSection
+          loading={loading}
+          strategies={strategies}
+          onFollow={handleFollowToggle}
+          onCopy={handleCopyStrategy}
+        />
       ) : (
-        <>
-          {/* Top 3 Leaders */}
-          <h2 className="discover__section-title">Top 3 Leaders</h2>
-          <div className="discover__top-leaders">
-            {topLeaders.map((leader, index) => (
-              <LeaderCard
-                key={leader.id}
-                leader={leader}
-                rank={index + 1}
-                onFollow={handleFollowToggle}
-                large
-              />
-            ))}
-          </div>
-
-          {/* AI Suggested Leaders */}
-          <h2 className="discover__section-title">AI Suggested Leaders</h2>
-          <div className="discover__leaders-grid">
-            {aiSuggestedLeaders.map((leader) => (
-              <LeaderCard
-                key={leader.id}
-                leader={leader}
-                onFollow={handleFollowToggle}
-              />
-            ))}
-          </div>
-
-          {/* Top Earners */}
-          <h2 className="discover__section-title">Top Earners</h2>
-          <div className="discover__leaders-grid">
-            {topEarners.map((leader) => (
-              <LeaderCard
-                key={leader.id}
-                leader={leader}
-                onFollow={handleFollowToggle}
-              />
-            ))}
-          </div>
-
-          {/* Most Popular */}
-          <h2 className="discover__section-title">Most Popular</h2>
-          <div className="discover__leaders-grid">
-            {mostPopular.map((leader) => (
-              <LeaderCard
-                key={leader.id}
-                leader={leader}
-                onFollow={handleFollowToggle}
-              />
-            ))}
-          </div>
-        </>
+        <TrendingAssets loading={loading} assets={assets} />
       )}
     </div>
   );
