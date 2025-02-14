@@ -5,6 +5,7 @@ dotenv.config();
 import express, { NextFunction } from "express";
 import cors from "cors";
 import insightsRouter from "./routes/insights";
+import marketRouter from "./routes/market";
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -15,34 +16,33 @@ app.use(express.json());
 
 // Health check endpoint
 app.get("/health", (req, res) => {
-    res.json({ status: "ok" });
+  res.json({ status: "ok" });
 });
 
-// Mount LLM routes
+// Mount routes
 app.use("/api/ai", insightsRouter);
+app.use("/api/market", marketRouter);
 
 // Error handling middleware
 app.use(
-    (
-        err: Error,
-        req: express.Request,
-        res: express.Response,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        next: NextFunction
-    ) => {
-        console.error(err.stack);
-        res.status(500).json({
-            error: "Internal Server Error",
-            message:
-                process.env.NODE_ENV === "development"
-                    ? err.message
-                    : undefined,
-        });
-    }
+  (
+    err: Error,
+    req: express.Request,
+    res: express.Response,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    next: NextFunction
+  ) => {
+    console.error(err.stack);
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: process.env.NODE_ENV === "development" ? err.message : undefined,
+    });
+  }
 );
 
 // Start server
 app.listen(port, () => {
-    console.log(`LLM Server running on port ${port}`);
-    console.log(`- LLM API: http://localhost:${port}/api/ai`);
+  console.log(`LLM Server running on port ${port}`);
+  console.log(`- LLM API: http://localhost:${port}/api/ai`);
+  console.log(`- Market API: http://localhost:${port}/api/market`);
 });

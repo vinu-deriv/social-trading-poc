@@ -254,24 +254,21 @@ export default function Discover() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [usersRes, strategiesRes, currencyAccountsRes, assetsRes] =
+        const [usersRes, strategiesRes, currencyAccountsRes] =
           await Promise.all([
             fetch("http://localhost:3001/users"),
             fetch("http://localhost:3001/tradingStrategies"),
             fetch("http://localhost:3001/currencyAccounts"),
-            fetch("http://localhost:3001/assets"),
           ]);
 
-        const [users, strategiesData, accounts, assetsData]: [
+        const [users, strategiesData, accounts]: [
           User[],
           TradingStrategy[],
-          CurrencyAccount[],
-          Asset[]
+          CurrencyAccount[]
         ] = await Promise.all([
           usersRes.json(),
           strategiesRes.json(),
           currencyAccountsRes.json(),
-          assetsRes.json(),
         ]);
 
         // Check if current user is a leader
@@ -312,7 +309,6 @@ export default function Discover() {
         const processedStrategies = strategiesData.map((strategy) => {
           const leader = users.find((u) => u.id === strategy.leaderId);
           const account = accounts.find((a) => a.id === strategy.accountId);
-          console.log(account, "strategy", accounts, strategy.accountId);
           const isCopying = copyRelations.some(
             (rel: CopyRelationship) => rel.strategyId === strategy.id
           );
@@ -335,7 +331,6 @@ export default function Discover() {
 
         setLeaders(leaders);
         setStrategies(processedStrategies);
-        setAssets(assetsData);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -346,9 +341,30 @@ export default function Discover() {
     fetchData();
   }, [user]);
 
+  // Fetch trending assets separately
+  useEffect(() => {
+    const fetchTrendingAssets = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          "http://localhost:3002/api/market/trending-assets"
+        );
+        const data = await response.json();
+        setAssets(data.slice(0, 5)); // Get only top 4 assets
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching trending assets:", error);
+        setLoading(false);
+      }
+    };
+
+    if (activeTab === "Trending Assets") {
+      fetchTrendingAssets();
+    }
+  }, [activeTab]);
+
   return (
     <div className="discover">
-      <h1 className="discover__title">Discover</h1>
       <Search />
       <TabNavigation
         tabs={tabs}
