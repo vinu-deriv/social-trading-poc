@@ -10,7 +10,7 @@ const useCurrentUser = (userId: string) => {
         const fetchUser = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:3001/users/${userId}`
+                    `${import.meta.env.VITE_JSON_SERVER_URL}/users/${userId}`
                 );
                 if (!response.ok) {
                     throw new Error("Failed to fetch user");

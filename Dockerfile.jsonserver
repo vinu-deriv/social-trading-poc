@@ -1,0 +1,24 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Create directory structure
+RUN mkdir -p /app/data
+
+# Copy package files and install dependencies
+COPY json-server/package.json ./package.json
+RUN npm install
+
+# Copy server code and data
+COPY json-server/server.js /app/server.js
+COPY json-server/data/db.json /app/data/db.json
+
+# Set permissions
+RUN chmod +x /app/server.js && \
+    chown -R node:node /app
+
+USER node
+
+EXPOSE 3001
+
+CMD ["npm", "start"]
