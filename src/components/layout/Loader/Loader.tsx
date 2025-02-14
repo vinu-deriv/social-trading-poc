@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import './Loader.css';
+import { FC } from "react";
+import "./Loader.css";
 
 const Loader: FC = () => (
   <div className="loader-container">

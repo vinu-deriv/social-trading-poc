@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import TabNavigation from "@/components/navigation/TabNavigation/TabNavigation";
 import FeedList from "@/modules/feed/components/FeedList/FeedList";
-import Loader from "@/components/layout/Loader/Loader";
+import Loader from "@/components/layout/Loader";
 import "./Feed.css";
 
 const Feed = () => {
