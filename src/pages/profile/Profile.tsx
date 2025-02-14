@@ -3,6 +3,7 @@ import { useProfile } from "@/modules/profile/hooks/useProfile";
 import ProfileHeader from "../../modules/profile/components/ProfileHeader";
 import FeedList from "@/modules/feed/components/FeedList";
 import Loader from "@/components/layout/Loader";
+import ErrorState from "@/components/feedback/ErrorState";
 import "./Profile.css";
 
 const Profile = () => {
@@ -15,9 +16,10 @@ const Profile = () => {
     error,
     handleFollow,
     handleUnfollow,
+    refetch,
   } = useProfile(username);
 
-  if (loading || !profile) {
+  if (loading) {
     return (
       <div className="profile-page">
         <div className="profile-page__loading">
@@ -27,10 +29,13 @@ const Profile = () => {
     );
   }
 
-  if (error) {
+  if (error || !profile) {
     return (
       <div className="profile-page">
-        <div className="profile-page__error">{error}</div>
+        <ErrorState
+          message={error || "Failed to load profile"}
+          onRetry={refetch}
+        />
       </div>
     );
   }

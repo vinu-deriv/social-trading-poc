@@ -1,46 +1,45 @@
 .feed-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 720px;
 }
 
 .feed-list__loading {
-    text-align: center;
-    padding: 20px;
-    color: #666;
+  text-align: center;
+  padding: 20px;
+  color: #666;
 }
 
 .feed-list__error {
-    text-align: center;
-    padding: 20px;
-    color: #d32f2f;
-    background-color: #ffebee;
-    border-radius: 8px;
-    margin: 20px 0;
+  text-align: center;
+  padding: 20px;
+  color: #000000;
+  border-radius: 8px;
+  margin: 20px 0;
 }
 
 .feed-list__empty {
-    padding: 48px 24px;
-    text-align: center;
-    color: #64748b;
-    margin: 16px;
+  padding: 48px 24px;
+  text-align: center;
+  color: #64748b;
+  margin: 16px;
 }
 
 .feed-list__empty svg {
-    margin-bottom: 16px;
-    color: #94a3b8;
+  margin-bottom: 16px;
+  color: #94a3b8;
 }
 
 .feed-list__empty p {
-    font-size: 16px;
-    margin: 0;
+  font-size: 16px;
+  margin: 0;
 }
 
 .feed-list__empty-subtitle {
-    font-size: 14px;
-    color: #94a3b8;
-    margin-top: 8px !important;
+  font-size: 14px;
+  color: #94a3b8;
+  margin-top: 8px !important;
 }
