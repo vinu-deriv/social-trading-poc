@@ -1,4 +1,3 @@
-import React from "react";
 import Table from "@/components/Table";
 import { Contract } from "@/types/contract.types";
 import { positionsTableColumns, TradeType } from "../../constants";

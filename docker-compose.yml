@@ -45,7 +45,7 @@ services:
       - "3001:3001"
     volumes:
       - ./json-server:/app/json-server
-      - ./db.json:/app/data/db.json
+      - ./json-server/data:/app/data
       - /app/node_modules
     environment:
       - NODE_ENV=${NODE_ENV:-development}

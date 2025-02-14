@@ -11,11 +11,10 @@ RUN npm install
 
 # Copy server code and data
 COPY json-server/server.js /app/server.js
-COPY db.json /app/data/db.json
+COPY json-server/data/db.json /app/data/db.json
 
-# Create symbolic link for backward compatibility
-RUN ln -s /app/data/db.json /app/db.json && \
-    chmod +x /app/server.js && \
+# Set permissions
+RUN chmod +x /app/server.js && \
     chown -R node:node /app
 
 USER node
