@@ -128,7 +128,7 @@
 
 @media (max-width: 768px) {
   .discover__top-leaders {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     padding: 1rem;
     gap: 1.5rem;
   }
@@ -154,10 +154,15 @@
     margin-bottom: 1.5rem;
   }
 
-  .discover__top-leaders,
+  .discover__top-leaders {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    padding: 0;
+  }
+
   .discover__leaders-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
     padding: 0;
   }
 }
