@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "mock-api": "json-server --watch ./json-server/data/db.json --port 3001",
-    "start:docker": "docker compose --env-file .env.development up",
+    "start:docker": "docker compose down -v --rmi all && docker compose --env-file .env.development up",
     "prepare": "husky",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\""
   },

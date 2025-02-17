@@ -1403,6 +1403,21 @@
       },
       "createdAt": "2025-02-11T15:15:04.299Z",
       "updatedAt": "2025-02-11T15:15:04.299Z"
+    },
+    {
+      "userId": "leader1",
+      "content": {
+        "text": "Пост на русском для проверки перевода",
+        "images": []
+      },
+      "engagement": {
+        "likes": [],
+        "comments": [],
+        "shares": 0
+      },
+      "createdAt": "2025-02-17T13:16:32.449Z",
+      "updatedAt": "2025-02-17T13:16:32.450Z",
+      "id": "6fBeqL9"
     }
   ],
   "contracts": [
