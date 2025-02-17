@@ -28,13 +28,24 @@ const TranslateButton = ({ text, onTranslation }: TranslateButtonProps) => {
 
   // Check if text is English on mount and when text changes
   useEffect(() => {
+    // Skip empty text or text that's not loaded yet
+    if (!text?.trim()) {
+      return;
+    }
+
+    // Skip text that's already in English (contains only ASCII characters and emojis)
+    const isAscii = /^[\x00-\x7F\u{1F300}-\u{1F9FF}]*$/u.test(text);
+    if (isAscii) {
+      setIsEnglish(true);
+      return;
+    }
+
     const checkLanguage = async () => {
       try {
         const translatedText = await translateText(text);
         // If translation returns the same text, it's English
         setIsEnglish(translatedText === text);
-      } catch (error) {
-        console.error("Language check error:", error);
+      } catch {
         // Hide button on error
         setIsEnglish(true);
       }

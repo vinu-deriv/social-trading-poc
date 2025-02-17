@@ -18,6 +18,7 @@ router.post("/translate", async (req, res) => {
     res.status(500).json({
       error: "Translation failed",
       message: error instanceof Error ? error.message : "Unknown error",
+      details: process.env.NODE_ENV === "development" ? error : undefined,
     });
   }
 });

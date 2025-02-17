@@ -1,14 +1,12 @@
-const API_URL = import.meta.env.VITE_LLM_SERVER_URL;
-if (!API_URL) {
-  throw new Error("VITE_LLM_SERVER_URL environment variable is not set");
-}
+const LLM_SERVER_URL =
+  import.meta.env.VITE_LLM_SERVER_URL || "http://localhost:3000";
 
 export const translateText = async (
   text: string,
   targetLang: string = "EN"
 ): Promise<string> => {
   try {
-    const response = await fetch(`${API_URL}/api/translate`, {
+    const response = await fetch(`${LLM_SERVER_URL}/api/translate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -20,7 +18,8 @@ export const translateText = async (
     });
 
     if (!response.ok) {
-      throw new Error("Translation failed");
+      const errorData = await response.json().catch(() => null);
+      throw new Error(errorData?.message || "Translation failed");
     }
 
     const data = await response.json();
