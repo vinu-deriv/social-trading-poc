@@ -6,6 +6,7 @@ import { MarketService } from "../services/market";
 const router = express.Router();
 const llmService = new LLMService();
 const dataService = new DataService();
+
 const marketService = new MarketService();
 
 // Get AI insights for a symbol
@@ -52,13 +53,15 @@ router.get(
     try {
       const { userId } = req.params;
 
-      const user = dataService.getUser(userId);
+      const user = await dataService.getUser(userId);
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
 
-      const posts = dataService.getUserPosts();
-      const strategies = dataService.getUserStrategies(userId);
+      const [posts, strategies] = await Promise.all([
+        dataService.getUserPosts(),
+        dataService.getUserStrategies(userId),
+      ]);
 
       const insights = await llmService.generatePostInsights(
         posts,
@@ -82,17 +85,20 @@ router.get(
     try {
       const { userId, postId } = req.params;
 
-      const user = dataService.getUser(userId);
+      const [user, post] = await Promise.all([
+        dataService.getUser(userId),
+        dataService.getPost(postId),
+      ]);
+
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
 
-      const post = dataService.getPost(postId);
       if (!post) {
         return res.status(404).json({ error: "Post not found" });
       }
 
-      const strategies = dataService.getUserStrategies(userId);
+      const strategies = await dataService.getUserStrategies(userId);
       const insight = await llmService.generatePostInsight(
         post,
         user,

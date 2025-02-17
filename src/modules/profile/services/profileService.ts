@@ -1,7 +1,7 @@
 import type User from "@/types/user.types";
 
 export const getUserByUsername = async (username: string): Promise<User> => {
-    const response = await fetch(`http://localhost:3001/users?username=${encodeURIComponent(username)}`);
+    const response = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users?username=${encodeURIComponent(username)}`);
     if (!response.ok) {
         throw new Error("Failed to fetch user");
     }
@@ -15,8 +15,8 @@ export const getUserByUsername = async (username: string): Promise<User> => {
 export const followUser = async (userId: string, targetUserId: string): Promise<User> => {
     // First get both users
     const [userResponse, targetUserResponse] = await Promise.all([
-        fetch(`http://localhost:3001/users/${userId}`),
-        fetch(`http://localhost:3001/users/${targetUserId}`)
+        fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${userId}`),
+        fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${targetUserId}`)
     ]);
 
     if (!userResponse.ok || !targetUserResponse.ok) {
@@ -40,14 +40,14 @@ export const followUser = async (userId: string, targetUserId: string): Promise<
 
     // Update both users
     const [updateUserResponse, updateTargetResponse] = await Promise.all([
-        fetch(`http://localhost:3001/users/${userId}`, {
+        fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${userId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(user)
         }),
-        fetch(`http://localhost:3001/users/${targetUserId}`, {
+        fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${targetUserId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -66,8 +66,8 @@ export const followUser = async (userId: string, targetUserId: string): Promise<
 export const unfollowUser = async (userId: string, targetUserId: string): Promise<User> => {
     // First get both users
     const [userResponse, targetUserResponse] = await Promise.all([
-        fetch(`http://localhost:3001/users/${userId}`),
-        fetch(`http://localhost:3001/users/${targetUserId}`)
+        fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${userId}`),
+        fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${targetUserId}`)
     ]);
 
     if (!userResponse.ok || !targetUserResponse.ok) {
@@ -87,14 +87,14 @@ export const unfollowUser = async (userId: string, targetUserId: string): Promis
 
     // Update both users
     const [updateUserResponse, updateTargetResponse] = await Promise.all([
-        fetch(`http://localhost:3001/users/${userId}`, {
+        fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${userId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(user)
         }),
-        fetch(`http://localhost:3001/users/${targetUserId}`, {
+        fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${targetUserId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -114,7 +114,7 @@ export const getUsersByIds = async (userIds: string[]): Promise<User[]> => {
     if (userIds.length === 0) return [];
     
     const promises = userIds.map(id => 
-        fetch(`http://localhost:3001/users/${id}`)
+        fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${id}`)
             .then(res => res.ok ? res.json() : null)
     );
 
@@ -123,7 +123,7 @@ export const getUsersByIds = async (userIds: string[]): Promise<User[]> => {
 };
 
 export const getUserPosts = async (userId: string) => {
-    const response = await fetch(`http://localhost:3001/posts?userId=${userId}`);
+    const response = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/posts?userId=${userId}`);
     if (!response.ok) {
         throw new Error("Failed to fetch user posts");
     }

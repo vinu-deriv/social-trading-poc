@@ -84,6 +84,15 @@ export default function Discover() {
   const [loading, setLoading] = useState(true);
   const [isLeader, setIsLeader] = useState(false);
 
+  const JSON_SERVER_URL = import.meta.env.VITE_JSON_SERVER_URL;
+  const LLM_SERVER_URL = import.meta.env.VITE_LLM_SERVER_URL;
+  if (!JSON_SERVER_URL) {
+    throw new Error("VITE_JSON_SERVER_URL environment variable is not set");
+  }
+  if (!LLM_SERVER_URL) {
+    throw new Error("VITE_LLM_SERVER_URL environment variable is not set");
+  }
+
   const { user } = useAuth();
 
   const tabs = isLeader
@@ -101,21 +110,21 @@ export default function Discover() {
       try {
         // Get current strategy data
         const strategyRes = await fetch(
-          `http://localhost:3001/tradingStrategies/${strategyId}`
+          `${JSON_SERVER_URL}/tradingStrategies/${strategyId}`
         );
         const strategy = await strategyRes.json();
 
         // Check if relationship already exists
         const relationshipId = `${user.id}-${strategyId}`;
         const existingRes = await fetch(
-          `http://localhost:3001/copyRelationships?id=${relationshipId}`
+          `${JSON_SERVER_URL}/copyRelationships?id=${relationshipId}`
         );
         const existing = await existingRes.json();
 
         if (existing.length > 0) {
           // Delete existing relationship
           await fetch(
-            `http://localhost:3001/copyRelationships/${relationshipId}`,
+            `${JSON_SERVER_URL}/copyRelationships/${relationshipId}`,
             {
               method: "DELETE",
             }
@@ -125,7 +134,7 @@ export default function Discover() {
           strategy.copiers = strategy.copiers.filter(
             (id: string) => id !== user.id
           );
-          await fetch(`http://localhost:3001/tradingStrategies/${strategyId}`, {
+          await fetch(`${JSON_SERVER_URL}/tradingStrategies/${strategyId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(strategy),
@@ -151,7 +160,7 @@ export default function Discover() {
             updatedAt: new Date().toISOString(),
           };
 
-          await fetch("http://localhost:3001/copyRelationships", {
+          await fetch(`${JSON_SERVER_URL}/copyRelationships`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(copyRelationship),
@@ -159,7 +168,7 @@ export default function Discover() {
 
           // Add user to strategy copiers
           strategy.copiers.push(user.id);
-          await fetch(`http://localhost:3001/tradingStrategies/${strategyId}`, {
+          await fetch(`${JSON_SERVER_URL}/tradingStrategies/${strategyId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(strategy),
@@ -186,8 +195,8 @@ export default function Discover() {
       try {
         // Get current leader and user data
         const [leaderRes, currentUserRes] = await Promise.all([
-          fetch(`http://localhost:3001/users/${leaderId}`),
-          fetch(`http://localhost:3001/users/${user.id}`),
+          fetch(`${JSON_SERVER_URL}/users/${leaderId}`),
+          fetch(`${JSON_SERVER_URL}/users/${user.id}`),
         ]);
 
         const leader = await leaderRes.json();
@@ -211,12 +220,12 @@ export default function Discover() {
 
         // Update both users in database
         await Promise.all([
-          fetch(`http://localhost:3001/users/${leaderId}`, {
+          fetch(`${JSON_SERVER_URL}/users/${leaderId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(leader),
           }),
-          fetch(`http://localhost:3001/users/${user.id}`, {
+          fetch(`${JSON_SERVER_URL}/users/${user.id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(currentUser),
@@ -256,9 +265,9 @@ export default function Discover() {
         setLoading(true);
         const [usersRes, strategiesRes, currencyAccountsRes] =
           await Promise.all([
-            fetch("http://localhost:3001/users"),
-            fetch("http://localhost:3001/tradingStrategies"),
-            fetch("http://localhost:3001/currencyAccounts"),
+            fetch(`${JSON_SERVER_URL}/users`),
+            fetch(`${JSON_SERVER_URL}/tradingStrategies`),
+            fetch(`${JSON_SERVER_URL}/currencyAccounts`),
           ]);
 
         const [users, strategiesData, accounts]: [
@@ -279,7 +288,7 @@ export default function Discover() {
 
         // Get current user data to check following status
         const currentUserData = user
-          ? await fetch(`http://localhost:3001/users/${user.id}`).then((res) =>
+          ? await fetch(`${JSON_SERVER_URL}/users/${user.id}`).then((res) =>
               res.json()
             )
           : null;
@@ -302,7 +311,7 @@ export default function Discover() {
         // Process strategies
         // Get copy relationships for current user
         const copyRelationsRes = await fetch(
-          `http://localhost:3001/copyRelationships?copierId=${user?.id}`
+          `${JSON_SERVER_URL}/copyRelationships?copierId=${user?.id}`
         );
         const copyRelations = await copyRelationsRes.json();
 
@@ -347,7 +356,7 @@ export default function Discover() {
       try {
         setLoading(true);
         const response = await fetch(
-          "http://localhost:3002/api/market/trending-assets"
+          `${LLM_SERVER_URL}/api/market/trending-assets`
         );
         const data = await response.json();
         setAssets(data.slice(0, 5)); // Get only top 4 assets

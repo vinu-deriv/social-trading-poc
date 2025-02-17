@@ -71,7 +71,7 @@ const Welcome = () => {
   const handleGetStarted = async () => {
     try {
       // Here you would typically make an API call to update user's isFirstLogin status
-      await fetch(`http://localhost:3001/users/${user?.id}`, {
+      await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${user?.id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

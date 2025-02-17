@@ -1,0 +1,55 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      target: ${NODE_ENV:-development}
+      args:
+        - VITE_LLM_SERVER_URL=${VITE_LLM_SERVER_URL:-http://localhost:3000}
+        - VITE_JSON_SERVER_URL=${VITE_JSON_SERVER_URL:-http://localhost:3001}
+    ports:
+      - "5173:5173"  # Development port
+      - "80:80"      # Production port
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - VITE_LLM_SERVER_URL=${VITE_LLM_SERVER_URL:-http://localhost:3000}
+      - VITE_JSON_SERVER_URL=${VITE_JSON_SERVER_URL:-http://localhost:3001}
+    depends_on:
+      - llm-server
+      - json-server
+
+  llm-server:
+    build:
+      context: .
+      dockerfile: llm-server/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./llm-server:/app
+      - /app/node_modules
+      - /app/dist
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - PORT=3000
+      - JSON_SERVER_URL=http://json-server:3001
+    env_file:
+      - ./llm-server/.env
+
+  json-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.jsonserver
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./json-server:/app/json-server
+      - ./json-server/data:/app/data
+      - /app/node_modules
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - PORT=3001
+
+volumes:
+  data:

@@ -2,7 +2,8 @@ export interface Strategy {
     id: string;
     name: string;
     description: string;
-    creatorId: string;
+    leaderId: string;
+    accountId: string;
     copiers: string[];
     winRate: number;
     totalPnL: number;

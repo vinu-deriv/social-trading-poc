@@ -3,7 +3,8 @@
 }
 
 .feed-page__container {
-    max-width: 720px;
+    display: flex;
+    justify-content: center;
     margin: 1rem auto;
 }
 
