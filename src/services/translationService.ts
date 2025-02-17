@@ -1,27 +1,5 @@
 const API_URL = "http://localhost:3002/api";
 
-export const detectLanguage = async (text: string): Promise<string> => {
-  try {
-    const response = await fetch(`${API_URL}/detect-language`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ text }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Language detection failed");
-    }
-
-    const data = await response.json();
-    return data.language;
-  } catch (error) {
-    console.error("Error detecting language:", error);
-    throw error;
-  }
-};
-
 export const translateText = async (
   text: string,
   targetLang: string = "EN"
