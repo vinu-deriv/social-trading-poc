@@ -25,12 +25,11 @@ export default function InsightsList({
       <h3 className="insights-list__title">AI Insights</h3>
       <div className="insights-list__content">
         {loadingSymbol && (
-          <div className="insight-card loading">
-            <div className="insight-card__header">
-              <span className="insight-card__symbol">{loadingSymbol}</span>
-            </div>
-            <AILoader size={60} />
-          </div>
+          <AILoader 
+            symbol={loadingSymbol} 
+            size={60} 
+            variant="card"
+          />
         )}
         {[...insights].reverse().map((insight) => (
           <div key={insight.postId} className="post-ai-insights">
