@@ -39,7 +39,6 @@ export default function StrategiesSection({
   }, [strategies]);
 
   const aiSuggestedStrategies = useMemo(() => {
-    console.log(strategies,'www');
     return strategies.slice(3, 8);
   }, [strategies]);
 
