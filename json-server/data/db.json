@@ -7,26 +7,9 @@
       "email": "expert@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
       "userType": "leader",
-      "followers": [
-        "copier1",
-        "copier2",
-        "copier3",
-        "leader1"
-      ],
-      "following": [
-        "leader9",
-        "leader3",
-        "leader8",
-        "leader1",
-        "leader4",
-        "leader5",
-        "leader11",
-        "leader6"
-      ],
-      "accounts": [
-        "acc1",
-        "acc2"
-      ],
+      "followers": ["copier1", "copier2", "copier3", "leader1"],
+      "following": ["leader9", "leader8", "leader11", "leader6", "leader7", "leader10", "leader5"],
+      "accounts": ["acc1", "acc2"],
       "performance": {
         "winRate": 78.5,
         "totalPnL": 245.8,
@@ -43,17 +26,9 @@
       "email": "pro@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
       "userType": "leader",
-      "followers": [
-        "copier1",
-        "copier3",
-        "leader2"
-      ],
-      "following": [
-        "copier1"
-      ],
-      "accounts": [
-        "acc3"
-      ],
+      "followers": ["copier1", "copier3", "leader2"],
+      "following": ["copier1"],
+      "accounts": ["acc3"],
       "performance": {
         "winRate": 68.5,
         "totalPnL": 185.2,
@@ -70,19 +45,23 @@
       "email": "new@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
       "userType": "copier",
-      "followers": [
-        "leader1",
-        "leader2"
-      ],
-      "following": [
-        "leader1",
-        "leader2"
-      ],
-      "accounts": [
-        "acc4"
-      ],
+      "followers": ["leader1", "leader2"],
+      "following": ["leader1", "leader2", "leader5"],
+      "accounts": ["acc4"],
       "createdAt": "2024-01-03T00:00:00Z",
-      "updatedAt": "2024-01-03T00:00:00Z"
+      "updatedAt": "2024-01-03T00:00:00Z",
+      "isFirstLogin": false,
+      "tradingPreferences": {
+        "riskTolerance": "medium",
+        "investmentStyle": "moderate",
+        "preferredMarkets": [],
+        "preferredTradeTypes": [],
+        "tradingFrequency": "weekly",
+        "maxDrawdown": 20,
+        "targetReturn": 15,
+        "minStake": 10,
+        "maxStake": 100
+      }
     },
     {
       "id": "copier2",
@@ -92,12 +71,8 @@
       "profilePicture": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80",
       "userType": "copier",
       "followers": [],
-      "following": [
-        "leader1"
-      ],
-      "accounts": [
-        "acc5"
-      ],
+      "following": ["leader1"],
+      "accounts": ["acc5"],
       "createdAt": "2024-01-04T00:00:00Z",
       "updatedAt": "2024-01-04T00:00:00Z"
     },
@@ -109,14 +84,8 @@
       "profilePicture": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e",
       "userType": "copier",
       "followers": [],
-      "following": [
-        "leader1",
-        "leader2"
-      ],
-      "accounts": [
-        "acc6",
-        "acc7"
-      ],
+      "following": ["leader1", "leader2"],
+      "accounts": ["acc6", "acc7"],
       "createdAt": "2024-01-05T00:00:00Z",
       "updatedAt": "2024-01-05T00:00:00Z"
     },
@@ -127,15 +96,9 @@
       "email": "forex@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1544005313-94ddf0286df2",
       "userType": "leader",
-      "followers": [
-        "copier4",
-        "copier5",
-        "leader1"
-      ],
+      "followers": ["copier4", "copier5"],
       "following": [],
-      "accounts": [
-        "acc8"
-      ],
+      "accounts": ["acc8"],
       "createdAt": "2024-01-06T00:00:00Z",
       "updatedAt": "2024-01-06T00:00:00Z"
     },
@@ -146,14 +109,9 @@
       "email": "crypto@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7",
       "userType": "leader",
-      "followers": [
-        "copier6",
-        "leader1"
-      ],
+      "followers": ["copier6"],
       "following": [],
-      "accounts": [
-        "acc9"
-      ],
+      "accounts": ["acc9"],
       "createdAt": "2024-01-07T00:00:00Z",
       "updatedAt": "2024-01-07T00:00:00Z"
     },
@@ -164,15 +122,9 @@
       "email": "tech@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f",
       "userType": "leader",
-      "followers": [
-        "copier7",
-        "copier8",
-        "leader1"
-      ],
+      "followers": ["copier7", "copier8", "leader1", "copier1"],
       "following": [],
-      "accounts": [
-        "acc10"
-      ],
+      "accounts": ["acc10"],
       "createdAt": "2024-01-08T00:00:00Z",
       "updatedAt": "2024-01-08T00:00:00Z"
     },
@@ -183,14 +135,9 @@
       "email": "swing@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d",
       "userType": "leader",
-      "followers": [
-        "copier9",
-        "leader1"
-      ],
+      "followers": ["copier9", "leader1"],
       "following": [],
-      "accounts": [
-        "acc11"
-      ],
+      "accounts": ["acc11"],
       "createdAt": "2024-01-09T00:00:00Z",
       "updatedAt": "2024-01-09T00:00:00Z"
     },
@@ -201,14 +148,9 @@
       "email": "day@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb",
       "userType": "leader",
-      "followers": [
-        "copier10",
-        "copier11"
-      ],
+      "followers": ["copier10", "copier11", "leader1"],
       "following": [],
-      "accounts": [
-        "acc12"
-      ],
+      "accounts": ["acc12"],
       "createdAt": "2024-01-10T00:00:00Z",
       "updatedAt": "2024-01-10T00:00:00Z"
     },
@@ -219,14 +161,9 @@
       "email": "options@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
       "userType": "leader",
-      "followers": [
-        "copier12",
-        "leader1"
-      ],
+      "followers": ["copier12", "leader1"],
       "following": [],
-      "accounts": [
-        "acc13"
-      ],
+      "accounts": ["acc13"],
       "createdAt": "2024-01-11T00:00:00Z",
       "updatedAt": "2024-01-11T00:00:00Z"
     },
@@ -237,15 +174,9 @@
       "email": "scalp@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce",
       "userType": "leader",
-      "followers": [
-        "copier13",
-        "copier14",
-        "leader1"
-      ],
+      "followers": ["copier13", "copier14", "leader1"],
       "following": [],
-      "accounts": [
-        "acc14"
-      ],
+      "accounts": ["acc14"],
       "createdAt": "2024-01-12T00:00:00Z",
       "updatedAt": "2024-01-12T00:00:00Z"
     },
@@ -256,13 +187,9 @@
       "email": "commodity@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
       "userType": "leader",
-      "followers": [
-        "copier15"
-      ],
+      "followers": ["copier15", "leader1"],
       "following": [],
-      "accounts": [
-        "acc15"
-      ],
+      "accounts": ["acc15"],
       "createdAt": "2024-01-13T00:00:00Z",
       "updatedAt": "2024-01-13T00:00:00Z"
     },
@@ -273,15 +200,9 @@
       "email": "index@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
       "userType": "leader",
-      "followers": [
-        "copier16",
-        "copier17",
-        "leader1"
-      ],
+      "followers": ["copier16", "copier17", "leader1"],
       "following": [],
-      "accounts": [
-        "acc16"
-      ],
+      "accounts": ["acc16"],
       "createdAt": "2024-01-14T00:00:00Z",
       "updatedAt": "2024-01-14T00:00:00Z"
     },
@@ -292,13 +213,9 @@
       "email": "global@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
       "userType": "leader",
-      "followers": [
-        "copier18"
-      ],
+      "followers": ["copier18"],
       "following": [],
-      "accounts": [
-        "acc17"
-      ],
+      "accounts": ["acc17"],
       "createdAt": "2024-01-15T00:00:00Z",
       "updatedAt": "2024-01-15T00:00:00Z"
     },
@@ -309,14 +226,9 @@
       "email": "hedge@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1544005313-94ddf0286df2",
       "userType": "leader",
-      "followers": [
-        "copier19",
-        "copier20"
-      ],
+      "followers": ["copier19", "copier20"],
       "following": [],
-      "accounts": [
-        "acc18"
-      ],
+      "accounts": ["acc18"],
       "createdAt": "2024-01-16T00:00:00Z",
       "updatedAt": "2024-01-16T00:00:00Z"
     },
@@ -327,13 +239,9 @@
       "email": "algo@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7",
       "userType": "leader",
-      "followers": [
-        "copier21"
-      ],
+      "followers": ["copier21"],
       "following": [],
-      "accounts": [
-        "acc19"
-      ],
+      "accounts": ["acc19"],
       "createdAt": "2024-01-17T00:00:00Z",
       "updatedAt": "2024-01-17T00:00:00Z"
     },
@@ -344,14 +252,9 @@
       "email": "value@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f",
       "userType": "leader",
-      "followers": [
-        "copier22",
-        "copier23"
-      ],
+      "followers": ["copier22", "copier23"],
       "following": [],
-      "accounts": [
-        "acc20"
-      ],
+      "accounts": ["acc20"],
       "createdAt": "2024-01-18T00:00:00Z",
       "updatedAt": "2024-01-18T00:00:00Z"
     },
@@ -362,13 +265,9 @@
       "email": "trend@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d",
       "userType": "leader",
-      "followers": [
-        "copier24"
-      ],
+      "followers": ["copier24"],
       "following": [],
-      "accounts": [
-        "acc21"
-      ],
+      "accounts": ["acc21"],
       "createdAt": "2024-01-19T00:00:00Z",
       "updatedAt": "2024-01-19T00:00:00Z"
     },
@@ -379,14 +278,9 @@
       "email": "pattern@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb",
       "userType": "leader",
-      "followers": [
-        "copier25",
-        "copier26"
-      ],
+      "followers": ["copier25", "copier26"],
       "following": [],
-      "accounts": [
-        "acc22"
-      ],
+      "accounts": ["acc22"],
       "createdAt": "2024-01-20T00:00:00Z",
       "updatedAt": "2024-01-20T00:00:00Z"
     }
@@ -397,10 +291,7 @@
       "userId": "leader1",
       "currency": "USD",
       "balance": 100000,
-      "tradingStrategies": [
-        "strat1",
-        "strat2"
-      ],
+      "tradingStrategies": ["strat1", "strat2"],
       "isActive": true,
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
@@ -410,9 +301,7 @@
       "userId": "leader1",
       "currency": "EUR",
       "balance": 85000,
-      "tradingStrategies": [
-        "strat3"
-      ],
+      "tradingStrategies": ["strat3"],
       "isActive": true,
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
@@ -422,9 +311,7 @@
       "userId": "leader2",
       "currency": "USD",
       "balance": 150000,
-      "tradingStrategies": [
-        "strat4"
-      ],
+      "tradingStrategies": ["strat4"],
       "isActive": true,
       "createdAt": "2024-01-02T00:00:00Z",
       "updatedAt": "2024-01-02T00:00:00Z"
@@ -484,10 +371,7 @@
         "winRate": 75.5,
         "averageProfit": 2.3
       },
-      "copiers": [
-        "copier1",
-        "copier2"
-      ],
+      "copiers": ["copier1", "copier2"],
       "isActive": true,
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
@@ -505,9 +389,7 @@
         "winRate": 62.5,
         "averageProfit": 7.8
       },
-      "copiers": [
-        "copier3"
-      ],
+      "copiers": ["copier3"],
       "isActive": true,
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
@@ -525,10 +407,7 @@
         "winRate": 82.5,
         "averageProfit": 1.2
       },
-      "copiers": [
-        "copier3",
-        "leader1"
-      ],
+      "copiers": ["copier3", "leader1"],
       "isActive": true,
       "createdAt": "2024-01-01T00:00:00Z",
       "updatedAt": "2024-01-01T00:00:00Z"
@@ -546,10 +425,7 @@
         "winRate": 68.5,
         "averageProfit": 5.4
       },
-      "copiers": [
-        "copier1",
-        "leader1"
-      ],
+      "copiers": ["copier1", "leader1"],
       "isActive": true,
       "createdAt": "2024-01-02T00:00:00Z",
       "updatedAt": "2024-01-02T00:00:00Z"
@@ -567,10 +443,7 @@
         "winRate": 65,
         "averageProfit": 4.5
       },
-      "copiers": [
-        "copier4",
-        "copier5"
-      ],
+      "copiers": ["copier4", "copier5"],
       "isActive": true,
       "createdAt": "2024-01-06T00:00:00Z",
       "updatedAt": "2024-01-06T00:00:00Z"
@@ -588,10 +461,7 @@
         "winRate": 55,
         "averageProfit": 10
       },
-      "copiers": [
-        "copier2",
-        "copier3"
-      ],
+      "copiers": ["copier2", "copier3"],
       "isActive": true,
       "createdAt": "2024-01-07T00:00:00Z",
       "updatedAt": "2024-01-07T00:00:00Z"
@@ -609,10 +479,7 @@
         "winRate": 60,
         "averageProfit": 12
       },
-      "copiers": [
-        "copier6",
-        "copier7"
-      ],
+      "copiers": ["copier6", "copier7"],
       "isActive": true,
       "createdAt": "2024-01-08T00:00:00Z",
       "updatedAt": "2024-01-08T00:00:00Z"
@@ -630,10 +497,7 @@
         "winRate": 70,
         "averageProfit": 3.5
       },
-      "copiers": [
-        "copier1",
-        "copier8"
-      ],
+      "copiers": ["copier1", "copier8"],
       "isActive": true,
       "createdAt": "2024-01-09T00:00:00Z",
       "updatedAt": "2024-01-09T00:00:00Z"
@@ -651,10 +515,7 @@
         "winRate": 65,
         "averageProfit": 4
       },
-      "copiers": [
-        "copier2",
-        "copier9"
-      ],
+      "copiers": ["copier2", "copier9", "leader1"],
       "isActive": true,
       "createdAt": "2024-01-10T00:00:00Z",
       "updatedAt": "2024-01-10T00:00:00Z"
@@ -672,10 +533,7 @@
         "winRate": 78,
         "averageProfit": 2.8
       },
-      "copiers": [
-        "copier3",
-        "copier10"
-      ],
+      "copiers": ["copier3", "copier10"],
       "isActive": true,
       "createdAt": "2024-01-11T00:00:00Z",
       "updatedAt": "2024-01-11T00:00:00Z"
@@ -693,10 +551,7 @@
         "winRate": 67,
         "averageProfit": 4.2
       },
-      "copiers": [
-        "copier4",
-        "copier5"
-      ],
+      "copiers": ["copier4", "copier5"],
       "isActive": true,
       "createdAt": "2024-01-12T00:00:00Z",
       "updatedAt": "2024-01-12T00:00:00Z"
@@ -714,10 +569,7 @@
         "winRate": 76,
         "averageProfit": 2.5
       },
-      "copiers": [
-        "copier6",
-        "copier7"
-      ],
+      "copiers": ["copier6", "copier7"],
       "isActive": true,
       "createdAt": "2024-01-13T00:00:00Z",
       "updatedAt": "2024-01-13T00:00:00Z"
@@ -735,10 +587,7 @@
         "winRate": 58,
         "averageProfit": 9
       },
-      "copiers": [
-        "copier8",
-        "copier9"
-      ],
+      "copiers": ["copier8", "copier9"],
       "isActive": true,
       "createdAt": "2024-01-14T00:00:00Z",
       "updatedAt": "2024-01-14T00:00:00Z"
@@ -756,10 +605,7 @@
         "winRate": 57,
         "averageProfit": 8
       },
-      "copiers": [
-        "copier10",
-        "copier1"
-      ],
+      "copiers": ["copier10", "copier1"],
       "isActive": true,
       "createdAt": "2024-01-15T00:00:00Z",
       "updatedAt": "2024-01-15T00:00:00Z"
@@ -1042,17 +888,6 @@
       "updatedAt": "2024-01-27T00:00:00Z"
     },
     {
-      "id": "leader1-strat4",
-      "copierId": "leader1",
-      "leaderId": "leader2",
-      "strategyId": "strat4",
-      "copierAccountId": "default",
-      "status": "active",
-      "copySize": 1000,
-      "createdAt": "2025-02-13T13:25:24.482Z",
-      "updatedAt": "2025-02-13T13:25:24.482Z"
-    },
-    {
       "id": "leader1-strat3",
       "copierId": "leader1",
       "leaderId": "leader1",
@@ -1062,6 +897,28 @@
       "copySize": 1000,
       "createdAt": "2025-02-13T14:17:59.717Z",
       "updatedAt": "2025-02-13T14:17:59.717Z"
+    },
+    {
+      "id": "leader1-strat4",
+      "copierId": "leader1",
+      "leaderId": "leader2",
+      "strategyId": "strat4",
+      "copierAccountId": "default",
+      "status": "active",
+      "copySize": 1000,
+      "createdAt": "2025-02-13T16:19:47.745Z",
+      "updatedAt": "2025-02-13T16:19:47.745Z"
+    },
+    {
+      "id": "leader1-strat9",
+      "copierId": "leader1",
+      "leaderId": "leader4",
+      "strategyId": "strat9",
+      "copierAccountId": "default",
+      "status": "active",
+      "copySize": 1000,
+      "createdAt": "2025-02-13T16:20:02.213Z",
+      "updatedAt": "2025-02-13T16:20:02.213Z"
     }
   ],
   "assets": [
@@ -1152,25 +1009,16 @@
       "userId": "leader1",
       "content": {
         "text": "🎯 EUR/USD Technical Analysis\n\nKey levels to watch:\n- Resistance: 1.2150\n- Support: 1.2050\n\nBullish momentum building on 4H chart with strong RSI divergence.",
-        "images": [
-          "https://images.unsplash.com/photo-1642790106117-e829e14a795f"
-        ]
+        "images": ["https://images.unsplash.com/photo-1642790106117-e829e14a795f"]
       },
       "engagement": {
-        "likes": [
-          "copier1",
-          "copier2",
-          "copier3"
-        ],
+        "likes": ["copier1", "copier2", "copier3"],
         "comments": [
           {
             "id": "comment1",
             "userId": "copier1",
             "content": "Great analysis! The RSI divergence is quite clear.",
-            "likes": [
-              "leader1",
-              "copier2"
-            ],
+            "likes": ["leader1", "copier2"],
             "createdAt": "2024-02-11T10:15:00Z",
             "updatedAt": "2024-02-11T10:15:00Z"
           },
@@ -1203,24 +1051,16 @@
       "userId": "leader2",
       "content": {
         "text": "📊 Monthly Performance Update\n\nUSD Position Trading Strategy:\n✅ Win Rate: 68%\n✅ Profit Factor: 2.3\n✅ Average Hold Time: 12 days\n\nConsistency is key! 🎯",
-        "images": [
-          "https://images.unsplash.com/photo-1543286386-2e659306cd6c"
-        ]
+        "images": ["https://images.unsplash.com/photo-1543286386-2e659306cd6c"]
       },
       "engagement": {
-        "likes": [
-          "copier1",
-          "copier3",
-          "leader1"
-        ],
+        "likes": ["copier1", "copier3", "leader1"],
         "comments": [
           {
             "id": "comment2",
             "userId": "copier3",
             "content": "Impressive results! Love the consistency.",
-            "likes": [
-              "leader2"
-            ],
+            "likes": ["leader2"],
             "createdAt": "2024-02-11T09:30:00Z",
             "updatedAt": "2024-02-11T09:30:00Z"
           }
@@ -1235,16 +1075,10 @@
       "userId": "leader1",
       "content": {
         "text": "🚨 Trade Alert: EUR/JPY Breakout\n\nKey Points:\n- Breaking 4-hour resistance\n- Volume confirmation\n- Strong momentum indicators\n\nWatching 158.50 as next target. 🎯",
-        "images": [
-          "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3"
-        ]
+        "images": ["https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3"]
       },
       "engagement": {
-        "likes": [
-          "copier1",
-          "copier2",
-          "leader2"
-        ],
+        "likes": ["copier1", "copier2", "leader2"],
         "comments": [],
         "shares": 5
       },
@@ -1259,19 +1093,13 @@
         "images": []
       },
       "engagement": {
-        "likes": [
-          "leader1",
-          "copier2",
-          "copier3"
-        ],
+        "likes": ["leader1", "copier2", "copier3"],
         "comments": [
           {
             "id": "comment3",
             "userId": "leader1",
             "content": "Great to see your progress! Keep following the plan 💪",
-            "likes": [
-              "copier1"
-            ],
+            "likes": ["copier1"],
             "createdAt": "2024-02-11T08:20:00Z",
             "updatedAt": "2024-02-11T08:20:00Z"
           }
@@ -1292,21 +1120,13 @@
         ]
       },
       "engagement": {
-        "likes": [
-          "copier1",
-          "copier2",
-          "copier3",
-          "leader1"
-        ],
+        "likes": ["copier1", "copier2", "copier3", "leader1"],
         "comments": [
           {
             "id": "comment4",
             "userId": "copier2",
             "content": "This is exactly what I needed! Can you do more educational posts like this?",
-            "likes": [
-              "leader2",
-              "copier1"
-            ],
+            "likes": ["leader2", "copier1"],
             "createdAt": "2024-02-11T07:30:00Z",
             "updatedAt": "2024-02-11T07:30:00Z"
           }
@@ -1321,23 +1141,16 @@
       "userId": "leader1",
       "content": {
         "text": "💡 Strategy Update: EUR Scalping\n\nAdjusted parameters for current volatility:\n- Tighter stops\n- Faster exits\n- Focus on London session\n\nCheck performance tab for results 📊",
-        "images": [
-          "https://images.unsplash.com/photo-1560221328-12fe60f83ab8"
-        ]
+        "images": ["https://images.unsplash.com/photo-1560221328-12fe60f83ab8"]
       },
       "engagement": {
-        "likes": [
-          "copier3",
-          "leader2"
-        ],
+        "likes": ["copier3", "leader2"],
         "comments": [
           {
             "id": "comment5",
             "userId": "copier3",
             "content": "The adjustments are working great! My results improved significantly.",
-            "likes": [
-              "leader1"
-            ],
+            "likes": ["leader1"],
             "createdAt": "2024-02-11T06:30:00Z",
             "updatedAt": "2024-02-11T06:30:00Z"
           }
@@ -1355,19 +1168,13 @@
         "images": []
       },
       "engagement": {
-        "likes": [
-          "leader1",
-          "copier1"
-        ],
+        "likes": ["leader1", "copier1"],
         "comments": [
           {
             "id": "comment6",
             "userId": "leader1",
             "content": "Great question! I'll make a detailed post about this tomorrow with examples.",
-            "likes": [
-              "copier2",
-              "copier1"
-            ],
+            "likes": ["copier2", "copier1"],
             "createdAt": "2024-02-11T05:30:00Z",
             "updatedAt": "2024-02-11T05:30:00Z"
           }
@@ -1382,16 +1189,10 @@
       "userId": "leader2",
       "content": {
         "text": "🎯 GBP/USD Trade Setup\n\nPotential reversal forming at key support:\n- Double bottom pattern\n- Bullish divergence on RSI\n- Strong institutional buying\n\nWatching for confirmation...",
-        "images": [
-          "https://images.unsplash.com/photo-1559526324-593bc073d938"
-        ]
+        "images": ["https://images.unsplash.com/photo-1559526324-593bc073d938"]
       },
       "engagement": {
-        "likes": [
-          "copier1",
-          "copier3",
-          "leader1"
-        ],
+        "likes": ["copier1", "copier3", "leader1"],
         "comments": [],
         "shares": 6
       },
@@ -1410,21 +1211,13 @@
         ]
       },
       "engagement": {
-        "likes": [
-          "copier1",
-          "copier2",
-          "copier3",
-          "leader2"
-        ],
+        "likes": ["copier1", "copier2", "copier3", "leader2"],
         "comments": [
           {
             "id": "comment7",
             "userId": "leader2",
             "content": "Solid analysis! Completely agree on the USD outlook.",
-            "likes": [
-              "leader1",
-              "copier1"
-            ],
+            "likes": ["leader1", "copier1"],
             "createdAt": "2024-02-11T04:15:00Z",
             "updatedAt": "2024-02-11T04:15:00Z"
           }
@@ -1439,24 +1232,16 @@
       "userId": "copier3",
       "content": {
         "text": "📊 My First Month Results\n\nFollowing multiple strategies:\n- @expertTrader's EUR Scalping\n- @proTrader's Position Trading\n\nDiversification really helps! Up 8% this month 🎉",
-        "images": [
-          "https://images.unsplash.com/photo-1551288049-bebda4e38f71"
-        ]
+        "images": ["https://images.unsplash.com/photo-1551288049-bebda4e38f71"]
       },
       "engagement": {
-        "likes": [
-          "leader1",
-          "leader2",
-          "copier1"
-        ],
+        "likes": ["leader1", "leader2", "copier1"],
         "comments": [
           {
             "id": "comment8",
             "userId": "leader2",
             "content": "Great start! Smart approach with diversification.",
-            "likes": [
-              "copier3"
-            ],
+            "likes": ["copier3"],
             "createdAt": "2024-02-11T03:30:00Z",
             "updatedAt": "2024-02-11T03:30:00Z"
           }
@@ -1474,21 +1259,13 @@
         "images": []
       },
       "engagement": {
-        "likes": [
-          "copier1",
-          "copier2",
-          "copier3",
-          "leader2"
-        ],
+        "likes": ["copier1", "copier2", "copier3", "leader2"],
         "comments": [
           {
             "id": "comment9",
             "userId": "copier2",
             "content": "FOMO is my biggest challenge. Working on it!",
-            "likes": [
-              "leader1",
-              "copier1"
-            ],
+            "likes": ["leader1", "copier1"],
             "createdAt": "2024-02-11T02:30:00Z",
             "updatedAt": "2024-02-11T02:30:00Z"
           }
@@ -1509,18 +1286,13 @@
         ]
       },
       "engagement": {
-        "likes": [
-          "copier1",
-          "copier3"
-        ],
+        "likes": ["copier1", "copier3"],
         "comments": [
           {
             "id": "comment10",
             "userId": "copier1",
             "content": "Perfect execution! Thanks for the detailed exit analysis.",
-            "likes": [
-              "leader2"
-            ],
+            "likes": ["leader2"],
             "createdAt": "2024-02-11T01:30:00Z",
             "updatedAt": "2024-02-11T01:30:00Z"
           }
@@ -1535,23 +1307,16 @@
       "userId": "leader1",
       "content": {
         "text": "📱 New Feature Alert!\n\nJust added risk calculators to my Conservative USD Strategy dashboard. Check it out in the strategy tab! 🔢",
-        "images": [
-          "https://images.unsplash.com/photo-1554224155-6726b3ff858f"
-        ]
+        "images": ["https://images.unsplash.com/photo-1554224155-6726b3ff858f"]
       },
       "engagement": {
-        "likes": [
-          "copier1",
-          "copier2"
-        ],
+        "likes": ["copier1", "copier2"],
         "comments": [
           {
             "id": "comment11",
             "userId": "copier2",
             "content": "This is super helpful! Makes position sizing much easier.",
-            "likes": [
-              "leader1"
-            ],
+            "likes": ["leader1"],
             "createdAt": "2024-02-11T00:30:00Z",
             "updatedAt": "2024-02-11T00:30:00Z"
           }
@@ -1569,20 +1334,13 @@
         "images": []
       },
       "engagement": {
-        "likes": [
-          "leader1",
-          "leader2",
-          "copier2"
-        ],
+        "likes": ["leader1", "leader2", "copier2"],
         "comments": [
           {
             "id": "comment12",
             "userId": "leader2",
             "content": "Great mindset! Consistency and patience are key.",
-            "likes": [
-              "copier1",
-              "leader1"
-            ],
+            "likes": ["copier1", "leader1"],
             "createdAt": "2024-02-10T23:30:00Z",
             "updatedAt": "2024-02-10T23:30:00Z"
           }
@@ -1597,24 +1355,16 @@
       "userId": "leader2",
       "content": {
         "text": "🔍 Market Analysis: Gold\n\nKey technical levels for next week:\n- Resistance: $2050\n- Support: $2020\n\nWatch correlation with DXY and real yields 📈",
-        "images": [
-          "https://images.unsplash.com/photo-1610375461246-83df859d849d"
-        ]
+        "images": ["https://images.unsplash.com/photo-1610375461246-83df859d849d"]
       },
       "engagement": {
-        "likes": [
-          "copier1",
-          "copier3",
-          "leader1"
-        ],
+        "likes": ["copier1", "copier3", "leader1"],
         "comments": [
           {
             "id": "comment13",
             "userId": "copier3",
             "content": "Do you think the Fed's stance will affect these levels?",
-            "likes": [
-              "leader2"
-            ],
+            "likes": ["leader2"],
             "createdAt": "2024-02-10T22:30:00Z",
             "updatedAt": "2024-02-10T22:30:00Z"
           }
@@ -1657,7 +1407,7 @@
     {
       "userId": "leader1",
       "content": {
-        "text": "Пост для тестирования перевода с русского языка",
+        "text": "Пост на русском для проверки перевода",
         "images": []
       },
       "engagement": {
@@ -1665,9 +1415,9 @@
         "comments": [],
         "shares": 0
       },
-      "createdAt": "2025-02-17T09:06:30.603Z",
-      "updatedAt": "2025-02-17T09:06:30.603Z",
-      "id": "45OidlY"
+      "createdAt": "2025-02-17T13:16:32.449Z",
+      "updatedAt": "2025-02-17T13:16:32.450Z",
+      "id": "6fBeqL9"
     }
   ],
   "contracts": [
@@ -1779,7 +1529,7 @@
       "amount": -3,
       "balance_after": 9969.54,
       "reference_id": 543129132101,
-      "transaction_time": 1739452884
+      "transaction_time": "2025-02-13T08:00:00Z"
     },
     {
       "type": "Multipliers",
@@ -1788,7 +1538,7 @@
       "amount": 0,
       "balance_after": 9972.54,
       "reference_id": 543129132108,
-      "transaction_time": 1739452745
+      "transaction_time": "2025-01-14T08:00:00Z"
     },
     {
       "type": "Options",
@@ -1797,7 +1547,7 @@
       "amount": -3,
       "balance_after": 9972.54,
       "reference_id": 543129132105,
-      "transaction_time": 1739452677
+      "transaction_time": "2025-04-10T08:00:00Z"
     },
     {
       "type": "Options",
@@ -1806,7 +1556,7 @@
       "amount": 0,
       "balance_after": 9975.54,
       "reference_id": 543112652068,
-      "transaction_time": 1739446842
+      "transaction_time": "2025-06-11T08:00:00Z"
     },
     {
       "type": "Accumulators",
@@ -1815,7 +1565,7 @@
       "amount": -3,
       "balance_after": 9975.54,
       "reference_id": 543129132104,
-      "transaction_time": 1739446776
+      "transaction_time": "2025-07-12T08:00:00Z"
     },
     {
       "type": "Accumulators",
@@ -1824,7 +1574,7 @@
       "amount": -3,
       "balance_after": 9975.54,
       "reference_id": 5431291321082,
-      "transaction_time": 1739446776
+      "transaction_time": "2025-08-01T08:00:00Z"
     }
   ]
 }

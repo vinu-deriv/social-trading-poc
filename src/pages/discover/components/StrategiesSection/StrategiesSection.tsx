@@ -1,6 +1,6 @@
-import { useMemo } from "react";
-import StrategyCard from "../StrategyCard";
-import SkeletonCard from "../SkeletonCard";
+import { useMemo } from 'react';
+import StrategyCard from '../StrategyCard';
+import SkeletonCard from '../SkeletonCard';
 
 interface Strategy {
   id: string;
@@ -35,21 +35,15 @@ export default function StrategiesSection({
 }: StrategiesSectionProps) {
   // Strategy sections
   const topStrategies = useMemo(() => {
-    return [...strategies]
-      .sort((a, b) => b.copiers.length - a.copiers.length)
-      .slice(0, 3);
+    return strategies.slice(0, 3);
   }, [strategies]);
 
   const aiSuggestedStrategies = useMemo(() => {
-    return [...strategies]
-      .sort((a, b) => b.copiers.length - a.copiers.length)
-      .slice(0, 5);
+    return strategies.slice(3, 8);
   }, [strategies]);
 
   const popularStrategies = useMemo(() => {
-    return [...strategies]
-      .sort((a, b) => b.copiers.length - a.copiers.length)
-      .slice(5, 10);
+    return strategies.slice(8, 13);
   }, [strategies]);
 
   if (loading) {
@@ -97,25 +91,15 @@ export default function StrategiesSection({
 
       <h2 className="discover__section-title">AI Suggested Strategies</h2>
       <div className="discover__leaders-grid">
-        {aiSuggestedStrategies.map((strategy) => (
-          <StrategyCard
-            key={strategy.id}
-            strategy={strategy}
-            onFollow={onFollow}
-            onCopy={onCopy}
-          />
+        {aiSuggestedStrategies.map(strategy => (
+          <StrategyCard key={strategy.id} strategy={strategy} onFollow={onFollow} onCopy={onCopy} />
         ))}
       </div>
 
       <h2 className="discover__section-title">Popular Strategies</h2>
       <div className="discover__leaders-grid">
-        {popularStrategies.map((strategy) => (
-          <StrategyCard
-            key={strategy.id}
-            strategy={strategy}
-            onFollow={onFollow}
-            onCopy={onCopy}
-          />
+        {popularStrategies.map(strategy => (
+          <StrategyCard key={strategy.id} strategy={strategy} onFollow={onFollow} onCopy={onCopy} />
         ))}
       </div>
     </>
