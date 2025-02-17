@@ -35,21 +35,16 @@ export default function StrategiesSection({
 }: StrategiesSectionProps) {
   // Strategy sections
   const topStrategies = useMemo(() => {
-    return [...strategies]
-      .sort((a, b) => b.copiers.length - a.copiers.length)
-      .slice(0, 3);
+    return strategies.slice(0, 3);
   }, [strategies]);
 
   const aiSuggestedStrategies = useMemo(() => {
-    return [...strategies]
-      .sort((a, b) => b.copiers.length - a.copiers.length)
-      .slice(0, 5);
+    console.log(strategies,'www');
+    return strategies.slice(3, 8);
   }, [strategies]);
 
   const popularStrategies = useMemo(() => {
-    return [...strategies]
-      .sort((a, b) => b.copiers.length - a.copiers.length)
-      .slice(5, 10);
+    return strategies.slice(8, 13);
   }, [strategies]);
 
   if (loading) {
