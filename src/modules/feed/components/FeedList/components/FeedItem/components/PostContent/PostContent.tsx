@@ -6,14 +6,9 @@ import "./PostContent.css";
 interface PostContentProps {
   content: Post["content"];
   translatedText?: string | null;
-  translationButton?: React.ReactNode;
 }
 
-const PostContent = ({
-  content,
-  translatedText,
-  translationButton,
-}: PostContentProps) => {
+const PostContent = ({ content, translatedText }: PostContentProps) => {
   const { text, images = [] } = content;
   const hasImages = images.length > 0;
   const isSingleImage = images.length === 1;
@@ -57,14 +52,9 @@ const PostContent = ({
       {text && (
         <div className="post-content__text-container">
           <p className="post-content__text">{text}</p>
-          {translationButton && (
+          {translatedText && (
             <div className="post-content__translation">
-              {translationButton}
-              {translatedText && (
-                <p className="post-content__translated-text">
-                  {translatedText}
-                </p>
-              )}
+              <p className="post-content__translated-text">{translatedText}</p>
             </div>
           )}
         </div>

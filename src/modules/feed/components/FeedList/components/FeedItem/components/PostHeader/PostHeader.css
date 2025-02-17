@@ -6,6 +6,12 @@
     padding: 0.8rem;
 }
 
+.post-header__buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
 .post-header__user-info {
     display: flex;
     gap: 0.75rem;

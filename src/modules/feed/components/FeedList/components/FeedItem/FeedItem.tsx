@@ -119,18 +119,17 @@ const FeedItem = ({
           onAnalyze={handleAnalyze}
           isAnalyzing={isAnalyzing}
           showAnalyzeButton={!insight && post.userId !== currentUserId}
+          translationButton={
+            <TranslateButton
+              text={post.content.text}
+              onTranslation={(text) => {
+                setTranslatedText(text);
+              }}
+            />
+          }
         />
       )}
-      <PostContent
-        content={post.content}
-        translatedText={translatedText}
-        translationButton={
-          <TranslateButton
-            text={post.content.text}
-            onTranslation={setTranslatedText}
-          />
-        }
-      />
+      <PostContent content={post.content} translatedText={translatedText} />
       {/* Only render PostAIInsights if we have a valid insight */}
       {insight && insight.sentiment && (
         <PostAIInsights

@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AIButton from "../AIButton";
-import { translateText } from "../../services/translationService";
+import {
+  translateText,
+  detectLanguage,
+} from "../../services/translationService";
 
 interface TranslateButtonProps {
   text: string;
@@ -10,6 +13,22 @@ interface TranslateButtonProps {
 const TranslateButton = ({ text, onTranslation }: TranslateButtonProps) => {
   const [isTranslating, setIsTranslating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isEnglish, setIsEnglish] = useState<boolean>(true);
+
+  useEffect(() => {
+    const checkLanguage = async () => {
+      try {
+        const detectedLang = await detectLanguage(text);
+        setIsEnglish(detectedLang === "EN");
+      } catch (error) {
+        console.error("Language detection error:", error);
+        // In case of error, hide the button (fail safe)
+        setIsEnglish(true);
+      }
+    };
+
+    checkLanguage();
+  }, [text]);
 
   const handleTranslate = async () => {
     setError(null);
@@ -27,6 +46,10 @@ const TranslateButton = ({ text, onTranslation }: TranslateButtonProps) => {
       setIsTranslating(false);
     }
   };
+
+  if (isEnglish) {
+    return null;
+  }
 
   return (
     <AIButton
