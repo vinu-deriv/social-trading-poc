@@ -25,6 +25,11 @@ export default function TrendingAssets({
   assets,
   loading,
 }: TrendingAssetsProps) {
+  const LLM_SERVER_URL = import.meta.env.VITE_LLM_SERVER_URL;
+
+  if (!LLM_SERVER_URL) {
+    throw new Error("VITE_LLM_SERVER_URL environment variable is not set");
+  }
   const [insights, setInsights] = useState<AIInsight[]>([]);
 
   const handleRemoveInsight = (postId: string) => {
@@ -36,7 +41,7 @@ export default function TrendingAssets({
     try {
       setLoadingSymbol(symbol);
       const response = await fetch(
-        `http://localhost:3002/api/ai/ai-insights-for-symbol/${symbol}`
+        `${LLM_SERVER_URL}/api/ai/ai-insights-for-symbol/${symbol}`
       );
       const data = await response.json();
       if (data.insight) {
