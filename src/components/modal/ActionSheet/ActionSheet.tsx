@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import "./ActionSheet.css";
+import { useEffect, useRef, useState } from 'react';
+import './ActionSheet.css';
 
 export interface ActionSheetAction {
   icon?: React.ReactNode;
   label: string;
   onClick: () => void;
-  showFor?: "all" | "leader" | "copier";
+  showFor?: 'all' | 'leader' | 'copier';
 }
 
 interface ActionSheetProps {
@@ -16,24 +16,18 @@ interface ActionSheetProps {
   title?: string;
 }
 
-const ActionSheet: React.FC<ActionSheetProps> = ({
-  isOpen,
-  onClose,
-  onExited,
-  actions,
-  title,
-}) => {
+const ActionSheet: React.FC<ActionSheetProps> = ({ isOpen, onClose, onExited, actions, title }) => {
   const sheetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     }
 
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
 
@@ -44,33 +38,30 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
   };
 
   const [isVisible, setIsVisible] = useState(false);
-  const [animationState, setAnimationState] = useState<"entering" | "exiting" | "">("");
-  
+  const [animationState, setAnimationState] = useState<'entering' | 'exiting' | ''>('');
+
   const handleAnimationEnd = () => {
-    if (animationState === "exiting") {
+    if (animationState === 'exiting') {
       setIsVisible(false);
       onExited?.();
     }
   };
 
-    useEffect(() => {
-        if (isOpen) {
-            setIsVisible(true);
-            setAnimationState("entering");
-        } else {
-            setAnimationState("exiting");
-        }
-    }, [isOpen]);
+  useEffect(() => {
+    if (isOpen) {
+      setIsVisible(true);
+      setAnimationState('entering');
+    } else {
+      setAnimationState('exiting');
+    }
+  }, [isOpen]);
 
   if (!isVisible) return null;
 
   return (
-    <div 
-      className={`action-sheet__overlay ${animationState}`} 
-      onClick={handleBackdropClick}
-    >
-      <div 
-        ref={sheetRef} 
+    <div className={`action-sheet__overlay ${animationState}`} onClick={handleBackdropClick}>
+      <div
+        ref={sheetRef}
         className={`action-sheet__container ${animationState}`}
         onAnimationEnd={handleAnimationEnd}
       >
@@ -89,9 +80,7 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
                 onClose();
               }}
             >
-              {action.icon && (
-                <span className="action-sheet__item-icon">{action.icon}</span>
-              )}
+              {action.icon && <span className="action-sheet__item-icon">{action.icon}</span>}
               <span className="action-sheet__item-label">{action.label}</span>
             </button>
           ))}

@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import AIButton from "../AIButton";
-import { translateText } from "../../services/translationService";
+import { useState, useEffect } from 'react';
+import AIButton from '../AIButton';
+import { translateText } from '../../services/translationService';
 
 interface TranslateButtonProps {
   text: string;
@@ -19,8 +19,8 @@ const TranslateButton = ({ text, onTranslation }: TranslateButtonProps) => {
       const translatedText = await translateText(text);
       onTranslation(translatedText);
     } catch (error) {
-      console.error("Translation error:", error);
-      setError(error instanceof Error ? error.message : "Translation failed");
+      console.error('Translation error:', error);
+      setError(error instanceof Error ? error.message : 'Translation failed');
     } finally {
       setIsTranslating(false);
     }
@@ -64,7 +64,7 @@ const TranslateButton = ({ text, onTranslation }: TranslateButtonProps) => {
       loadingText="Translating..."
       disabled={!!error}
     >
-      {error ? "Translation Failed" : "Translate"}
+      {error ? 'Translation Failed' : 'Translate'}
     </AIButton>
   );
 };
