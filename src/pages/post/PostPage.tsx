@@ -5,7 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import FeedItem from '@/modules/feed/components/FeedList/components/FeedItem';
 import { getPost } from '@/modules/feed/services/postService';
 import useCurrentUser from '@/modules/feed/hooks/useCurrentUser';
-import Loader from '@/components/layout/Loader';
+import AILoader from '@/components/AILoader';
 import BackIcon from '@/assets/icons/BackIcon';
 import './PostPage.css';
 
@@ -49,7 +49,7 @@ const PostPage = () => {
           <h1 className="post-page__title">Post</h1>
         </header>
         <div className="post-page__loading">
-          <Loader />
+          <AILoader size={40} showText={false} />
         </div>
       </div>
     );
