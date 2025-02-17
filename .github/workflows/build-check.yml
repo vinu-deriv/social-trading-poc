@@ -22,7 +22,7 @@ jobs:
     - name: Build Frontend
       run: npm run build
       env:
-        VITE_API_URL: http://localhost:3000
+        VITE_LLM_SERVER_URL: http://localhost:3000
         VITE_JSON_SERVER_URL: http://localhost:3001
 
     - name: Set up Docker Buildx
@@ -38,7 +38,7 @@ jobs:
         cache-to: type=gha,mode=max
         target: development
         build-args: |
-          VITE_API_URL=http://localhost:3000
+          VITE_LLM_SERVER_URL=http://localhost:3000
           VITE_JSON_SERVER_URL=http://localhost:3001
 
   json-server:

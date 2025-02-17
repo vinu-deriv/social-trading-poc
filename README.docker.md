@@ -70,7 +70,7 @@ For staging and production environments in Render:
 3. Service-Specific Configuration:
    - Frontend:
      ```
-     VITE_API_URL=https://your-llm-server.onrender.com
+     VITE_LLM_SERVER_URL=https://your-llm-server.onrender.com
      VITE_JSON_SERVER_URL=https://your-json-server.onrender.com
      ```
    
