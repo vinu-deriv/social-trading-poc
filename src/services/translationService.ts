@@ -1,15 +1,11 @@
-const LLM_SERVER_URL =
-  import.meta.env.VITE_LLM_SERVER_URL || "http://localhost:3000";
+const LLM_SERVER_URL = import.meta.env.VITE_LLM_SERVER_URL || 'http://localhost:3000';
 
-export const translateText = async (
-  text: string,
-  targetLang: string = "EN"
-): Promise<string> => {
+export const translateText = async (text: string, targetLang: string = 'EN'): Promise<string> => {
   try {
-    const response = await fetch(`${LLM_SERVER_URL}/api/translate`, {
-      method: "POST",
+    const response = await fetch(`${LLM_SERVER_URL}/api/translation/translate`, {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         text,
@@ -19,11 +15,11 @@ export const translateText = async (
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
-      throw new Error(errorData?.message || "Translation failed");
+      throw new Error(errorData?.message || 'Translation failed');
     }
 
     const data = await response.json();
-    const translatedText = data.translatedText;
+    const { translatedText } = data;
 
     // Only return translated text if it's different from the original
     if (translatedText.toLowerCase() !== text.toLowerCase()) {
@@ -31,7 +27,7 @@ export const translateText = async (
     }
     return text;
   } catch (error) {
-    console.error("Error translating text:", error);
+    console.error('Error translating text:', error);
     throw error;
   }
 };

@@ -1,73 +1,73 @@
-interface AnthropicResponse {
-  content: Array<{
-    text: string;
-  }>;
-}
-
 // Simple in-memory cache for translations
 const translationCache = new Map<string, { text: string; timestamp: number }>();
 const CACHE_EXPIRY = 1000 * 60 * 60; // 1 hour
+
+// Retry helper with exponential backoff.
+async function retry<T>(
+  fn: () => Promise<T>,
+  maxRetries: number,
+  delayFn: (attempt: number) => number = attempt => Math.min(1000 * Math.pow(2, attempt), 5000)
+): Promise<T> {
+  let lastError: Error;
+  for (let i = 0; i <= maxRetries; i++) {
+    try {
+      return await fn();
+    } catch (error) {
+      lastError = error as Error;
+      if (i < maxRetries) {
+        await new Promise(resolve => setTimeout(resolve, delayFn(i)));
+        continue;
+      }
+      throw new Error(`Operation failed after ${maxRetries + 1} attempts: ${lastError.message}`);
+    }
+  }
+  throw new Error('Unexpected error in retry loop');
+}
 
 const makeAnthropicRequest = async (
   prompt: string,
   model: string = 'claude-3-sonnet-20240229'
 ): Promise<string> => {
-  const maxRetries = 2;
-  let lastError: Error | null = null;
+  return retry(async () => {
+    if (!process.env.ANTHROPIC_API_KEY) {
+      throw new Error('ANTHROPIC_API_KEY is not set in environment variables');
+    }
 
-  for (let i = 0; i <= maxRetries; i++) {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: 1024,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+
+    const responseText = await response.text();
+    let responseData;
+
     try {
-      if (!process.env.ANTHROPIC_API_KEY) {
-        throw new Error('ANTHROPIC_API_KEY is not set in environment variables');
-      }
+      responseData = JSON.parse(responseText);
+    } catch {
+      throw new Error('Invalid JSON response from Anthropic API');
+    }
 
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': process.env.ANTHROPIC_API_KEY,
-          'anthropic-version': '2023-06-01',
-        },
-        body: JSON.stringify({
-          model,
-          max_tokens: 1024,
-          messages: [{ role: 'user', content: prompt }],
-        }),
-      });
-
-      const responseText = await response.text();
-      let responseData;
-
-      try {
-        responseData = JSON.parse(responseText);
-      } catch {
-        throw new Error('Invalid JSON response from Anthropic API');
-      }
-
-      if (!response.ok) {
-        throw new Error(
-          responseData.error?.message || `API request failed with status ${response.status}`
-        );
-      }
-
-      if (!responseData?.content?.[0]?.text) {
-        throw new Error('Invalid response format from Anthropic API');
-      }
-
-      return responseData.content[0].text.trim();
-    } catch (error) {
-      lastError = error as Error;
-      if (i < maxRetries) {
-        const delay = Math.min(1000 * Math.pow(2, i), 5000); // Exponential backoff with 5s max
-        await new Promise(resolve => setTimeout(resolve, delay));
-        continue;
-      }
+    if (!response.ok) {
       throw new Error(
-        `Anthropic API request failed after ${maxRetries + 1} attempts: ${lastError.message}`
+        responseData.error?.message || `API request failed with status ${response.status}`
       );
     }
-  }
-  throw new Error('Failed after retries');
+
+    if (!responseData?.content?.[0]?.text) {
+      throw new Error('Invalid response format from Anthropic API');
+    }
+
+    return responseData.content[0].text.trim();
+  }, 2);
 };
 
 export const translateText = async (text: string, targetLang: string = 'EN'): Promise<string> => {

@@ -22,7 +22,7 @@ app.get('/health', (req, res) => {
 
 // Mount routes
 app.use('/api/ai', insightsRouter);
-app.use('/api', translationRouter);
+app.use('/api/translation', translationRouter);
 app.use('/api/market', marketRouter);
 
 // Error handling middleware
