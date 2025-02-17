@@ -1,0 +1,40 @@
+.ai-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-loader__svg {
+  display: block;
+  filter: drop-shadow(0 0 2px rgba(0, 102, 255, 0.2));
+  transform-origin: center;
+  will-change: transform;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ai-loader__text {
+  color: #0066ff;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  margin: 0;
+  opacity: 0.8;
+  animation: textPulse 1.4s ease-in-out infinite;
+  user-select: none;
+}
+
+@keyframes textPulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 0.5; }
+  100% { opacity: 0.8; }
+}
+
+/* Ensure smooth animation rendering */
+@media screen and (prefers-reduced-motion: no-preference) {
+  .ai-loader__svg {
+    backface-visibility: hidden;
+    perspective: 1000;
+    transform: translate3d(0, 0, 0);
+  }
+}

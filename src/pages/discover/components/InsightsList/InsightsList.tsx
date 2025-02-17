@@ -1,6 +1,7 @@
 import { AIInsight } from "../../../../types/ai.types";
 import Badge from "../../../../components/feedback/Badge";
 import Button from "../../../../components/input/Button";
+import AILoader from "../../../../components/AILoader";
 import { getSentimentDetails } from "../../../../modules/feed/components/FeedList/components/FeedItem/components/PostAIInsights/config";
 import "./InsightsList.css";
 
@@ -28,7 +29,7 @@ export default function InsightsList({
             <div className="insight-card__header">
               <span className="insight-card__symbol">{loadingSymbol}</span>
             </div>
-            <div className="loading-animation">Analyzing with AI...</div>
+            <AILoader size={60} />
           </div>
         )}
         {[...insights].reverse().map((insight) => (
