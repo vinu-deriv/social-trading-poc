@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import type User from "@/types/user.types";
-import { UserType } from "@/types/user.types";
-import ActionSheet from "@/components/modal/ActionSheet";
-import type { ActionSheetAction } from "@/components/modal/ActionSheet";
-import FullscreenModal from "@/components/modal/FullscreenModal/FullscreenModal";
-import PostForm from "@/modules/feed/components/PostForm";
-import CreatePostIcon from "@/assets/icons/CreatePostIcon";
-import CreateStrategyIcon from "@/assets/icons/CreateStrategyIcon";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import type User from '@/types/user.types';
+import { UserType } from '@/types/user.types';
+import ActionSheet from '@/components/modal/ActionSheet';
+import type { ActionSheetAction } from '@/components/modal/ActionSheet';
+import FullscreenModal from '@/components/modal/FullscreenModal/FullscreenModal';
+import PostForm from '@/modules/feed/components/PostForm';
+import CreatePostIcon from '@/assets/icons/CreatePostIcon';
+import CreateStrategyIcon from '@/assets/icons/CreateStrategyIcon';
 
 interface CreateContentSheetProps {
   isOpen: boolean;
@@ -26,26 +26,31 @@ const CreateContentSheet: React.FC<CreateContentSheetProps> = ({
   userType,
   currentUser,
 }) => {
+  type PendingAction = 'createPost' | 'createStrategy' | null;
+
   const [showPostForm, setShowPostForm] = useState(false);
-  const [shouldShowPostForm, setShouldShowPostForm] = useState(false);
-
-  const handleCreatePost = () => {
-    setShouldShowPostForm(true); // Set flag to show post form after ActionSheet closes
-    onClose(); // Close the action sheet
-  };
-
-  const handleActionSheetExited = () => {
-    if (shouldShowPostForm) {
-      setShowPostForm(true); // Show the post form after action sheet closes
-      setShouldShowPostForm(false); // Reset the flag
-    }
-  };
+  const [pendingAction, setPendingAction] = useState<PendingAction>(null);
 
   const navigate = useNavigate();
 
+  const handleCreatePost = () => {
+    setPendingAction('createPost');
+    onClose();
+  };
+
+  const handleActionSheetExited = () => {
+    if (pendingAction === 'createPost') {
+      setShowPostForm(true);
+      setPendingAction(null);
+    } else if (pendingAction === 'createStrategy') {
+      onCreateStrategy();
+      setPendingAction(null);
+    }
+  };
+
   const handlePostFormClose = () => {
     setShowPostForm(false);
-    setShouldShowPostForm(false); // Reset the flag when post form is closed
+    setPendingAction(null);
   };
 
   const handlePostSubmit = async (content: { text: string; images: string[] }) => {
@@ -55,10 +60,10 @@ const CreateContentSheet: React.FC<CreateContentSheetProps> = ({
         handlePostFormClose();
         navigate(`/posts/${newPost.id}`);
       } else {
-        console.error("Failed to create post: No post ID returned");
+        console.error('Failed to create post: No post ID returned');
       }
     } catch (error) {
-      console.error("Failed to create post:", error);
+      console.error('Failed to create post:', error);
       // TODO: Show error message to user
     }
   };
@@ -66,15 +71,18 @@ const CreateContentSheet: React.FC<CreateContentSheetProps> = ({
   const actions: ActionSheetAction[] = [
     {
       icon: <CreatePostIcon />,
-      label: "Create Post",
+      label: 'Create Post',
       onClick: handleCreatePost,
     },
     ...(userType === UserType.LEADER
       ? [
           {
             icon: <CreateStrategyIcon />,
-            label: "Create Strategy",
-            onClick: onCreateStrategy,
+            label: 'Create Strategy',
+            onClick: () => {
+              setPendingAction('createStrategy');
+              onClose();
+            },
           },
         ]
       : []),
@@ -89,11 +97,7 @@ const CreateContentSheet: React.FC<CreateContentSheetProps> = ({
         actions={actions}
         title="Create Content"
       />
-      <FullscreenModal
-        isOpen={showPostForm}
-        onClose={handlePostFormClose}
-        title="Create Post"
-      >
+      <FullscreenModal isOpen={showPostForm} onClose={handlePostFormClose} title="Create Post">
         <PostForm
           currentUser={currentUser}
           onSubmit={handlePostSubmit}
