@@ -36,35 +36,6 @@
     color: #dc3545;
 }
 
-.feed-page__fab {
-    position: fixed;
-    right: 16px;
-    bottom: 80px; /* Above BottomNavigation */
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    cursor: pointer;
-    transition: transform 0.2s;
-    background: #00d0ff;
-}
-
-.feed-page__fab:hover {
-    transform: scale(1.05);
-}
-
-.feed-page__fab:active, .feed-page__fab:focus {
-    transform: scale(0.95);
-    outline: none;
-}
-
 main {
     display: flex;
     flex-direction: column;

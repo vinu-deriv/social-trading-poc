@@ -1,12 +1,17 @@
 import type Strategy from "./strategy.types";
 
+export enum UserType {
+    LEADER = "leader",
+    COPIER = "copier"
+}
+
 interface User {
     id: string;
     username: string;
     email: string;
     displayName: string;
     profilePicture?: string;
-    userType: "leader" | "copier";
+    userType: UserType;
     followers?: string[]; // Array of user IDs
     following?: string[]; // Array of user IDs
     accounts?: string[]; // Array of account IDs

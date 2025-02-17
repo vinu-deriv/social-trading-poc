@@ -1,8 +1,8 @@
 import { FC } from "react";
 import Tick from "../../../../assets/icons/Tick";
-import Plus from "../../../../assets/icons/Plus";
 import Trophy from "../../../../assets/icons/Trophy";
 import "../LeaderCard/LeaderCard.css";
+import PlusIcon from "@/assets/icons/PlusIcon";
 
 interface Strategy {
   id: string;
@@ -69,7 +69,7 @@ const StrategyCard: FC<StrategyCardProps> = ({
               className="leader-card__follow-icon"
               onClick={() => onFollow(strategy.leaderId)}
             >
-              {strategy.isFollowing ? <Tick /> : <Plus />}
+              {strategy.isFollowing ? <Tick /> : <PlusIcon />}
             </button>
           </div>
         </div>
