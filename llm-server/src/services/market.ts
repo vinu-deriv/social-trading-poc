@@ -23,8 +23,11 @@ export class MarketService {
   private async getTrendingSymbols(): Promise<string[]> {
     try {
       const queryOptions = { count: 5, lang: "en-US" };
-      const result = await yahooFinance.trendingSymbols("US", queryOptions);
-      return result.quotes.map((quote) => quote.symbol);
+      const result: any = await yahooFinance.trendingSymbols(
+        "US",
+        queryOptions
+      );
+      return result.quotes.map((quote: any) => quote.symbol);
     } catch (error) {
       console.error("Error getting trending symbols:", error);
       throw error;
@@ -33,7 +36,7 @@ export class MarketService {
 
   private async getCompanyLogo(symbol: string): Promise<string> {
     try {
-      const quote = await yahooFinance.quoteSummary(symbol, {
+      const quote: any = await yahooFinance.quoteSummary(symbol, {
         modules: ["assetProfile"],
       });
       // Try to get logo from asset profile
@@ -70,7 +73,7 @@ export class MarketService {
 
   public async getSymbolPrice(symbol: string): Promise<number | null> {
     try {
-      const quote = await yahooFinance.quote(symbol);
+      const quote: any = await yahooFinance.quote(symbol);
       return quote.regularMarketPrice || null;
     } catch (error) {
       console.error(`Error getting price for ${symbol}:`, error);
@@ -88,7 +91,7 @@ export class MarketService {
       // Then get detailed quotes for each symbol
       const quotes = await Promise.all(
         trendingSymbols.map(async (symbol) => {
-          const [quote, logo] = await Promise.all([
+          const [quote, logo]: [any, string] = await Promise.all([
             yahooFinance.quote(symbol),
             this.getCompanyLogo(symbol),
           ]);
