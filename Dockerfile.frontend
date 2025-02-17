@@ -12,11 +12,11 @@ FROM node:18-alpine as build
 WORKDIR /app
 
 # Add build arguments
-ARG VITE_API_URL
+ARG VITE_LLM_SERVER_URL
 ARG VITE_JSON_SERVER_URL
 
 # Convert to environment variables
-ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_LLM_SERVER_URL=$VITE_LLM_SERVER_URL
 ENV VITE_JSON_SERVER_URL=$VITE_JSON_SERVER_URL
 
 COPY package*.json ./
@@ -32,9 +32,9 @@ COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/templates/default.conf.template
 
 # Set environment variable for LLM server URL
-ENV LLM_SERVER_URL=http://localhost:3000/
+ENV VITE_LLM_SERVER_URL=http://localhost:3000/
 
 EXPOSE 80
 
 # Use environment variable substitution
-CMD ["/bin/sh", "-c", "envsubst '${LLM_SERVER_URL}' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+CMD ["/bin/sh", "-c", "envsubst '${VITE_LLM_SERVER_URL}' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
