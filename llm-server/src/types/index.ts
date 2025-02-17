@@ -1,8 +1,8 @@
-import { PostSentiment } from './sentiment';
+import { PostSentiment } from "./sentiment";
 
 export interface User {
   id: string;
-  userType: 'leader' | 'copier';
+  userType: "leader" | "copier";
   followers: string[];
   following: string[];
   accounts: string[];
@@ -41,7 +41,7 @@ export interface TradingStrategy {
   name: string;
   description: string;
   tradeType: string;
-  riskLevel: 'low' | 'medium' | 'high';
+  riskLevel: "low" | "medium" | "high";
   performance: {
     totalReturn: number;
     winRate: number;

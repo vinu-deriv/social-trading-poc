@@ -11,13 +11,13 @@ interface AILoaderProps {
   variant?: 'default' | 'card';
 }
 
-const AILoader: React.FC<AILoaderProps> = ({
-  size = 60,
+const AILoader: React.FC<AILoaderProps> = ({ 
+  size = 60, 
   className = '',
   symbol,
   title,
   showText = true,
-  variant = 'default',
+  variant = 'default'
 }) => {
   const containerClass = variant === 'card' ? 'ai-loader--card' : 'ai-loader';
 
@@ -25,19 +25,25 @@ const AILoader: React.FC<AILoaderProps> = ({
     <div className={`${containerClass} ${className}`}>
       {(symbol || title) && (
         <div className="ai-loader__header">
-          <span className="ai-loader__text--title">{symbol || title}</span>
+          <span className="ai-loader__text--title">
+            {symbol || title}
+          </span>
         </div>
       )}
       <div className="ai-loader__svg-container">
-        <img
-          src={aiLoaderSvg}
+        <img 
+          src={aiLoaderSvg} 
           alt="AI Loading"
           width={size}
           height={size}
           className="ai-loader__svg"
         />
       </div>
-      {showText && <div className="ai-loader__text">Analyzing with AI...</div>}
+      {showText && (
+        <div className="ai-loader__text">
+          Analyzing with AI...
+        </div>
+      )}
     </div>
   );
 };

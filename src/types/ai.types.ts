@@ -1,4 +1,4 @@
-import { PostSentiment } from '@/modules/feed/components/FeedList/components/FeedItem/components/PostAIInsights/config';
+import { PostSentiment } from "@/modules/feed/components/FeedList/components/FeedItem/components/PostAIInsights/config";
 
 export interface NewsItem {
   title: string;
@@ -10,7 +10,7 @@ export interface AIInsight {
   summary: string;
   sentiment: PostSentiment;
   isLegitimate: boolean;
-  riskLevel: 'low' | 'medium' | 'high';
+  riskLevel: "low" | "medium" | "high";
   recommendation: string;
   news?: NewsItem[];
   yahooFinanceUrl?: string;

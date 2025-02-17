@@ -1,4 +1,4 @@
-import yahooFinance from 'yahoo-finance2';
+import yahooFinance from "yahoo-finance2";
 
 interface NewsItem {
   title: string;
@@ -13,20 +13,23 @@ interface TrendingAsset {
   imageUrl: string;
   currentPrice: number;
   changePercentage: number;
-  direction: 'up' | 'down';
+  direction: "up" | "down";
 }
 
 export class MarketService {
   private readonly DEFAULT_IMAGE =
-    'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400';
+    "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400";
 
   private async getTrendingSymbols(): Promise<string[]> {
     try {
-      const queryOptions = { count: 5, lang: 'en-US' };
-      const result: any = await yahooFinance.trendingSymbols('US', queryOptions);
+      const queryOptions = { count: 5, lang: "en-US" };
+      const result: any = await yahooFinance.trendingSymbols(
+        "US",
+        queryOptions
+      );
       return result.quotes.map((quote: any) => quote.symbol);
     } catch (error) {
-      console.error('Error getting trending symbols:', error);
+      console.error("Error getting trending symbols:", error);
       throw error;
     }
   }
@@ -34,7 +37,7 @@ export class MarketService {
   private async getCompanyLogo(symbol: string): Promise<string> {
     try {
       const quote: any = await yahooFinance.quoteSummary(symbol, {
-        modules: ['assetProfile'],
+        modules: ["assetProfile"],
       });
       // Try to get logo from asset profile
       if (quote.assetProfile?.website) {
@@ -56,7 +59,7 @@ export class MarketService {
         quotesCount: 0,
       });
 
-      return result.news.map(item => ({
+      return result.news.map((item) => ({
         title: item.title,
         summary: item.title, // Using title as summary since the API doesn't provide a snippet
         url: item.link,
@@ -87,14 +90,16 @@ export class MarketService {
 
       // Then get detailed quotes for each symbol
       const quotes = await Promise.all(
-        trendingSymbols.map(async symbol => {
+        trendingSymbols.map(async (symbol) => {
           const [quote, logo]: [any, string] = await Promise.all([
             yahooFinance.quote(symbol),
             this.getCompanyLogo(symbol),
           ]);
 
           const direction =
-            (quote.regularMarketChangePercent || 0) >= 0 ? ('up' as const) : ('down' as const);
+            (quote.regularMarketChangePercent || 0) >= 0
+              ? ("up" as const)
+              : ("down" as const);
 
           return {
             symbol,
@@ -109,7 +114,7 @@ export class MarketService {
 
       return quotes;
     } catch (error) {
-      console.error('Error getting trending assets:', error);
+      console.error("Error getting trending assets:", error);
       throw error;
     }
   }

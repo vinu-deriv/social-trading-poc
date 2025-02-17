@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
-import StrategyCard from '../StrategyCard';
-import SkeletonCard from '../SkeletonCard';
+import { useMemo } from "react";
+import StrategyCard from "../StrategyCard";
+import SkeletonCard from "../SkeletonCard";
 
 interface Strategy {
   id: string;
@@ -91,15 +91,25 @@ export default function StrategiesSection({
 
       <h2 className="discover__section-title">AI Suggested Strategies</h2>
       <div className="discover__leaders-grid">
-        {aiSuggestedStrategies.map(strategy => (
-          <StrategyCard key={strategy.id} strategy={strategy} onFollow={onFollow} onCopy={onCopy} />
+        {aiSuggestedStrategies.map((strategy) => (
+          <StrategyCard
+            key={strategy.id}
+            strategy={strategy}
+            onFollow={onFollow}
+            onCopy={onCopy}
+          />
         ))}
       </div>
 
       <h2 className="discover__section-title">Popular Strategies</h2>
       <div className="discover__leaders-grid">
-        {popularStrategies.map(strategy => (
-          <StrategyCard key={strategy.id} strategy={strategy} onFollow={onFollow} onCopy={onCopy} />
+        {popularStrategies.map((strategy) => (
+          <StrategyCard
+            key={strategy.id}
+            strategy={strategy}
+            onFollow={onFollow}
+            onCopy={onCopy}
+          />
         ))}
       </div>
     </>
