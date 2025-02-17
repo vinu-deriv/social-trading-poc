@@ -3,6 +3,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import AuthLayout from "@/layouts/AuthLayout";
 import MainLayout from "@/layouts/MainLayout";
 import Feed from "@pages/feed";
+import PostPage from "@pages/post/PostPage";
 import Login from "@pages/login";
 import Welcome from "@/pages/welcome";
 import Profile from "@/pages/profile";
@@ -51,6 +52,10 @@ export const routes: RouteObject[] = [
           {
             path: "/feed",
             element: <Feed />,
+          },
+          {
+            path: "/posts/:postId",
+            element: <PostPage />,
           },
           {
             path: "/discover",
