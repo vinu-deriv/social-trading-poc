@@ -1,13 +1,13 @@
-import { useState } from "react";
-import type Strategy from "@/types/strategy.types";
-import { useAuth } from "@/context/AuthContext";
-import FullscreenModal from "@/components/modal/FullscreenModal/FullscreenModal";
-import Loader from "@/components/layout/Loader";
-import UserList from "../../../UserList/UserList";
-import StrategyList from "../../../StrategyList/StrategyList";
-import { useFollowers } from "../../../../hooks/useFollowers";
-import { followUser, unfollowUser } from "../../../../services/profileService";
-import "./ProfileStats.css";
+import { useState } from 'react';
+import type Strategy from '@/types/strategy.types';
+import { useAuth } from '@/context/AuthContext';
+import FullscreenModal from '@/components/modal/FullscreenModal/FullscreenModal';
+import AILoader from '@/components/AILoader';
+import UserList from '../../../UserList/UserList';
+import StrategyList from '../../../StrategyList/StrategyList';
+import { useFollowers } from '../../../../hooks/useFollowers';
+import { followUser, unfollowUser } from '../../../../services/profileService';
+import './ProfileStats.css';
 
 interface ProfileStatsProps {
   followers: string[];
@@ -16,20 +16,13 @@ interface ProfileStatsProps {
   onFollowAction: () => Promise<void>;
 }
 
-const ProfileStats = ({
-  followers,
-  following,
-  strategies,
-  onFollowAction,
-}: ProfileStatsProps) => {
+const ProfileStats = ({ followers, following, strategies, onFollowAction }: ProfileStatsProps) => {
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
   const [showStrategies, setShowStrategies] = useState(false);
   const { user: currentUser } = useAuth();
 
-  const followersCount = followers.filter(
-    (id) => id !== currentUser?.id
-  ).length;
+  const followersCount = followers.filter(id => id !== currentUser?.id).length;
   const followingCount = following.length;
   const strategiesCount = strategies.length;
 
@@ -47,24 +40,15 @@ const ProfileStats = ({
   return (
     <>
       <div className="profile-stats">
-        <div
-          className="profile-stats__item"
-          onClick={() => setShowFollowers(true)}
-        >
+        <div className="profile-stats__item" onClick={() => setShowFollowers(true)}>
           <span className="profile-stats__value">{followersCount}</span>
           <span className="profile-stats__label">followers</span>
         </div>
-        <div
-          className="profile-stats__item"
-          onClick={() => setShowFollowing(true)}
-        >
+        <div className="profile-stats__item" onClick={() => setShowFollowing(true)}>
           <span className="profile-stats__value">{followingCount}</span>
           <span className="profile-stats__label">following</span>
         </div>
-        <div
-          className="profile-stats__item"
-          onClick={() => setShowStrategies(true)}
-        >
+        <div className="profile-stats__item" onClick={() => setShowStrategies(true)}>
           <span className="profile-stats__value">{strategiesCount}</span>
           <span className="profile-stats__label">strategies</span>
         </div>
@@ -80,19 +64,19 @@ const ProfileStats = ({
       >
         {loadingFollowers ? (
           <div className="user-list--loading">
-            <Loader />
+            <AILoader size={40} showText={false} />
           </div>
         ) : (
           <UserList
             users={followerUsers}
             currentUserId={currentUser?.id}
-            onFollowUser={async (userId) => {
+            onFollowUser={async userId => {
               if (currentUser?.id) {
                 await followUser(currentUser.id, userId);
                 await refetchFollowers();
               }
             }}
-            onUnfollowUser={async (userId) => {
+            onUnfollowUser={async userId => {
               if (currentUser?.id) {
                 await unfollowUser(currentUser.id, userId);
                 await refetchFollowers();
@@ -113,19 +97,19 @@ const ProfileStats = ({
       >
         {loadingFollowing ? (
           <div className="user-list--loading">
-            <Loader />
+            <AILoader size={40} showText={false} />
           </div>
         ) : (
           <UserList
             users={followingUsers}
             currentUserId={currentUser?.id}
-            onFollowUser={async (userId) => {
+            onFollowUser={async userId => {
               if (currentUser?.id) {
                 await followUser(currentUser.id, userId);
                 await refetchFollowing();
               }
             }}
-            onUnfollowUser={async (userId) => {
+            onUnfollowUser={async userId => {
               if (currentUser?.id) {
                 await unfollowUser(currentUser.id, userId);
                 await refetchFollowing();
@@ -143,9 +127,9 @@ const ProfileStats = ({
       >
         <StrategyList
           strategies={strategies}
-          onCopyStrategy={async (strategyId) => {
+          onCopyStrategy={async strategyId => {
             // TODO: Implement copy strategy
-            console.log("Copy strategy:", strategyId);
+            console.log('Copy strategy:', strategyId);
           }}
         />
       </FullscreenModal>
