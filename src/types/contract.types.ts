@@ -1,14 +1,16 @@
-export interface Contract {
-  buy_price: number;
-  contract_id: string;
-  contract_type: string;
+export interface BaseContract {
+  symbol: string;
+  contractId: string;
+  contractType: string;
   currency: string;
-  date_start: string;
-  expiry_time: string;
-  payout: number;
-  purchase_time: string;
-  strategy_name: string;
+  strategyName: string;
   leader: string;
-  leader_id: string;
-  strategy_id: string;
+  leaderId: string;
+  strategyId: string;
+  stake: number;
+}
+
+export interface MultiplierContract extends BaseContract {
+  multiplier: number;
+  contractCost: number;
 }
