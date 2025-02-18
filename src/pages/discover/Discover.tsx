@@ -29,16 +29,6 @@ interface User {
   followers: string[];
 }
 
-interface Leader {
-  id: string;
-  username: string;
-  avatar?: string;
-  copiers: number;
-  totalProfit: number;
-  winRate: number;
-  isFollowing: boolean;
-}
-
 interface Asset {
   symbol: string;
   name: string;
@@ -50,7 +40,6 @@ interface Asset {
 
 export default function Discover() {
   const [activeTab, setActiveTab] = useState<string>('');
-  const [leaders, setLeaders] = useState<Leader[]>([]);
   const [strategies, setStrategies] = useState<ExtendedStrategy[]>([]);
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
@@ -147,66 +136,6 @@ export default function Discover() {
     [user]
   );
 
-  const handleFollowToggle = useCallback(
-    async (leaderId: string) => {
-      if (!user) return;
-
-      try {
-        // Get current leader and user data
-        const [leaderRes, currentUserRes] = await Promise.all([
-          fetch(`${JSON_SERVER_URL}/users/${leaderId}`),
-          fetch(`${JSON_SERVER_URL}/users/${user.id}`),
-        ]);
-
-        const leader = await leaderRes.json();
-        const currentUser = await currentUserRes.json();
-
-        // Update following/followers lists
-        const isFollowing = currentUser.following.includes(leaderId);
-        if (isFollowing) {
-          // Unfollow: Remove from lists
-          leader.followers = leader.followers.filter((id: string) => id !== user.id);
-          currentUser.following = currentUser.following.filter((id: string) => id !== leaderId);
-        } else {
-          // Follow: Add to lists
-          leader.followers.push(user.id);
-          currentUser.following.push(leaderId);
-        }
-
-        // Update both users in database
-        await Promise.all([
-          fetch(`${JSON_SERVER_URL}/users/${leaderId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(leader),
-          }),
-          fetch(`${JSON_SERVER_URL}/users/${user.id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(currentUser),
-          }),
-        ]);
-
-        // Update local state for both leaders and strategies
-        setLeaders(prevLeaders =>
-          prevLeaders.map(leader =>
-            leader.id === leaderId ? { ...leader, isFollowing: !leader.isFollowing } : leader
-          )
-        );
-        setStrategies(prevStrategies =>
-          prevStrategies.map(strategy =>
-            strategy.leaderId === leaderId
-              ? { ...strategy, isFollowing: !strategy.isFollowing }
-              : strategy
-          )
-        );
-      } catch (error) {
-        console.error('Error updating follow status:', error);
-      }
-    },
-    [user]
-  );
-
   useEffect(() => {
     // Set initial active tab based on user type
     setActiveTab(isLeader ? 'Trending Assets' : 'Leaders');
@@ -231,25 +160,6 @@ export default function Discover() {
           setIsLeader(currentUser?.userType === 'leader');
         }
 
-        // Get current user data to check following status
-        const currentUserData = user
-          ? await fetch(`${JSON_SERVER_URL}/users/${user.id}`).then(res => res.json())
-          : null;
-
-        // Process leaders
-        const leaders = users
-          .filter(u => u.userType === 'leader')
-          .map(leader => ({
-            id: leader.id,
-            username: leader.username,
-            avatar: leader.profilePicture,
-            copiers: Math.floor(Math.random() * 2000) + 500,
-            totalProfit: Math.floor(Math.random() * 900000) + 100000,
-            winRate: Math.floor(Math.random() * 20) + 70,
-            isFollowing: currentUserData ? currentUserData.following.includes(leader.id) : false,
-          }));
-
-        // Process strategies
         // Get copy relationships for current user
         const copyRelationsRes = await fetch(
           `${JSON_SERVER_URL}/copyRelationships?copierId=${user?.id}`
@@ -277,14 +187,10 @@ export default function Discover() {
                 }
               : undefined,
             currency: account?.currency,
-            isFollowing: currentUserData
-              ? currentUserData.following.includes(strategy.leaderId)
-              : false,
             isCopying,
           };
         });
 
-        setLeaders(leaders);
         setStrategies(processedStrategies);
         setLoading(false);
       } catch (error) {
@@ -323,7 +229,7 @@ export default function Discover() {
       <Search />
       <TabNavigation tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
       {activeTab === 'Leaders' ? (
-        <LeadersSection loading={loading} leaders={leaders} onFollow={handleFollowToggle} />
+        <LeadersSection />
       ) : activeTab === 'Strategies' ? (
         <StrategiesSection loading={loading} strategies={strategies} onCopy={handleCopyStrategy} />
       ) : (
