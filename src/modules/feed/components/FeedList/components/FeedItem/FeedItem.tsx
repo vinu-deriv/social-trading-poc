@@ -1,21 +1,21 @@
-import { useState, useRef } from "react";
-import type Post from "@/types/post.types";
-import type User from "@/types/user.types";
-import type { AIInsight } from "@/types/ai.types";
-import PostHeader from "./components/PostHeader";
-import PostContent from "./components/PostContent";
-import PostEngagement from "./components/PostEngagement";
-import PostAIInsights from "./components/PostAIInsights/PostAIInsights";
+import { useState, useRef } from 'react';
+import type Post from '@/types/post.types';
+import type User from '@/types/user.types';
+import type { AIInsight } from '@/types/ai.types';
+import PostHeader from './components/PostHeader';
+import PostContent from './components/PostContent';
+import PostEngagement from './components/PostEngagement';
+import PostAIInsights from './components/PostAIInsights/PostAIInsights';
 import {
   addComment,
   addReply,
   likeComment,
   likePost,
   sharePost,
-} from "@/modules/feed/services/postService";
-import { getPostInsight } from "@/modules/feed/services/aiService";
-import "./FeedItem.css";
-import TranslateButton from "@/components/TranslateButton";
+} from '@/modules/feed/services/postService';
+import { getPostInsight } from '@/modules/feed/services/aiService';
+import './FeedItem.css';
+import TranslateButton from '@/components/TranslateButton';
 
 interface FeedItemProps {
   post: Post;
@@ -24,12 +24,7 @@ interface FeedItemProps {
   insight?: AIInsight;
 }
 
-const FeedItem = ({
-  post,
-  user,
-  currentUserId,
-  insight: initialInsight,
-}: FeedItemProps) => {
+const FeedItem = ({ post, user, currentUserId, insight: initialInsight }: FeedItemProps) => {
   const [engagement, setEngagement] = useState(post.engagement);
   const [insight, setInsight] = useState<AIInsight | undefined>(initialInsight);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -46,13 +41,13 @@ const FeedItem = ({
         // Wait for state update and DOM render
         setTimeout(() => {
           insightsRef.current?.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
+            behavior: 'smooth',
+            block: 'center',
           });
         }, 100);
       }
     } catch (error) {
-      console.error("Failed to analyze post:", error);
+      console.error('Failed to analyze post:', error);
     } finally {
       setIsAnalyzing(false);
     }
@@ -63,7 +58,7 @@ const FeedItem = ({
       const updatedPost = await likePost(post.id, currentUserId);
       setEngagement(updatedPost.engagement);
     } catch (error) {
-      console.error("Failed to like post:", error);
+      console.error('Failed to like post:', error);
     }
   };
 
@@ -75,7 +70,7 @@ const FeedItem = ({
       });
       setEngagement(updatedPost.engagement);
     } catch (error) {
-      console.error("Failed to add comment:", error);
+      console.error('Failed to add comment:', error);
     }
   };
 
@@ -84,7 +79,7 @@ const FeedItem = ({
       const updatedPost = await likeComment(post.id, commentId, currentUserId);
       setEngagement(updatedPost.engagement);
     } catch (error) {
-      console.error("Failed to like comment:", error);
+      console.error('Failed to like comment:', error);
     }
   };
 
@@ -97,7 +92,7 @@ const FeedItem = ({
       });
       setEngagement(updatedPost.engagement);
     } catch (error) {
-      console.error("Failed to add reply:", error);
+      console.error('Failed to add reply:', error);
     }
   };
 
@@ -106,7 +101,7 @@ const FeedItem = ({
       const updatedPost = await sharePost(post.id);
       setEngagement(updatedPost.engagement);
     } catch (error) {
-      console.error("Failed to share post:", error);
+      console.error('Failed to share post:', error);
     }
   };
 
@@ -122,7 +117,7 @@ const FeedItem = ({
           translationButton={
             <TranslateButton
               text={post.content.text}
-              onTranslation={(text) => {
+              onTranslation={text => {
                 setTranslatedText(text);
               }}
             />
@@ -135,7 +130,7 @@ const FeedItem = ({
         <PostAIInsights
           ref={insightsRef}
           insight={insight}
-          userType={user?.userType ?? "copier"}
+          userType={user?.userType ?? 'copier'}
           onCopyTrader={() => {
             /* TODO: Implement copy trader */
           }}

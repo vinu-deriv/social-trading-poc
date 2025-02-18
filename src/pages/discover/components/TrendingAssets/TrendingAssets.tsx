@@ -1,11 +1,11 @@
-import { useMemo, useState } from "react";
-import AIButton from "../../../../components/AIButton";
-import ArrowUpTrend from "../../../../assets/icons/ArrowUpTrend";
-import ArrowDownTrend from "../../../../assets/icons/ArrowDownTrend";
-import YahooLogo from "../../../../assets/icons/yahoo.png";
-import { AIInsight } from "../../../../types/ai.types";
-import InsightsList from "../InsightsList/InsightsList";
-import "./TrendingAssets.css";
+import { useMemo, useState } from 'react';
+import AIButton from '../../../../components/AIButton';
+import ArrowUpTrend from '../../../../assets/icons/ArrowUpTrend';
+import ArrowDownTrend from '../../../../assets/icons/ArrowDownTrend';
+import YahooLogo from '../../../../assets/icons/yahoo.png';
+import { AIInsight } from '../../../../types/ai.types';
+import InsightsList from '../InsightsList/InsightsList';
+import './TrendingAssets.css';
 
 interface Asset {
   symbol: string;
@@ -13,7 +13,7 @@ interface Asset {
   imageUrl: string;
   currentPrice: number;
   changePercentage: number;
-  direction: "up" | "down";
+  direction: 'up' | 'down';
 }
 
 interface TrendingAssetsProps {
@@ -21,59 +21,46 @@ interface TrendingAssetsProps {
   loading: boolean;
 }
 
-export default function TrendingAssets({
-  assets,
-  loading,
-}: TrendingAssetsProps) {
+export default function TrendingAssets({ assets, loading }: TrendingAssetsProps) {
   const LLM_SERVER_URL = import.meta.env.VITE_LLM_SERVER_URL;
 
   if (!LLM_SERVER_URL) {
-    throw new Error("VITE_LLM_SERVER_URL environment variable is not set");
+    throw new Error('VITE_LLM_SERVER_URL environment variable is not set');
   }
   const [insights, setInsights] = useState<AIInsight[]>([]);
 
   const handleRemoveInsight = (postId: string) => {
-    setInsights((prev) => prev.filter((insight) => insight.postId !== postId));
+    setInsights(prev => prev.filter(insight => insight.postId !== postId));
   };
-  const [loadingSymbol, setLoadingSymbol] = useState<string | null>(null);
+  const [loadingSymbol, setLoadingSymbol] = useState<{ symbol: string; name: string } | null>(null);
 
-  const handleGetInsight = async (symbol: string) => {
+  const handleGetInsight = async (symbol: string, name: string) => {
     try {
-      setLoadingSymbol(symbol);
-      const response = await fetch(
-        `${LLM_SERVER_URL}/api/ai/ai-insights-for-symbol/${symbol}`
-      );
+      setLoadingSymbol({ symbol, name });
+      const response = await fetch(`${LLM_SERVER_URL}/api/ai/ai-insights-for-symbol/${symbol}`);
       const data = await response.json();
       if (data.insight) {
-        setInsights((prev) => {
+        setInsights(prev => {
           // Remove any existing insight for this symbol
-          const filtered = prev.filter(
-            (i) => i.postId.split("_")[0] !== symbol
-          );
+          const filtered = prev.filter(i => i.postId.split('_')[0] !== symbol);
           // Add new insight
           return [...filtered, data.insight];
         });
       }
     } catch (error) {
-      console.error("Error fetching insight:", error);
+      console.error('Error fetching insight:', error);
     } finally {
       setLoadingSymbol(null);
     }
   };
   const sortedAssets = useMemo(() => {
-    return [...assets].sort(
-      (a, b) => Math.abs(b.changePercentage) - Math.abs(a.changePercentage)
-    );
+    return [...assets].sort((a, b) => Math.abs(b.changePercentage) - Math.abs(a.changePercentage));
   }, [assets]);
 
   return (
     <div className="trending-assets-container">
       <h2 className="trending-assets-heading">
-        <img
-          src={YahooLogo}
-          alt="Yahoo Finance"
-          className="yahoo-finance-logo"
-        />
+        <img src={YahooLogo} alt="Yahoo Finance" className="yahoo-finance-logo" />
         Yahoo Finance Suggested Assets
       </h2>
       <div className="trending-assets-wrapper">
@@ -82,11 +69,7 @@ export default function TrendingAssets({
             ? [...Array(5)].map((_, index) => (
                 <div key={index} className="asset-card skeleton">
                   <div className="asset-card__image skeleton-image">
-                    <img
-                      src={YahooLogo}
-                      alt="Yahoo Finance"
-                      className="skeleton-yahoo-logo"
-                    />
+                    <img src={YahooLogo} alt="Yahoo Finance" className="skeleton-yahoo-logo" />
                   </div>
                   <div className="asset-card__content">
                     <div className="asset-card__title skeleton-text" />
@@ -94,29 +77,21 @@ export default function TrendingAssets({
                   </div>
                 </div>
               ))
-            : sortedAssets.map((asset) => (
+            : sortedAssets.map(asset => (
                 <div key={asset.symbol} className="asset-card">
-                  <img
-                    src={asset.imageUrl}
-                    alt={asset.name}
-                    className="asset-card__image"
-                  />
+                  <img src={asset.imageUrl} alt={asset.name} className="asset-card__image" />
                   <div className="asset-card__content">
                     <div className="asset-card__header">
                       <h3 className="asset-card__title">{asset.name}</h3>
                       <span className="asset-card__symbol">{asset.symbol}</span>
                     </div>
                     <div className="asset-card__stats">
-                      <span className="asset-card__price">
-                        ${asset.currentPrice.toFixed(2)}
-                      </span>
+                      <span className="asset-card__price">${asset.currentPrice.toFixed(2)}</span>
                       <div className="asset-card__right">
                         <div className="asset-card__ai-button">
                           <AIButton
-                            onClick={() => {
-                              handleGetInsight(asset.symbol);
-                            }}
-                            isLoading={loadingSymbol === asset.symbol}
+                            onClick={() => handleGetInsight(asset.symbol, asset.name)}
+                            isLoading={loadingSymbol?.symbol === asset.symbol}
                             loadingText="Analyzing..."
                           >
                             Ask AI
@@ -124,14 +99,10 @@ export default function TrendingAssets({
                         </div>
                         <span
                           className={`asset-card__change ${
-                            asset.direction === "up" ? "up" : "down"
+                            asset.direction === 'up' ? 'up' : 'down'
                           }`}
                         >
-                          {asset.direction === "up" ? (
-                            <ArrowUpTrend />
-                          ) : (
-                            <ArrowDownTrend />
-                          )}
+                          {asset.direction === 'up' ? <ArrowUpTrend /> : <ArrowDownTrend />}
                           {Math.abs(asset.changePercentage).toFixed(2)}%
                         </span>
                       </div>

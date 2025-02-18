@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type Strategy from '@/types/strategy.types';
 import { useAuth } from '@/context/AuthContext';
 import FullscreenModal from '@/components/modal/FullscreenModal/FullscreenModal';
-import Loader from '@/components/layout/Loader';
+import AILoader from '@/components/AILoader';
 import UserList from '../../../UserList/UserList';
 import StrategyList from '../../../StrategyList/StrategyList';
 import { useFollowers } from '../../../../hooks/useFollowers';
@@ -106,7 +106,7 @@ const ProfileStats = ({ followers, following, strategies, onFollowAction }: Prof
       >
         {loadingFollowers ? (
           <div className="user-list--loading">
-            <Loader />
+            <AILoader size={40} showText={false} />
           </div>
         ) : (
           <UserList
@@ -139,7 +139,7 @@ const ProfileStats = ({ followers, following, strategies, onFollowAction }: Prof
       >
         {loadingFollowing ? (
           <div className="user-list--loading">
-            <Loader />
+            <AILoader size={40} showText={false} />
           </div>
         ) : (
           <UserList

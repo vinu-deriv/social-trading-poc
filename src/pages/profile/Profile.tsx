@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useProfile } from '@/modules/profile/hooks/useProfile';
 import ProfileHeader from '../../modules/profile/components/ProfileHeader';
 import FeedList from '@/modules/feed/components/FeedList';
-import Loader from '@/components/layout/Loader';
+import AILoader from '@/components/AILoader';
 import ErrorState from '@/components/feedback/ErrorState';
 import './Profile.css';
 
@@ -23,7 +23,7 @@ const Profile = () => {
     return (
       <div className="profile-page">
         <div className="profile-page__loading">
-          <Loader />
+          <AILoader size={40} showText={false} />
         </div>
       </div>
     );

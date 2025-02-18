@@ -1,24 +1,24 @@
-import express from "express";
-import { translateText } from "../services/translation";
+import express from 'express';
+import { translateText } from '../services/translation';
 
 const router = express.Router();
 
-router.post("/translate", async (req, res) => {
+router.post('/translate', async (req, res) => {
   try {
-    const { text, targetLang = "EN" } = req.body;
+    const { text, targetLang = 'EN' } = req.body;
 
     if (!text) {
-      return res.status(400).json({ error: "Text is required" });
+      return res.status(400).json({ error: 'Text is required' });
     }
 
     const translatedText = await translateText(text, targetLang);
     res.json({ translatedText });
   } catch (error) {
-    console.error("Translation error:", error);
+    console.error('Translation error:', error);
     res.status(500).json({
-      error: "Translation failed",
-      message: error instanceof Error ? error.message : "Unknown error",
-      details: process.env.NODE_ENV === "development" ? error : undefined,
+      error: 'Translation failed',
+      message: error instanceof Error ? error.message : 'Unknown error',
+      details: process.env.NODE_ENV === 'development' ? error : undefined,
     });
   }
 });
