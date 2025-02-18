@@ -10,6 +10,8 @@ interface PostContentProps {
 
 const PostContent = ({ content, translatedText }: PostContentProps) => {
   const { text, images = [] } = content;
+  // Display text is controlled entirely by props
+  const displayText = translatedText || text;
   const hasImages = images.length > 0;
   const isSingleImage = images.length === 1;
 
@@ -49,12 +51,7 @@ const PostContent = ({ content, translatedText }: PostContentProps) => {
     <div className="post-content">
       {text && (
         <div className="post-content__text-container">
-          <p className="post-content__text">{text}</p>
-          {translatedText && (
-            <div className="post-content__translation">
-              <p className="post-content__translated-text">{translatedText}</p>
-            </div>
-          )}
+          <p className="post-content__text">{displayText}</p>
         </div>
       )}
 
