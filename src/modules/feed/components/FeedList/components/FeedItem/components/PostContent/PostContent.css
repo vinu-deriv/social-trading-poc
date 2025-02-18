@@ -16,25 +16,6 @@
     white-space: pre-wrap;
 }
 
-.post-content__translation {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding-top: 8px;
-    border-top: 1px solid #eee;
-}
-
-.post-content__translated-text {
-    color: #536471;
-    font-size: 15px;
-    line-height: 1.5;
-    margin: 0;
-    white-space: pre-wrap;
-    padding: 12px;
-    background-color: #f7f9fa;
-    border-radius: 8px;
-}
-
 .post-content__text a {
     color: #1d9bf0;
     text-decoration: none;
@@ -42,6 +23,14 @@
 
 .post-content__text a:hover {
     text-decoration: underline;
+}
+
+.post-content__translation-indicator {
+    display: block;
+    margin-top: 12px;
+    color: #536471;
+    font-size: 13px;
+    font-weight: 400;
 }
 
 .post-content__images {
