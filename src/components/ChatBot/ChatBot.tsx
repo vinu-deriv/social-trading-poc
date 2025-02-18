@@ -18,7 +18,7 @@ interface BotInfo {
 const botInfo: BotInfo = {
   name: 'AI Trading Assistant',
   avatar: '/champion_logo-blue.svg',
-  role: 'Customer Support',
+  role: '',
 };
 
 const ChatBot: React.FC = () => {

@@ -135,7 +135,7 @@ router.post('/chat', async (req, res) => {
     }
 
     const prompt = `
-      You are a helpful customer support AI for a social trading platform. Use the following product information to answer user questions accurately and professionally:
+      You are a helpful Trade support AI for a social trading platform. Use the following product information to answer user questions accurately and professionally:
 
       ${JSON.stringify(productInfo, null, 2)}
 
