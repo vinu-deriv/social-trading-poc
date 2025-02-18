@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import AIButton from '../AIButton';
+import Button from '../input/Button';
 import { translateText } from '../../services/translationService';
 
 interface TranslateButtonProps {
@@ -11,6 +11,7 @@ const TranslateButton = ({ text, onTranslation }: TranslateButtonProps) => {
   const [isTranslating, setIsTranslating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isEnglish, setIsEnglish] = useState(true);
+  const [isTranslated, setIsTranslated] = useState(false);
 
   const handleTranslate = async () => {
     setError(null);
@@ -18,12 +19,20 @@ const TranslateButton = ({ text, onTranslation }: TranslateButtonProps) => {
       setIsTranslating(true);
       const translatedText = await translateText(text);
       onTranslation(translatedText);
+      setIsTranslated(true);
     } catch (error) {
       console.error('Translation error:', error);
       setError(error instanceof Error ? error.message : 'Translation failed');
     } finally {
       setIsTranslating(false);
     }
+  };
+
+  const getButtonText = () => {
+    if (error) return 'Translation Failed';
+    if (isTranslating) return '✦ Translating...';
+    if (isTranslated) return '✦ Translated by AI';
+    return '✦ See translation';
   };
 
   // Check if text is English on mount and when text changes
@@ -58,14 +67,14 @@ const TranslateButton = ({ text, onTranslation }: TranslateButtonProps) => {
   }
 
   return (
-    <AIButton
+    <Button
       onClick={handleTranslate}
-      isLoading={isTranslating}
-      loadingText="Translating..."
-      disabled={!!error}
+      disabled={!!error || isTranslating}
+      variant="text"
+      className="post-engagement__button"
     >
-      {error ? 'Translation Failed' : 'Translate'}
-    </AIButton>
+      {getButtonText()}
+    </Button>
   );
 };
 
