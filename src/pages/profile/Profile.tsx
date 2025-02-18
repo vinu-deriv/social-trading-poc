@@ -1,13 +1,13 @@
-import { useParams } from "react-router-dom";
-import { useProfile } from "@/modules/profile/hooks/useProfile";
-import ProfileHeader from "../../modules/profile/components/ProfileHeader";
-import FeedList from "@/modules/feed/components/FeedList";
-import Loader from "@/components/layout/Loader";
-import ErrorState from "@/components/feedback/ErrorState";
-import "./Profile.css";
+import { useParams } from 'react-router-dom';
+import { useProfile } from '@/modules/profile/hooks/useProfile';
+import ProfileHeader from '../../modules/profile/components/ProfileHeader';
+import FeedList from '@/modules/feed/components/FeedList';
+import Loader from '@/components/layout/Loader';
+import ErrorState from '@/components/feedback/ErrorState';
+import './Profile.css';
 
 const Profile = () => {
-  const { username = "" } = useParams();
+  const { username = '' } = useParams();
   const {
     profile,
     isOwnProfile,
@@ -32,10 +32,7 @@ const Profile = () => {
   if (error || !profile) {
     return (
       <div className="profile-page">
-        <ErrorState
-          message={error || "Failed to load profile"}
-          onRetry={refetch}
-        />
+        <ErrorState message={error || 'Failed to load profile'} onRetry={refetch} />
       </div>
     );
   }
