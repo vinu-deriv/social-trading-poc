@@ -35,6 +35,7 @@
 
 .post-engagement__button:hover {
   color: #1d9bf0;
+  outline: none;
   & svg {
     fill: #1d9bf0;
   }
