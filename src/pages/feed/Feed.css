@@ -1,78 +1,47 @@
 .feed-page {
-    padding: 2rem;
-    position: relative;
-    height: 100%;
+  padding: 2rem;
+  position: relative;
+  height: 100%;
 }
 
 .feed-page__container {
-    display: flex;
-    justify-content: center;
-    margin: 1rem auto;
-    position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 1rem auto;
+  position: relative;
 }
 
 .feed-page__header {
-    margin-bottom: 24px;
+  margin-bottom: 24px;
 }
 
 .feed-page__title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #333;
-    margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
 }
 
 .feed-page__loading,
 .feed-page__error {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 24px;
-    text-align: center;
-    color: #666;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  color: #666;
 }
 
 .feed-page__error {
-    color: #dc3545;
-}
-
-.feed-page__fab {
-    position: fixed;
-    right: 16px;
-    bottom: 80px; /* Above BottomNavigation */
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    cursor: pointer;
-    transition: transform 0.2s;
-    background: #00d0ff;
-}
-
-.feed-page__fab:hover {
-    transform: scale(1.05);
-}
-
-.feed-page__fab:active, .feed-page__fab:focus {
-    transform: scale(0.95);
-    outline: none;
+  color: #dc3545;
 }
 
 main {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 @media (max-width: 480px) {
-    .feed-page {
-        padding: 1rem;
-    }
+  .feed-page {
+    padding: 1rem;
+  }
 }

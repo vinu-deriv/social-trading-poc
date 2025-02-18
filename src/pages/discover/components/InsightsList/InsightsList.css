@@ -176,29 +176,19 @@
   justify-content: center;
   background-color: #00d0ff10;
   border-radius: 0.75rem;
-  padding: 1rem;
+  padding: 2rem;
+  gap: 1.5rem;
 }
 
-.loading-animation {
-  margin-top: 1rem;
-  color: var(--color-text-secondary);
+.insight-card__header {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  width: 100%;
 }
 
-.loading-animation::before {
-  content: "";
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--color-primary);
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+.insight-card__symbol {
+  font-size: 1.5rem;
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
 }

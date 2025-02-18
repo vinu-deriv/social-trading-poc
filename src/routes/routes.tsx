@@ -1,15 +1,17 @@
-import { RouteObject, Outlet } from "react-router-dom";
-import { AuthProvider } from "@/context/AuthContext";
-import AuthLayout from "@/layouts/AuthLayout";
-import MainLayout from "@/layouts/MainLayout";
-import Feed from "@pages/feed";
-import Login from "@pages/login";
-import Welcome from "@/pages/welcome";
-import Profile from "@/pages/profile";
-import NotFound from "@/pages/not-found";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import Discover from "@/pages/discover/Discover";
-import Reports from "@/pages/reports";
+import { RouteObject, Outlet } from 'react-router-dom';
+import { AuthProvider } from '@/context/AuthContext';
+import AuthLayout from '@/layouts/AuthLayout';
+import MainLayout from '@/layouts/MainLayout';
+import Feed from '@pages/feed';
+import PostPage from '@pages/post/PostPage';
+import Login from '@pages/login';
+import Welcome from '@/pages/welcome';
+import Profile from '@/pages/profile';
+import NotFound from '@/pages/not-found';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import Discover from '@/pages/discover/Discover';
+import Reports from '@/pages/reports';
+import StrategyDetails from '@/pages/strategy';
 
 export const routes: RouteObject[] = [
   {
@@ -23,11 +25,11 @@ export const routes: RouteObject[] = [
         element: <AuthLayout />,
         children: [
           {
-            path: "/login",
+            path: '/login',
             element: <Login />,
           },
           {
-            path: "/welcome",
+            path: '/welcome',
             element: (
               <ProtectedRoute>
                 <Welcome />
@@ -45,27 +47,35 @@ export const routes: RouteObject[] = [
         errorElement: <NotFound />,
         children: [
           {
-            path: "/",
+            path: '/',
             element: <Feed />,
           },
           {
-            path: "/feed",
+            path: '/feed',
             element: <Feed />,
           },
           {
-            path: "/discover",
+            path: '/posts/:postId',
+            element: <PostPage />,
+          },
+          {
+            path: '/discover',
             element: <Discover />,
           },
           {
-            path: "/reports",
+            path: '/reports',
             element: <Reports />,
           },
           {
-            path: "/profile/:username",
+            path: '/profile/:username',
             element: <Profile />,
           },
           {
-            path: "*",
+            path: '/strategies/:id',
+            element: <StrategyDetails />,
+          },
+          {
+            path: '*',
             element: <NotFound />,
           },
         ],

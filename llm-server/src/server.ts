@@ -1,11 +1,12 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 // Load environment variables
 dotenv.config();
 
-import express, { NextFunction } from "express";
-import cors from "cors";
-import insightsRouter from "./routes/insights";
-import marketRouter from "./routes/market";
+import express, { NextFunction } from 'express';
+import cors from 'cors';
+import insightsRouter from './routes/insights';
+import translationRouter from './routes/translation';
+import marketRouter from './routes/market';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -15,13 +16,14 @@ app.use(cors());
 app.use(express.json());
 
 // Health check endpoint
-app.get("/health", (req, res) => {
-  res.json({ status: "ok" });
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
 });
 
 // Mount routes
-app.use("/api/ai", insightsRouter);
-app.use("/api/market", marketRouter);
+app.use('/api/ai', insightsRouter);
+app.use('/api/translation', translationRouter);
+app.use('/api/market', marketRouter);
 
 // Error handling middleware
 app.use(
@@ -34,8 +36,8 @@ app.use(
   ) => {
     console.error(err.stack);
     res.status(500).json({
-      error: "Internal Server Error",
-      message: process.env.NODE_ENV === "development" ? err.message : undefined,
+      error: 'Internal Server Error',
+      message: process.env.NODE_ENV === 'development' ? err.message : undefined,
     });
   }
 );
