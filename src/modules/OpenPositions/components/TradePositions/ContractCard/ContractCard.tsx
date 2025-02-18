@@ -1,7 +1,7 @@
 import React from 'react';
 import './ContractCard.css';
 import Tick from '../../../../../assets/icons/Tick';
-import { Contract } from '@/types/contract.types';
+import { BaseContract } from '@/types/contract.types';
 
 interface ContractItem {
   title: string;
@@ -11,7 +11,7 @@ interface ContractItem {
 interface ContractCardProps {
   isStatement?: boolean;
   items: ContractItem[];
-  contract?: Contract;
+  contract?: BaseContract;
   onShare?: () => void;
 }
 
@@ -32,7 +32,7 @@ const ContractCard: React.FC<ContractCardProps> = ({ items, contract, isStatemen
         <>
           <div className="message">
             <div className="contract-card-up-title">Type</div>
-            <div className="contract-card-up-value">{contract?.contract_type}</div>
+            <div className="contract-card-up-value">{contract?.contractType}</div>
           </div>
           {isCopier && (
             <>
@@ -42,7 +42,7 @@ const ContractCard: React.FC<ContractCardProps> = ({ items, contract, isStatemen
               </div>
               <div className="message">
                 <div className="contract-card-up-title">Strategy</div>
-                <div className="contract-card-up-value">{contract?.strategy_name}</div>
+                <div className="contract-card-up-value">{contract?.strategyName}</div>
               </div>
             </>
           )}

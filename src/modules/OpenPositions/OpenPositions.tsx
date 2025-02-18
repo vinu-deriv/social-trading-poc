@@ -21,6 +21,7 @@ const OpenPositions = () => {
           onSelect={handleTradeTypeChange}
         />
       </div>
+      {/* @ts-expect-error multiplier prop is not defined */}
       <TradePositions contracts={dbData.contracts || []} tradeType={selectedTradeType} />
     </div>
   );
