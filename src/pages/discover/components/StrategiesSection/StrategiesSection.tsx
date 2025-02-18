@@ -1,15 +1,11 @@
-import { useMemo } from "react";
-import StrategyCard from "../StrategyCard";
-import SkeletonCard from "../SkeletonCard";
+import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import StrategyListItem from '@/components/strategy/StrategyListItem';
+import SkeletonCard from '../SkeletonCard';
 
-interface Strategy {
-  id: string;
-  leaderId: string;
-  accountId: string;
-  name: string;
-  description: string;
-  tradeType: string;
-  copiers: string[];
+import type { Strategy } from '@/types/strategy.types';
+
+interface ExtendedStrategy extends Strategy {
   leader?: {
     username: string;
     displayName: string;
@@ -22,17 +18,12 @@ interface Strategy {
 
 interface StrategiesSectionProps {
   loading: boolean;
-  strategies: Strategy[];
-  onFollow: (leaderId: string) => Promise<void>;
+  strategies: ExtendedStrategy[];
   onCopy: (strategyId: string) => Promise<void>;
 }
 
-export default function StrategiesSection({
-  loading,
-  strategies,
-  onFollow,
-  onCopy,
-}: StrategiesSectionProps) {
+export default function StrategiesSection({ loading, strategies, onCopy }: StrategiesSectionProps) {
+  const navigate = useNavigate();
   // Strategy sections
   const topStrategies = useMemo(() => {
     return strategies.slice(0, 3);
@@ -78,37 +69,42 @@ export default function StrategiesSection({
       <h2 className="discover__section-title">Top Strategies</h2>
       <div className="discover__top-leaders">
         {topStrategies.map((strategy, index) => (
-          <StrategyCard
+          <StrategyListItem
             key={strategy.id}
             strategy={strategy}
             rank={index + 1}
-            onFollow={onFollow}
-            onCopy={onCopy}
-            large
+            showCopyButton={true}
+            isCopying={strategy.isCopying}
+            onCopy={(strategyId: string) => onCopy(strategyId)}
+            onClick={(strategyId: string) => navigate(`/strategies/${strategyId}`)}
           />
         ))}
       </div>
 
       <h2 className="discover__section-title">AI Suggested Strategies</h2>
       <div className="discover__leaders-grid">
-        {aiSuggestedStrategies.map((strategy) => (
-          <StrategyCard
+        {aiSuggestedStrategies.map(strategy => (
+          <StrategyListItem
             key={strategy.id}
             strategy={strategy}
-            onFollow={onFollow}
-            onCopy={onCopy}
+            showCopyButton={true}
+            isCopying={strategy.isCopying}
+            onCopy={(strategyId: string) => onCopy(strategyId)}
+            onClick={(strategyId: string) => navigate(`/strategies/${strategyId}`)}
           />
         ))}
       </div>
 
       <h2 className="discover__section-title">Popular Strategies</h2>
       <div className="discover__leaders-grid">
-        {popularStrategies.map((strategy) => (
-          <StrategyCard
+        {popularStrategies.map(strategy => (
+          <StrategyListItem
             key={strategy.id}
             strategy={strategy}
-            onFollow={onFollow}
-            onCopy={onCopy}
+            showCopyButton={true}
+            isCopying={strategy.isCopying}
+            onCopy={(strategyId: string) => onCopy(strategyId)}
+            onClick={(strategyId: string) => navigate(`/strategies/${strategyId}`)}
           />
         ))}
       </div>
