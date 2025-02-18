@@ -16,7 +16,7 @@ interface BotInfo {
 }
 
 const botInfo: BotInfo = {
-  name: 'AI Trading Assistant',
+  name: 'Champion AI  Assistant',
   avatar: '/champion_logo-blue.svg',
   role: '',
 };
@@ -27,7 +27,7 @@ const ChatBot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
-      text: `Hi ${user?.displayName || 'there'}! 👋 Welcome to our social trading platform's support. How can I help you today? I'd be happy to tell you about our copy trading features, AI insights, or answer any questions about our Basic and Pro plans.`,
+      text: `Hi ${user?.displayName || 'there'}! 👋 Welcome to our social trading platform's support. How can I help you today? I'd be happy to tell you about our copy trading features.`,
       isUser: false,
     },
   ]);
