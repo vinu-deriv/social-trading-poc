@@ -3,6 +3,7 @@
   bottom: 8%;
   right: 20px;
   z-index: 1000;
+  overscroll-behavior: none;
 }
 
 .chatbot-toggle {
@@ -180,6 +181,7 @@
   border-radius: 20px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   overflow: hidden;
+  overscroll-behavior-y: contain;
 }
 
 .chatbot-wrapper.open .chatbot-container {
@@ -233,6 +235,8 @@
   flex-direction: column;
   gap: 16px;
   background: #ffffff;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .message {
@@ -435,6 +439,8 @@
     margin-bottom: 80px;
     height: calc(100vh - 150px);
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .chatbot-wrapper.open .chatbot-input {
