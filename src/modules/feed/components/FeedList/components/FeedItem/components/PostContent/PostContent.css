@@ -25,6 +25,14 @@
     text-decoration: underline;
 }
 
+.post-content__translation-indicator {
+    display: block;
+    margin-top: 12px;
+    color: #536471;
+    font-size: 13px;
+    font-weight: 400;
+}
+
 .post-content__images {
     margin-top: 0.75rem;
     border-radius: 16px;
