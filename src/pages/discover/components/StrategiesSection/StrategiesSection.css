@@ -11,7 +11,7 @@
 @media (max-width: 480px) {
   .top-strategies {
     gap: 1rem;
-    padding: 0 1rem;
+    padding: unset;
   }
 }
 

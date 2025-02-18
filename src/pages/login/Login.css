@@ -1,130 +1,128 @@
 @import '../../styles/variables.css';
 
 .login-page {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #00d0ff 0%, #00d0ff 100%);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #00d0ff 0%, #ffffff 340px);
 }
 
 .login-content {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .login-branding {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  padding: 2rem;
 }
 
 .branding-content {
-    max-width: 440px;
-    text-align: center;
+  max-width: 440px;
+  text-align: center;
 }
 
 .branding-content .logo {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 2rem;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 2rem;
 }
 
 .branding-content h1 {
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-semibold);
-    margin-bottom: 1rem;
-    color: white;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 1rem;
+  color: black;
 }
 
 .branding-content p {
-    font-size: var(--font-size-lg);
-    opacity: 0.9;
-    line-height: var(--line-height-relaxed);
+  font-size: var(--font-size-lg);
+  opacity: 0.9;
+  line-height: var(--line-height-relaxed);
 }
 
 .login-form-container {
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
 }
 
 .form-wrapper {
-    width: 360px;
+  width: 360px;
 }
 
 .form-wrapper h2 {
-    font-size: var(--font-size-xl);
-    font-weight: var(--font-weight-semibold);
-    color: #333;
-    margin-bottom: 2rem;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: #333;
+  margin-bottom: 2rem;
 }
 
 .login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .login-error {
-    background-color: #fee2e2;
-    border: 1px solid #ef4444;
-    color: #dc2626;
-    padding: 0.75rem 1.5rem;
-    border-radius: 100px;
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    text-align: center;
+  color: #dc2626;
+  padding: 0.75rem 1.5rem;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  text-align: center;
 }
 
 .login-input {
-    height: 55px;
+  height: 50px;
+  font-size: var(--font-size-base);
 }
 
 .login-button {
-    height: 55px;
+  height: 50px;
+  font-size: var(--font-size-base);
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .login-content {
-        flex-direction: column;
-        padding: 2rem 1rem;
-    }
+  .login-content {
+    flex-direction: column;
+    padding: 2rem;
+    gap: 2rem;
+    margin: auto 0 0;
+  }
 
-    .login-branding {
-        padding: 2rem 1rem;
-    }
+  .login-branding {
+    padding: 2rem 0;
+  }
 
-    .branding-content h1 {
-        font-size: var(--font-size-xl);
-    }
+  .branding-content h1 {
+    font-size: var(--font-size-xl);
+  }
 
-    .branding-content p {
-        font-size: var(--font-size-base);
-    }
+  .branding-content p {
+    font-size: var(--font-size-base);
+  }
 
-    .login-form-container {
-        width: 100%;
-        padding: 1.5rem;
-        border-radius: 0.5rem;
-    }
+  .login-form-container {
+    width: 100%;
+    padding: 2rem 0;
+    border-radius: 0.5rem;
+  }
 
-    .form-wrapper {
-        padding: 0;
-        width: 100%;
-    }
+  .form-wrapper {
+    padding: 0;
+    width: 100%;
+  }
 
-    .form-wrapper h2 {
-        font-size: var(--font-size-lg);
-        margin-bottom: 1.5rem;
-    }
+  .form-wrapper h2 {
+    font-size: var(--font-size-lg);
+    margin-bottom: 1.5rem;
+  }
 }
