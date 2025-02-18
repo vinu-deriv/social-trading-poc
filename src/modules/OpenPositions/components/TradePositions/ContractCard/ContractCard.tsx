@@ -16,6 +16,8 @@ interface ContractCardProps {
 }
 
 const ContractCard: React.FC<ContractCardProps> = ({ items, contract, isStatement }) => {
+  const isCopier = JSON.parse(localStorage.getItem('auth') || 'false').user.userType === 'copier';
+
   return (
     <div className="contract-card">
       <div
@@ -32,14 +34,18 @@ const ContractCard: React.FC<ContractCardProps> = ({ items, contract, isStatemen
             <div className="contract-card-up-title">Type</div>
             <div className="contract-card-up-value">{contract?.contract_type}</div>
           </div>
-          <div className="message">
-            <div className="contract-card-up-title">Leader</div>
-            <div className="contract-card-up-value">{contract?.leader}</div>
-          </div>
-          <div className="message">
-            <div className="contract-card-up-title">Strategy</div>
-            <div className="contract-card-up-value">{contract?.strategy_name}</div>
-          </div>
+          {isCopier && (
+            <>
+              <div className="message">
+                <div className="contract-card-up-title">Leader</div>
+                <div className="contract-card-up-value">{contract?.leader}</div>
+              </div>
+              <div className="message">
+                <div className="contract-card-up-title">Strategy</div>
+                <div className="contract-card-up-value">{contract?.strategy_name}</div>
+              </div>
+            </>
+          )}
         </>
       )}
 
