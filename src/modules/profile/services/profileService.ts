@@ -1,9 +1,36 @@
 import type User from '@/types/user.types';
+import type { Strategy } from '@/types/strategy.types';
+import type { CopyRelationship } from '@/types/copy.types';
+
+const BASE_URL = import.meta.env.VITE_JSON_SERVER_URL;
+
+const fetchUserStrategies = async (userId: string, userType: string): Promise<Strategy[]> => {
+  // Fetch all strategies
+  const strategiesResponse = await fetch(`${BASE_URL}/tradingStrategies`);
+  if (!strategiesResponse.ok) {
+    throw new Error('Failed to fetch strategies');
+  }
+  const allStrategies = await strategiesResponse.json();
+
+  // For leaders, return created strategies
+  if (userType === 'leader') {
+    return allStrategies.filter((s: Strategy) => s.leaderId === userId);
+  }
+
+  // For copiers, fetch and filter by copy relationships
+  const copyRelationsResponse = await fetch(`${BASE_URL}/copyRelationships?copierId=${userId}`);
+  if (!copyRelationsResponse.ok) {
+    throw new Error('Failed to fetch copy relationships');
+  }
+  const copyRelations = await copyRelationsResponse.json();
+
+  return allStrategies.filter((s: Strategy) =>
+    copyRelations.some((cr: CopyRelationship) => cr.strategyId === s.id && cr.status === 'active')
+  );
+};
 
 export const getUserByUsername = async (username: string): Promise<User> => {
-  const response = await fetch(
-    `${import.meta.env.VITE_JSON_SERVER_URL}/users?username=${encodeURIComponent(username)}`
-  );
+  const response = await fetch(`${BASE_URL}/users?username=${encodeURIComponent(username)}`);
   if (!response.ok) {
     throw new Error('Failed to fetch user');
   }
@@ -13,32 +40,8 @@ export const getUserByUsername = async (username: string): Promise<User> => {
   }
   const user = users[0];
 
-  // Fetch all strategies
-  const strategiesResponse = await fetch(
-    `${import.meta.env.VITE_JSON_SERVER_URL}/tradingStrategies`
-  );
-  if (!strategiesResponse.ok) {
-    throw new Error('Failed to fetch strategies');
-  }
-  const allStrategies = await strategiesResponse.json();
-
-  // Fetch copy relationships for this user
-  const copyRelationsResponse = await fetch(
-    `${import.meta.env.VITE_JSON_SERVER_URL}/copyRelationships?copierId=${user.id}`
-  );
-  if (!copyRelationsResponse.ok) {
-    throw new Error('Failed to fetch copy relationships');
-  }
-  const copyRelations = await copyRelationsResponse.json();
-
-  // For leaders, get created strategies. For copiers, get copied strategies based on copyRelationships
-  user.strategies =
-    user.userType === 'leader'
-      ? allStrategies.filter((s: any) => s.leaderId === user.id)
-      : allStrategies.filter((s: any) =>
-          copyRelations.some((cr: any) => cr.strategyId === s.id && cr.status === 'active')
-        );
-
+  // Fetch user's strategies based on their type
+  user.strategies = await fetchUserStrategies(user.id, user.userType);
   return user;
 };
 
