@@ -2,19 +2,7 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StrategyListItem from '@/components/strategy/StrategyListItem';
 import SkeletonCard from '../SkeletonCard';
-
-import type { Strategy } from '@/types/strategy.types';
-
-interface ExtendedStrategy extends Strategy {
-  leader?: {
-    username: string;
-    displayName: string;
-    profilePicture?: string;
-  };
-  currency?: string;
-  isFollowing?: boolean;
-  isCopying?: boolean;
-}
+import type { ExtendedStrategy } from '@/types/strategy.types';
 
 interface StrategiesSectionProps {
   loading: boolean;
