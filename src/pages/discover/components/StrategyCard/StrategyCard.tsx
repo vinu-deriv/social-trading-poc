@@ -1,8 +1,9 @@
-import { FC } from "react";
-import Tick from "../../../../assets/icons/Tick";
-import Trophy from "../../../../assets/icons/Trophy";
-import "../LeaderCard/LeaderCard.css";
-import PlusIcon from "@/assets/icons/PlusIcon";
+import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Tick from '../../../../assets/icons/Tick';
+import Trophy from '../../../../assets/icons/Trophy';
+import '../LeaderCard/LeaderCard.css';
+import PlusIcon from '@/assets/icons/PlusIcon';
 
 interface Strategy {
   id: string;
@@ -30,22 +31,33 @@ interface StrategyCardProps {
   large?: boolean;
 }
 
-const StrategyCard: FC<StrategyCardProps> = ({
-  strategy,
-  rank,
-  onFollow,
-  onCopy,
-  large,
-}) => {
+const StrategyCard: FC<StrategyCardProps> = ({ strategy, rank, onFollow, onCopy, large }) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Don't navigate if clicking on buttons
+    if (
+      (e.target as HTMLElement).tagName === 'BUTTON' ||
+      (e.target as HTMLElement).closest('button')
+    ) {
+      return;
+    }
+    navigate(`/strategies/${strategy.id}`);
+  };
+
   const formatCopiers = (count: number) => {
-    return new Intl.NumberFormat("en-US", {
-      notation: "compact",
-      compactDisplay: "short",
+    return new Intl.NumberFormat('en-US', {
+      notation: 'compact',
+      compactDisplay: 'short',
     }).format(count);
   };
 
   return (
-    <div className={`leader-card ${large ? "leader-card--large" : ""}`}>
+    <div
+      className={`leader-card ${large ? 'leader-card--large' : ''}`}
+      onClick={handleCardClick}
+      style={{ cursor: 'pointer' }}
+    >
       {rank && (
         <div className="leader-card__rank">
           {rank <= 3 && <Trophy className="leader-card__trophy" />}#{rank}
@@ -62,7 +74,7 @@ const StrategyCard: FC<StrategyCardProps> = ({
               />
             ) : (
               <div className="leader-card__avatar-placeholder">
-                {strategy.leader?.displayName.slice(0, 2).toUpperCase() || "ST"}
+                {strategy.leader?.displayName.slice(0, 2).toUpperCase() || 'ST'}
               </div>
             )}
             <button
@@ -76,22 +88,20 @@ const StrategyCard: FC<StrategyCardProps> = ({
       </div>
       <div className="leader-card__info">
         <h3 className="leader-card__name">{strategy.name}</h3>
-        <p className="leader-card__leader-name">
-          {strategy.leader?.displayName}
-        </p>
+        <p className="leader-card__leader-name">{strategy.leader?.displayName}</p>
         <span className="leader-card__trade-type">
           {strategy.tradeType
-            .split("_")
-            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(" ")}
+            .split('_')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ')}
         </span>
         <button
           className={`leader-card__copy-button ${
-            strategy.isCopying ? "leader-card__copy-button--copied" : ""
+            strategy.isCopying ? 'leader-card__copy-button--copied' : ''
           }`}
           onClick={() => onCopy(strategy.id)}
         >
-          {strategy.isCopying ? "Stop Copying" : "Copy Strategy"}
+          {strategy.isCopying ? 'Stop Copying' : 'Copy Strategy'}
         </button>
         <div className="leader-card__stats">
           <div className="leader-card__stat">
