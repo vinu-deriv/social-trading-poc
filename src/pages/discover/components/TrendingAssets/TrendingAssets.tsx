@@ -42,9 +42,15 @@ export default function TrendingAssets({ assets, loading }: TrendingAssetsProps)
       if (data.insight) {
         setInsights(prev => {
           // Remove any existing insight for this symbol
-          const filtered = prev.filter(i => i.postId.split('_')[0] !== symbol);
-          // Add new insight
-          return [...filtered, data.insight];
+          const filtered = prev.filter(i => i.symbol !== symbol);
+          // Add new insight with symbol information
+          const insightWithSymbol = {
+            ...data.insight,
+            symbol,
+            symbolName: name,
+            postId: `${symbol}_${Date.now()}`, // Keep postId for backwards compatibility
+          };
+          return [...filtered, insightWithSymbol];
         });
       }
     } catch (error) {

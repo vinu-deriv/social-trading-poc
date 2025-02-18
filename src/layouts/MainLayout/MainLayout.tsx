@@ -6,6 +6,7 @@ import Header from '@/layouts/Header';
 import AppContent from '@/layouts/AppContent';
 import BottomNavigation from '@/components/navigation/BottomNavigation';
 import CreateContentSheet from '@/components/content/CreateContentSheet';
+import ChatBot from '@/components/ChatBot';
 import './MainLayout.css';
 
 const MainLayout = () => {
@@ -45,6 +46,7 @@ const MainLayout = () => {
           currentUser={user}
         />
       )}
+      <ChatBot />
     </div>
   );
 };
