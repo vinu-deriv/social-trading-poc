@@ -28,7 +28,7 @@
   font-size: 13px;
   background: none;
   border: none;
-  padding: 0.5rem 0;
+  padding: 0.5rem 0.3rem;
   cursor: pointer;
   transition: color 0.2s ease;
 }
