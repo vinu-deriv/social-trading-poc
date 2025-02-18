@@ -1415,7 +1415,10 @@
       "expiry_time": "2025-02-14T00:00:00Z",
       "payout": 120,
       "purchase_time": "2025-02-13T00:05:00Z",
-      "symbol": "XYZ"
+      "leader": "Satoshi Nakamoto",
+      "leader_id": "leader1",
+      "strategy_id": "strategy1",
+      "strategy_name": "Conservative USD Strategy"
     },
     {
       "buy_price": 105,
@@ -1426,7 +1429,10 @@
       "expiry_time": "2025-02-14T01:00:00Z",
       "payout": 130,
       "purchase_time": "2025-02-13T01:05:00Z",
-      "symbol": "XYZ"
+      "leader": "Satoshi Nakamoto",
+      "leader_id": "leader1",
+      "strategy_id": "strategy1",
+      "strategy_name": "Conservative USD Strategy"
     },
     {
       "buy_price": 110,
@@ -1437,7 +1443,10 @@
       "expiry_time": "2025-02-14T02:00:00Z",
       "payout": 140,
       "purchase_time": "2025-02-13T02:05:00Z",
-      "symbol": "XYZ"
+      "leader": "John Doe",
+      "leader_id": "leader2",
+      "strategy_id": "strategy2",
+      "strategy_name": "Cool Strategy"
     },
     {
       "buy_price": 95,
@@ -1448,7 +1457,10 @@
       "expiry_time": "2025-02-14T03:00:00Z",
       "payout": 115,
       "purchase_time": "2025-02-13T03:05:00Z",
-      "symbol": "XYZ"
+      "leader": "Nezuko Kamado",
+      "leader_id": "leader1",
+      "strategy_id": "strategy3",
+      "strategy_name": "Aggressive USD Strategy"
     },
     {
       "buy_price": 98,
@@ -1459,7 +1471,10 @@
       "expiry_time": "2025-02-14T04:00:00Z",
       "payout": 118,
       "purchase_time": "2025-02-13T04:05:00Z",
-      "symbol": "XYZ"
+      "leader": "Nezuko Kamado",
+      "leader_id": "leader1",
+      "strategy_id": "strategy3",
+      "strategy_name": "Aggressive USD Strategy"
     },
     {
       "buy_price": 102,
@@ -1470,7 +1485,10 @@
       "expiry_time": "2025-02-14T05:00:00Z",
       "payout": 122,
       "purchase_time": "2025-02-13T05:05:00Z",
-      "symbol": "XYZ"
+      "leader": "John Doe",
+      "leader_id": "leader2",
+      "strategy_id": "strategy4",
+      "strategy_name": "Aggressive USD Strategy"
     },
     {
       "buy_price": 115,
@@ -1481,7 +1499,10 @@
       "expiry_time": "2025-02-14T06:00:00Z",
       "payout": 135,
       "purchase_time": "2025-02-13T06:05:00Z",
-      "symbol": "XYZ"
+      "leader": "John Doe",
+      "leader_id": "leader2",
+      "strategy_id": "strategy4",
+      "strategy_name": "Great Strategy"
     },
     {
       "buy_price": 118,
@@ -1492,7 +1513,10 @@
       "expiry_time": "2025-02-14T07:00:00Z",
       "payout": 138,
       "purchase_time": "2025-02-13T07:05:00Z",
-      "symbol": "XYZ"
+      "leader": "John Doe",
+      "leader_id": "leader2",
+      "strategy_id": "strategy5",
+      "strategy_name": "Great Strategy"
     },
     {
       "buy_price": 120,
@@ -1503,7 +1527,10 @@
       "expiry_time": "2025-02-14T08:00:00Z",
       "payout": 140,
       "purchase_time": "2025-02-13T08:05:00Z",
-      "symbol": "XYZ"
+      "leader": "John Doe",
+      "leader_id": "leader2",
+      "strategy_id": "strategy6",
+      "strategy_name": "Perfect Strategy"
     }
   ],
   "statements": [
