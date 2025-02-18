@@ -35,7 +35,8 @@ export default function InsightsList({
           <div key={insight.postId} className="post-ai-insights">
             <div className="post-ai-insights__header">
               <h4 className="post-ai-insights__title">
-                ✦ AI Insights for {insight.postId.split('_')[0]}
+                ✦ AI Insights for{' '}
+                {insight.symbolName || insight.symbol || insight.postId.split('_')[0]}
               </h4>
               <button
                 className="post-ai-insights__close"

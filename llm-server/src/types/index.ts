@@ -1,8 +1,8 @@
-import { PostSentiment } from "./sentiment";
+import { PostSentiment } from './sentiment';
 
 export interface User {
   id: string;
-  userType: "leader" | "copier";
+  userType: 'leader' | 'copier';
   username: string;
   displayName: string;
   profilePicture: string;
@@ -16,9 +16,9 @@ export interface User {
     totalTrades: number;
   };
   tradingPreferences?: {
-    riskTolerance: "low" | "medium" | "high";
-    investmentStyle: "conservative" | "moderate" | "aggressive";
-    tradingFrequency: "daily" | "weekly" | "monthly";
+    riskTolerance: 'low' | 'medium' | 'high';
+    investmentStyle: 'conservative' | 'moderate' | 'aggressive';
+    tradingFrequency: 'daily' | 'weekly' | 'monthly';
     preferredMarkets: string[];
     maxDrawdown: number;
     targetReturn: number;
@@ -58,7 +58,7 @@ export interface TradingStrategy {
   name: string;
   description: string;
   tradeType: string;
-  riskLevel: "low" | "medium" | "high";
+  riskLevel: 'low' | 'medium' | 'high';
   performance: {
     totalReturn: number;
     winRate: number;

@@ -10,18 +10,18 @@ const leaderSuggestionsService = new LeaderSuggestionsService(dataService);
 router.get('/:copierId', async (req, res) => {
   try {
     const { copierId } = req.params;
-    
+
     const suggestions = await leaderSuggestionsService.findMatchingLeaders(copierId);
-    
+
     res.json({
       suggestions,
-      totalResults: suggestions.length
+      totalResults: suggestions.length,
     });
   } catch (error) {
     console.error('Error getting leader suggestions:', error);
     res.status(500).json({
       error: 'Failed to get leader suggestions',
-      message: error instanceof Error ? error.message : 'Unknown error'
+      message: error instanceof Error ? error.message : 'Unknown error',
     });
   }
 });

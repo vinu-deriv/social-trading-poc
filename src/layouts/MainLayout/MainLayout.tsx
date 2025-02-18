@@ -8,6 +8,7 @@ import Header from '@/layouts/Header';
 import AppContent from '@/layouts/AppContent';
 import BottomNavigation from '@/components/navigation/BottomNavigation';
 import CreateContentSheet from '@/components/content/CreateContentSheet';
+import ChatBot from '@/components/ChatBot';
 import type { StrategyFormData } from '@/modules/strategy/components/StrategyForm/StrategyForm';
 import './MainLayout.css';
 
@@ -56,6 +57,7 @@ const MainLayout = () => {
           currentUser={user}
         />
       )}
+      <ChatBot />
     </div>
   );
 };
