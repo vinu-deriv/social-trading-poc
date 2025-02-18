@@ -4,7 +4,7 @@ import BackIcon from '@/assets/icons/BackIcon';
 import { getStrategy } from '@/modules/strategy/services/strategyService';
 import type Strategy from '@/types/strategy.types';
 import ErrorState from '@/components/feedback/ErrorState';
-import Loader from '@/components/layout/Loader';
+import AILoader from '@/components/AILoader';
 import './StrategyDetails.css';
 
 const StrategyDetails = () => {
@@ -30,7 +30,7 @@ const StrategyDetails = () => {
     fetchStrategy();
   }, [id]);
 
-  if (loading) return <Loader />;
+  if (loading) return <AILoader />;
   if (error) return <ErrorState message={error} />;
   if (!strategy) return <ErrorState message="Strategy not found" />;
 
