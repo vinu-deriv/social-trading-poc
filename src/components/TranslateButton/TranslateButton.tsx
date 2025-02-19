@@ -4,6 +4,7 @@ import { translateText } from '../../services/translationService';
 
 interface TranslateButtonProps {
   text: string;
+  language: 'EN' | 'NON-EN';
   onTranslation: (translatedText: string) => void;
 }
 
@@ -76,7 +77,7 @@ function translateReducer(state: TranslateState, action: TranslateAction): Trans
   }
 }
 
-const TranslateButton = ({ text, onTranslation }: TranslateButtonProps) => {
+const TranslateButton = ({ text, language, onTranslation }: TranslateButtonProps) => {
   const [state, dispatch] = useReducer(translateReducer, initialState);
   const { isTranslating, error, isEnglish, isTranslated, translatedText, showingOriginal } = state;
 
@@ -112,23 +113,6 @@ const TranslateButton = ({ text, onTranslation }: TranslateButtonProps) => {
     return '✦ See translation';
   };
 
-  // Helper function to check if text contains only English characters
-  const isEnglishText = (text: string): boolean => {
-    return /^[A-Za-z0-9\s!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]*$/.test(text);
-  };
-
-  // Helper function to check if text is in English via translation
-  const checkLanguageViaTranslation = async (text: string) => {
-    try {
-      const translatedText = await translateText(text);
-      // If translation returns the same text, it's English
-      dispatch({ type: 'SET_IS_ENGLISH', payload: translatedText === text });
-    } catch {
-      // Hide button on error
-      dispatch({ type: 'SET_IS_ENGLISH', payload: true });
-    }
-  };
-
   // Check if text is English on mount and when text changes
   useEffect(() => {
     // Skip empty text or text that's not loaded yet
@@ -137,13 +121,13 @@ const TranslateButton = ({ text, onTranslation }: TranslateButtonProps) => {
     }
 
     // Skip text that's already in English
-    if (isEnglishText(text)) {
+    if (language === 'EN') {
       dispatch({ type: 'SET_IS_ENGLISH', payload: true });
       return;
     }
 
-    checkLanguageViaTranslation(text);
-  }, [text]);
+    dispatch({ type: 'SET_IS_ENGLISH', payload: translatedText === text });
+  }, []);
 
   if (isEnglish) {
     return null;
