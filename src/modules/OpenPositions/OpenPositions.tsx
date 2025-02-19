@@ -14,93 +14,61 @@ const OpenPositions = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     const fetchContracts = async () => {
       try {
         setLoading(true);
-        const data = await contractService.getContracts(selectedTradeType);
+        const data = await contractService.getContracts(selectedTradeType, abortController.signal);
         setContracts(data);
         setError(null);
       } catch (err) {
-        setError('Failed to fetch contracts');
-        console.error('Error:', err);
+        // Only set error if it's not an abort error
+        if (err instanceof Error && err.name !== 'AbortError') {
+          setError('Failed to fetch contracts');
+          console.error('Error:', err);
+        }
       } finally {
-        setLoading(false);
+        if (!abortController.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchContracts();
+
+    return () => {
+      abortController.abort(); // Cleanup on unmount or when selectedTradeType changes
+    };
   }, [selectedTradeType]);
 
   const handleTradeTypeChange = (selected: string) => {
     setSelectedTradeType(selected as TradeType);
   };
 
-  if (loading) {
-    return (
-      <div className="open-positions">
-        <div className="open-positions-header">
-          <div className="open-positions-tabs">
-            {Object.values(TradeType).map(type => (
-              <Chip
-                key={type}
-                active={selectedTradeType === type}
-                onClick={() => handleTradeTypeChange(type)}
-              >
-                {type}
-              </Chip>
-            ))}
-          </div>
-        </div>
+  const renderContent = () => {
+    if (loading) {
+      return (
         <div className="open-positions-loader">
           <AILoader />
         </div>
-      </div>
-    );
-  }
+      );
+    }
 
-  if (error) {
-    return (
-      <div className="open-positions">
-        <div className="open-positions-header">
-          <div className="open-positions-tabs">
-            {Object.values(TradeType).map(type => (
-              <Chip
-                key={type}
-                active={selectedTradeType === type}
-                onClick={() => handleTradeTypeChange(type)}
-              >
-                {type}
-              </Chip>
-            ))}
-          </div>
-        </div>
-        <ErrorState message={error} />
-      </div>
-    );
-  }
+    if (error) {
+      return <ErrorState message={error} />;
+    }
 
-  if (contracts.length === 0) {
-    return (
-      <div className="open-positions">
-        <div className="open-positions-header">
-          <div className="open-positions-tabs">
-            {Object.values(TradeType).map(type => (
-              <Chip
-                key={type}
-                active={selectedTradeType === type}
-                onClick={() => handleTradeTypeChange(type)}
-              >
-                {type}
-              </Chip>
-            ))}
-          </div>
-        </div>
+    if (contracts.length === 0) {
+      return (
         <ErrorState
           message={`No open positions found for ${selectedTradeType}. Try selecting a different trade type or check back later.`}
         />
-      </div>
-    );
-  }
+      );
+    }
+
+    return <TradePositions contracts={contracts} tradeType={selectedTradeType} />;
+  };
 
   return (
     <div className="open-positions">
@@ -117,7 +85,7 @@ const OpenPositions = () => {
           ))}
         </div>
       </div>
-      <TradePositions contracts={contracts} tradeType={selectedTradeType} />
+      {renderContent()}
     </div>
   );
 };

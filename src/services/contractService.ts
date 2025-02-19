@@ -62,7 +62,7 @@ const transformContract = (contract: Contract): ContractResponse => ({
 });
 
 export const contractService = {
-  async getContracts(contractType?: TradeType): Promise<ContractResponse[]> {
+  async getContracts(contractType?: TradeType, signal?: AbortSignal): Promise<ContractResponse[]> {
     const auth = getStoredAuth();
     if (!auth) {
       throw new Error('User not authenticated');
@@ -74,7 +74,7 @@ export const contractService = {
       queryParams.append('contractType', contractType);
     }
 
-    const response = await fetch(`${BASE_URL}/contracts?${queryParams.toString()}`);
+    const response = await fetch(`${BASE_URL}/contracts?${queryParams.toString()}`, { signal });
     if (!response.ok) {
       throw new Error('Failed to fetch contracts');
     }

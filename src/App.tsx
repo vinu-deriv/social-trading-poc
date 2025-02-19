@@ -1,4 +1,5 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { useEffect } from 'react';
 import { routes } from '@/routes/routes';
 import { ThemeProvider } from '@/context/ThemeContext';
 import './App.css';
@@ -6,15 +7,21 @@ import './App.css';
 function App() {
   const router = createBrowserRouter(routes);
 
-  // Add class to prevent transitions on page load
-  const removeNoTransition = () => {
-    document.documentElement.classList.remove('no-transition');
-  };
+  useEffect(() => {
+    // Add no-transition class initially
+    document.documentElement.classList.add('no-transition');
 
-  // Add no-transition class initially
-  document.documentElement.classList.add('no-transition');
-  // Remove it after a short delay
-  setTimeout(removeNoTransition, 100);
+    // Remove it after a short delay
+    const timeoutId = setTimeout(() => {
+      document.documentElement.classList.remove('no-transition');
+    }, 100);
+
+    // Cleanup function to remove class and clear timeout if component unmounts
+    return () => {
+      clearTimeout(timeoutId);
+      document.documentElement.classList.remove('no-transition');
+    };
+  }, []); // Empty dependency array since this should only run once on mount
 
   return (
     <ThemeProvider>
