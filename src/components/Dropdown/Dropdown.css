@@ -17,6 +17,14 @@
   cursor: pointer;
 }
 
+.dropdown-arrow {
+  transition: transform 0.2s ease;
+}
+
+.dropdown-arrow.rotated {
+  transform: rotate(180deg);
+}
+
 .dropdown-header:focus {
   outline: none;
   border-color: #999;
