@@ -1,0 +1,41 @@
+.profile-trading-preferences {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background-color: #00d0ff10;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 1.5rem;
+}
+
+.profile-trading-preferences__stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.profile-trading-preferences__label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.profile-trading-preferences__value {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+    text-transform: capitalize;
+}
+
+@media (max-width: 640px) {
+    .profile-trading-preferences {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        padding: 1rem;
+        max-width: 100%;
+    }
+}
