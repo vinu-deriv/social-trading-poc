@@ -1,10 +1,16 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { strategyService } from '@/services/strategy';
 import './StrategiesSection.css';
 import '../shared.css';
 import { useNavigate } from 'react-router-dom';
 import StrategyListItem from '@/components/strategy/StrategyListItem';
 import SkeletonCard from '../SkeletonCard';
-import type { ExtendedStrategy } from '@/types/strategy.types';
+import AIButton from '@/components/AIButton/AIButton';
+import StrategyComparison from '../StrategyComparison/StrategyComparison';
+import type {
+  ExtendedStrategy,
+  StrategyComparison as ComparisonType,
+} from '@/types/strategy.types';
 
 interface StrategiesSectionProps {
   loading: boolean;
@@ -14,6 +20,19 @@ interface StrategiesSectionProps {
 
 export default function StrategiesSection({ loading, strategies, onCopy }: StrategiesSectionProps) {
   const navigate = useNavigate();
+  const [selectedStrategies, setSelectedStrategies] = useState<string[]>([]);
+  const [isComparing, setIsComparing] = useState(false);
+  const [comparisonData, setComparisonData] = useState<ComparisonType | null>(null);
+  const [showComparison, setShowComparison] = useState(false);
+
+  const handleStrategyClick = (strategyId: string) => {
+    if (selectedStrategies.length > 0) {
+      handleStrategySelect(strategyId);
+    } else {
+      navigate(`/strategies/${strategyId}`);
+    }
+  };
+
   // Strategy sections
   const topStrategies = useMemo(() => {
     return strategies.slice(0, 3);
@@ -27,9 +46,54 @@ export default function StrategiesSection({ loading, strategies, onCopy }: Strat
     return strategies.slice(8, 13);
   }, [strategies]);
 
+  const handleStrategySelect = (strategyId: string) => {
+    setSelectedStrategies(prev => {
+      if (prev.includes(strategyId)) {
+        return prev.filter(id => id !== strategyId);
+      }
+      if (prev.length >= 4) {
+        return prev;
+      }
+      return [...prev, strategyId];
+    });
+  };
+
+  const handleCompare = async () => {
+    if (selectedStrategies.length > 1) {
+      try {
+        setIsComparing(true);
+        const selectedStrategyObjects = strategies.filter(s => selectedStrategies.includes(s.id));
+        const comparison = await strategyService.compareStrategies(selectedStrategyObjects);
+        setComparisonData(comparison);
+        setShowComparison(true);
+      } catch (error) {
+        console.error('Error comparing strategies:', error);
+      } finally {
+        setIsComparing(false);
+      }
+    }
+  };
+
+  const handleCloseComparison = () => {
+    setShowComparison(false);
+    setSelectedStrategies([]);
+  };
+
   if (loading) {
     return (
-      <>
+      <div className="strategies-section">
+        {selectedStrategies.length > 0 && (
+          <div className="strategies-compare-bar">
+            <AIButton
+              onClick={handleCompare}
+              disabled={selectedStrategies.length < 2}
+              isLoading={isComparing}
+              loadingText="Comparing..."
+            >
+              Compare ({selectedStrategies.length}/4)
+            </AIButton>
+          </div>
+        )}
         <h2 className="section-title">Top Strategies</h2>
         <div className="top-strategies">
           {[...Array(3)].map((_, index) => (
@@ -50,12 +114,33 @@ export default function StrategiesSection({ loading, strategies, onCopy }: Strat
             <SkeletonCard key={`popular-${index}`} />
           ))}
         </div>
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div className="strategies-section">
+      {selectedStrategies.length > 0 && (
+        <div className="strategies-compare-bar">
+          <AIButton
+            onClick={handleCompare}
+            disabled={selectedStrategies.length < 2}
+            isLoading={isComparing}
+            loadingText="Comparing..."
+          >
+            Compare ({selectedStrategies.length}/4)
+          </AIButton>
+        </div>
+      )}
+
+      {comparisonData && (
+        <StrategyComparison
+          comparison={comparisonData}
+          isOpen={showComparison}
+          onClose={handleCloseComparison}
+        />
+      )}
+
       <h2 className="section-title">Top Strategies</h2>
       <div className="top-strategies">
         {topStrategies.map((strategy, index) => (
@@ -63,10 +148,10 @@ export default function StrategiesSection({ loading, strategies, onCopy }: Strat
             key={strategy.id}
             strategy={strategy}
             rank={index + 1}
-            showCopyButton={true}
-            isCopying={strategy.isCopying}
             onCopy={(strategyId: string) => onCopy(strategyId)}
-            onClick={(strategyId: string) => navigate(`/strategies/${strategyId}`)}
+            onClick={handleStrategyClick}
+            selected={selectedStrategies.includes(strategy.id)}
+            onSelect={() => handleStrategySelect(strategy.id)}
           />
         ))}
       </div>
@@ -77,10 +162,10 @@ export default function StrategiesSection({ loading, strategies, onCopy }: Strat
           <StrategyListItem
             key={strategy.id}
             strategy={strategy}
-            showCopyButton={true}
-            isCopying={strategy.isCopying}
             onCopy={(strategyId: string) => onCopy(strategyId)}
-            onClick={(strategyId: string) => navigate(`/strategies/${strategyId}`)}
+            onClick={handleStrategyClick}
+            selected={selectedStrategies.includes(strategy.id)}
+            onSelect={() => handleStrategySelect(strategy.id)}
           />
         ))}
       </div>
@@ -91,13 +176,13 @@ export default function StrategiesSection({ loading, strategies, onCopy }: Strat
           <StrategyListItem
             key={strategy.id}
             strategy={strategy}
-            showCopyButton={true}
-            isCopying={strategy.isCopying}
             onCopy={(strategyId: string) => onCopy(strategyId)}
-            onClick={(strategyId: string) => navigate(`/strategies/${strategyId}`)}
+            onClick={handleStrategyClick}
+            selected={selectedStrategies.includes(strategy.id)}
+            onSelect={() => handleStrategySelect(strategy.id)}
           />
         ))}
       </div>
-    </>
+    </div>
   );
 }

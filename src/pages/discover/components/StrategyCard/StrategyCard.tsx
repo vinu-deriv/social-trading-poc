@@ -6,6 +6,7 @@ import Trophy from '../../../../assets/icons/Trophy';
 import './StrategyCard.css';
 import PlusIcon from '@/assets/icons/PlusIcon';
 import { toggleUserFollow } from '@/services/userService';
+import { useLongPress } from '@/hooks/useLongPress';
 
 import type { ExtendedStrategy } from '../../../../types/strategy.types';
 
@@ -46,15 +47,18 @@ const StrategyCard: FC<StrategyCardProps> = ({
     }
   };
 
-  const handleCardClick = (e: React.MouseEvent) => {
+  const handleCardClick = () => {
+    navigate(`/strategies/${strategy.id}`);
+  };
+
+  const handleButtonClick = (e: React.MouseEvent) => {
     // Don't navigate if clicking on buttons
     if (
       (e.target as HTMLElement).tagName === 'BUTTON' ||
       (e.target as HTMLElement).closest('button')
     ) {
-      return;
+      e.stopPropagation();
     }
-    navigate(`/strategies/${strategy.id}`);
   };
 
   const formatCopiers = (count: number) => {
@@ -66,46 +70,47 @@ const StrategyCard: FC<StrategyCardProps> = ({
 
   return (
     <div
-      className={`leader-card ${large ? 'leader-card--large' : ''} ${selected ? 'leader-card--selected' : ''}`}
-      onClick={e => {
-        if (onSelect) {
-          e.stopPropagation();
-          onSelect();
-        } else {
-          handleCardClick(e);
-        }
-      }}
+      className={`strategy-card ${large ? 'strategy-card--large' : ''} ${selected ? 'strategy-card--selected' : ''}`}
+      {...useLongPress({
+        onClick: onSelect ? undefined : handleCardClick,
+        onLongPress: () => onSelect?.(),
+      })}
+      onClick={handleButtonClick}
       style={{ cursor: 'pointer' }}
     >
       {rank && (
-        <div className="leader-card__rank">
-          {rank <= 3 && <Trophy className="leader-card__trophy" />}#{rank}
+        <div className="strategy-card__rank">
+          {rank <= 3 && <Trophy className="strategy-card__trophy" />}#{rank}
         </div>
       )}
-      <div className="leader-card__banner">
-        <div className="leader-card__avatar">
-          <div className="leader-card__avatar-wrapper">
+      <div className="strategy-card__banner">
+        <div className="strategy-card__avatar">
+          <div className="strategy-card__avatar-wrapper">
             {strategy.leader?.profilePicture ? (
               <img
                 src={strategy.leader.profilePicture}
                 alt={strategy.leader.displayName}
-                className="leader-card__avatar-img"
+                className="strategy-card__avatar-img"
               />
             ) : (
-              <div className="leader-card__avatar-placeholder">
+              <div className="strategy-card__avatar-placeholder">
                 {strategy.leader?.displayName.slice(0, 2).toUpperCase() || 'ST'}
               </div>
             )}
-            <button className="leader-card__follow-icon" onClick={handleFollow} disabled={loading}>
+            <button
+              className="strategy-card__follow-icon"
+              onClick={handleFollow}
+              disabled={loading}
+            >
               {isFollowing ? <Tick /> : <PlusIcon />}
             </button>
           </div>
         </div>
       </div>
-      <div className="leader-card__info">
-        <h3 className="leader-card__name">{strategy.name}</h3>
-        <p className="leader-card__leader-name">{strategy.leader?.displayName}</p>
-        <span className="leader-card__trade-type">
+      <div className="strategy-card__info">
+        <h3 className="strategy-card__name">{strategy.name}</h3>
+        <p className="strategy-card__leader-name">{strategy.leader?.displayName}</p>
+        <span className="strategy-card__trade-type">
           {strategy.tradeType
             ? strategy.tradeType
                 .split('_')
@@ -115,8 +120,8 @@ const StrategyCard: FC<StrategyCardProps> = ({
         </span>
         {!selected && (
           <button
-            className={`leader-card__copy-button ${
-              strategy.isCopying ? 'leader-card__copy-button--copied' : ''
+            className={`strategy-card__copy-button ${
+              strategy.isCopying ? 'strategy-card__copy-button--copied' : ''
             }`}
             onClick={e => {
               e.stopPropagation();
@@ -126,14 +131,14 @@ const StrategyCard: FC<StrategyCardProps> = ({
             {strategy.isCopying ? 'Stop Copying' : 'Copy Strategy'}
           </button>
         )}
-        <div className="leader-card__stats">
-          <div className="leader-card__stat">
-            <span className="leader-card__stat-label">Currency</span>
-            <span className="leader-card__stat-value">{strategy.currency}</span>
+        <div className="strategy-card__stats">
+          <div className="strategy-card__stat">
+            <span className="strategy-card__stat-label">Currency</span>
+            <span className="strategy-card__stat-value">{strategy.currency}</span>
           </div>
-          <div className="leader-card__stat">
-            <span className="leader-card__stat-label">Copiers</span>
-            <span className="leader-card__stat-value">
+          <div className="strategy-card__stat">
+            <span className="strategy-card__stat-label">Copiers</span>
+            <span className="strategy-card__stat-value">
               {formatCopiers(strategy.copiers.length)}
             </span>
           </div>

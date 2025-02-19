@@ -1,5 +1,9 @@
 import { FC } from 'react';
 import type { Strategy } from '@/types/strategy.types';
+import { useLongPress } from '@/hooks/useLongPress';
+import Trophy from '@/assets/icons/Trophy';
+import Tick from '@/assets/icons/Tick';
+import './StrategyListItem.css';
 
 interface ExtendedStrategy extends Strategy {
   leader?: {
@@ -8,8 +12,6 @@ interface ExtendedStrategy extends Strategy {
     profilePicture?: string;
   };
 }
-import Trophy from '@/assets/icons/Trophy';
-import './StrategyListItem.css';
 
 interface StrategyListItemProps {
   strategy: ExtendedStrategy;
@@ -18,6 +20,8 @@ interface StrategyListItemProps {
   onCopy?: (strategyId: string, isCopying: boolean) => void;
   onClick?: (strategyId: string) => void;
   rank?: number;
+  selected?: boolean;
+  onSelect?: () => void;
 }
 
 const StrategyListItem: FC<StrategyListItemProps> = ({
@@ -27,18 +31,51 @@ const StrategyListItem: FC<StrategyListItemProps> = ({
   onCopy,
   onClick,
   rank,
+  selected = false,
+  onSelect,
 }) => {
   const getRiskLevelClass = (riskLevel: string) => {
     const level = riskLevel.toLowerCase();
     return `strategy-list__risk strategy-list__risk--${level}`;
   };
 
+  const handleClick = () => {
+    if (selected) {
+      onSelect?.();
+    } else {
+      onClick?.(strategy.id);
+    }
+  };
+
+  const handleButtonClick = (e: React.MouseEvent) => {
+    // Stop propagation if clicking on buttons
+    if (
+      (e.target as HTMLElement).tagName === 'BUTTON' ||
+      (e.target as HTMLElement).closest('button')
+    ) {
+      e.stopPropagation();
+    }
+  };
+
+  const longPressHandlers = useLongPress({
+    onClick: handleClick,
+    onLongPress: () => onSelect?.(),
+  });
+
   return (
     <div
-      className={`strategy-list__item ${rank ? 'strategy-list__item--ranked' : ''}`}
-      onClick={() => onClick?.(strategy.id)}
+      className={`strategy-list__item ${rank ? 'strategy-list__item--ranked' : ''} ${
+        selected ? 'strategy-list__item--selected' : ''
+      }`}
+      {...longPressHandlers}
+      onClick={handleButtonClick}
       style={{ cursor: 'pointer' }}
     >
+      {selected && (
+        <div className="strategy-list__tick">
+          <Tick />
+        </div>
+      )}
       <div className="strategy-list__header">
         <div className="strategy-list__header-main">
           <div className="strategy-list__title">
@@ -47,7 +84,7 @@ const StrategyListItem: FC<StrategyListItemProps> = ({
               <span className="strategy-list__username">by @{strategy.leader.username}</span>
             )}
           </div>
-          {showCopyButton && onCopy && (
+          {!selected && showCopyButton && onCopy && (
             <button
               className={`strategy-list__copy-btn ${
                 isCopying

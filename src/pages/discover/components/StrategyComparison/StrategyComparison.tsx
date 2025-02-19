@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  ReferenceLine,
 } from 'recharts';
 import './StrategyComparison.css';
 
@@ -64,17 +65,18 @@ export const StrategyComparison: FC<Props> = ({ comparison, isOpen, onClose }) =
               <BarChart
                 data={Object.entries(comparison.comparisonMatrix.performance).map(
                   ([name, perf]) => ({
-                    name: name.split(' ').join('\n'), // Break long names into multiple lines
+                    name: name.split(' ').join('\n'),
                     'Total Return': perf.totalReturn,
                     'Win Rate': perf.winRate,
                     'Avg Profit': perf.averageProfit,
-                    originalName: name, // Keep original name for tooltip
+                    originalName: name,
                   })
                 )}
                 margin={{ top: 40, right: 30, left: 30, bottom: 90 }}
-                barSize={35}
+                barGap={2}
+                barCategoryGap={20}
               >
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis
                   dataKey="name"
                   height={60}
@@ -85,13 +87,14 @@ export const StrategyComparison: FC<Props> = ({ comparison, isOpen, onClose }) =
                 />
                 <YAxis
                   yAxisId="percent"
-                  label={{ value: 'Percentage', angle: -90, position: 'insideLeft' }}
+                  label={{ value: 'Value', angle: -90, position: 'insideLeft' }}
+                  domain={[-100, 100]}
+                  tickFormatter={value => `${value}%`}
+                  ticks={[-100, -75, -50, -25, 0, 25, 50, 75, 100]}
+                  axisLine={true}
+                  scale="linear"
                 />
-                <YAxis
-                  yAxisId="profit"
-                  orientation="right"
-                  label={{ value: 'Profit', angle: 90, position: 'insideRight' }}
-                />
+                <ReferenceLine y={0} stroke="#666" yAxisId="percent" />
                 <Tooltip
                   formatter={(value, name) => {
                     if (name === 'Avg Profit') return [`${value}`, 'Average Profit'];
@@ -105,9 +108,30 @@ export const StrategyComparison: FC<Props> = ({ comparison, isOpen, onClose }) =
                   verticalAlign="top"
                   align="center"
                 />
-                <Bar yAxisId="percent" dataKey="Total Return" fill="#00D0FF" name="Total Return" />
-                <Bar yAxisId="percent" dataKey="Win Rate" fill="#00A3FF" name="Win Rate" />
-                <Bar yAxisId="profit" dataKey="Avg Profit" fill="#0077FF" name="Average Profit" />
+                <Bar
+                  yAxisId="percent"
+                  dataKey="Total Return"
+                  fill="#00D0FF"
+                  name="Total Return"
+                  radius={[4, 4, 0, 0]}
+                  barSize={35}
+                />
+                <Bar
+                  yAxisId="percent"
+                  dataKey="Win Rate"
+                  fill="#00A3FF"
+                  name="Win Rate"
+                  radius={[4, 4, 0, 0]}
+                  barSize={35}
+                />
+                <Bar
+                  yAxisId="percent"
+                  dataKey="Avg Profit"
+                  fill="#0077FF"
+                  name="Average Profit"
+                  radius={[4, 4, 0, 0]}
+                  barSize={35}
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
