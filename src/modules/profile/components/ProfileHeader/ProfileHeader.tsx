@@ -4,6 +4,7 @@ import ProfileStats from './components/ProfileStats';
 import ProfilePerformance from './components/ProfilePerformance';
 import ProfileTradingPreferences from './components/ProfileTradingPreferences';
 import './ProfileHeader.css';
+import { UserType } from '@/types/user';
 
 interface ProfileHeaderProps {
   profile: User;
@@ -11,6 +12,7 @@ interface ProfileHeaderProps {
   isFollowing: boolean;
   onFollow: () => Promise<void>;
   onUnfollow: () => Promise<void>;
+  onProfileUpdate?: (updatedProfile: User) => void;
 }
 
 const ProfileHeader = ({
@@ -19,8 +21,10 @@ const ProfileHeader = ({
   isFollowing,
   onFollow,
   onUnfollow,
+  onProfileUpdate,
 }: ProfileHeaderProps) => {
   const {
+    id,
     username,
     profilePicture,
     userType,
@@ -31,6 +35,15 @@ const ProfileHeader = ({
     tradingPreferences,
   } = profile;
 
+  const handleUpgrade = () => {
+    if (onProfileUpdate) {
+      onProfileUpdate({
+        ...profile,
+        userType: UserType.LEADER,
+      });
+    }
+  };
+
   return (
     <div className="profile-header">
       <div className="profile-header__info">
@@ -39,10 +52,12 @@ const ProfileHeader = ({
           displayName={displayName}
           profilePicture={profilePicture}
           userType={userType}
+          userId={id}
           isOwnProfile={isOwnProfile}
           isFollowing={isFollowing}
           onFollow={onFollow}
           onUnfollow={onUnfollow}
+          onUpgrade={handleUpgrade}
         />
         <ProfileStats
           followers={followers}
