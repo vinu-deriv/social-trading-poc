@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import "./Dropdown.css";
+import React, { useState } from 'react';
+import ChevronDown from '../../assets/icons/ChevronDown';
+import './Dropdown.css';
 
 interface DropdownProps {
   options: string[];
@@ -25,20 +26,17 @@ const Dropdown: React.FC<DropdownProps> = ({ options, selected, onSelect }) => {
         className="dropdown-header"
         tabIndex={0}
         onClick={toggleDropdown}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") toggleDropdown();
+        onKeyDown={e => {
+          if (e.key === 'Enter') toggleDropdown();
         }}
       >
         {selected}
+        <ChevronDown className={`dropdown-arrow ${isOpen ? 'rotated' : ''}`} />
       </div>
       {isOpen && (
         <ul className="dropdown-list">
-          {options.map((option) => (
-            <li
-              key={option}
-              className="dropdown-item"
-              onClick={() => handleSelect(option)}
-            >
+          {options.map(option => (
+            <li key={option} className="dropdown-item" onClick={() => handleSelect(option)}>
               {option}
             </li>
           ))}

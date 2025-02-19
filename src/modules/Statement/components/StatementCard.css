@@ -1,0 +1,100 @@
+.statement-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  min-width: 320px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.statement-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.statement-card__type {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.statement-card__type-text {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+}
+
+.statement-card__multiplier {
+  font-size: 14px;
+  color: #666;
+}
+
+.statement-card__action {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.statement-card__action.buy {
+  background-color: #e6f4ea;
+  color: #1e7e34;
+}
+
+.statement-card__action.sell {
+  background-color: #fbe9e7;
+  color: #d32f2f;
+}
+
+.statement-card__content {
+  display: grid;
+  gap: 12px;
+}
+
+.statement-card__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statement-card__label {
+  font-size: 14px;
+  color: #666;
+}
+
+.statement-card__value {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.statement-card__currency {
+  background-color: #e9ecef;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.statement-card__amount {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.statement-card__amount.negative {
+  color: #d32f2f;
+}
+
+.statement-card__amount.positive {
+  color: #1e7e34;
+}
+
+.statement-card__balance {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}

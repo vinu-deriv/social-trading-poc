@@ -127,7 +127,7 @@ const CopierOverviewContent: React.FC = () => {
       </div>
       <div className="charts-section">
         <div className="chart-card">
-          <h3>Performance Over Time</h3>
+          <h3 className="chart-title">Performance Over Time</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={performanceData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -142,7 +142,7 @@ const CopierOverviewContent: React.FC = () => {
         </div>
 
         <div className="chart-card">
-          <h3>Asset Allocation</h3>
+          <h3 className="chart-title">Asset Allocation</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -163,7 +163,7 @@ const CopierOverviewContent: React.FC = () => {
         </div>
 
         <div className="chart-card">
-          <h3>Win/Loss Trade History</h3>
+          <h3 className="chart-title">Win/Loss Trade History</h3>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={tradeData}>
               <CartesianGrid strokeDasharray="3 3" />

@@ -1533,57 +1533,57 @@
   "statements": [
     {
       "type": "Multipliers",
-      "action_type": "buy",
+      "actionType": "buy",
       "currency": "USD",
       "amount": -3,
-      "balance_after": 9969.54,
-      "reference_id": 543129132101,
-      "transaction_time": "2025-02-13T08:00:00Z"
+      "balanceAfter": 9969.54,
+      "referenceId": 543129132101,
+      "transactionTime": "2025-02-13T08:00:00Z"
     },
     {
       "type": "Multipliers",
-      "action_type": "sell",
+      "actionType": "sell",
       "currency": "USD",
       "amount": 0,
-      "balance_after": 9972.54,
-      "reference_id": 543129132108,
-      "transaction_time": "2025-01-14T08:00:00Z"
+      "balanceAfter": 9972.54,
+      "referenceId": 543129132108,
+      "transactionTime": "2025-01-14T08:00:00Z"
     },
     {
       "type": "Options",
-      "action_type": "buy",
+      "actionType": "buy",
       "currency": "USD",
       "amount": -3,
-      "balance_after": 9972.54,
-      "reference_id": 543129132105,
-      "transaction_time": "2025-04-10T08:00:00Z"
+      "balanceAfter": 9972.54,
+      "referenceId": 543129132105,
+      "transactionTime": "2025-04-10T08:00:00Z"
     },
     {
       "type": "Options",
-      "action_type": "sell",
+      "actionType": "sell",
       "currency": "USD",
       "amount": 0,
-      "balance_after": 9975.54,
-      "reference_id": 543112652068,
-      "transaction_time": "2025-06-11T08:00:00Z"
+      "balanceAfter": 9975.54,
+      "referenceId": 543112652068,
+      "transactionTime": "2025-06-11T08:00:00Z"
     },
     {
       "type": "Accumulators",
-      "action_type": "buy",
+      "actionType": "buy",
       "currency": "USD",
       "amount": -3,
-      "balance_after": 9975.54,
-      "reference_id": 543129132104,
-      "transaction_time": "2025-07-12T08:00:00Z"
+      "balanceAfter": 9975.54,
+      "referenceId": 543129132104,
+      "transactionTime": "2025-07-12T08:00:00Z"
     },
     {
       "type": "Accumulators",
-      "action_type": "buy",
+      "actionType": "buy",
       "currency": "USD",
       "amount": -3,
-      "balance_after": 9975.54,
-      "reference_id": 5431291321082,
-      "transaction_time": "2025-08-01T08:00:00Z"
+      "balanceAfter": 9975.54,
+      "referenceId": 5431291321082,
+      "transactionTime": "2025-08-01T08:00:00Z"
     }
   ]
 }
