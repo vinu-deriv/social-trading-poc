@@ -20,7 +20,6 @@ export default function InsightsList({
   hideCloseButtons,
   hideLoader,
 }: InsightsListProps) {
-  console.log(insights, 'insights', loadingSymbol, insights.length === 0 && !loadingSymbol);
   if (insights.length === 0) {
     return null;
   }
