@@ -29,7 +29,6 @@ const TradePositions = ({ contracts }: PositionsTableProps) => {
           strategyId={contract.strategyId}
           strategyDisplayName={contract.strategyName}
           multiplier={contract.multiplier}
-          contractCost={contract.contractCost}
           buyPrice={contract.buyPrice}
           dateStart={contract.dateStart}
           expiryTime={contract.expiryTime}
