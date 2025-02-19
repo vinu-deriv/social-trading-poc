@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import Button from '@/components/input/Button';
 import { upgradeToLeader } from '@/services/userService';
+import UpgradeModal from '@/components/modals/UpgradeModal/UpgradeModal';
 import './ProfileActions.css';
 
 interface ProfileActionsProps {
@@ -21,10 +23,17 @@ const ProfileActions = ({
   onUnfollow,
   onUpgrade,
 }: ProfileActionsProps) => {
-  const handleUpgrade = async () => {
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+
+  const handleUpgradeClick = () => {
+    setIsUpgradeModalOpen(true);
+  };
+
+  const handleUpgradeConfirm = async () => {
     try {
       await upgradeToLeader(userId);
       onUpgrade?.();
+      setIsUpgradeModalOpen(false);
     } catch (error) {
       console.error('Error upgrading to leader:', error);
       // Here you might want to show an error notification to the user
@@ -42,9 +51,16 @@ const ProfileActions = ({
         </Button>
       )}
       {isOwnProfile && userType === 'copier' && (
-        <Button variant="secondary" onClick={handleUpgrade}>
-          Upgrade to Leader
-        </Button>
+        <>
+          <Button variant="secondary" onClick={handleUpgradeClick}>
+            Upgrade to Leader
+          </Button>
+          <UpgradeModal
+            isOpen={isUpgradeModalOpen}
+            onClose={() => setIsUpgradeModalOpen(false)}
+            onConfirm={handleUpgradeConfirm}
+          />
+        </>
       )}
     </div>
   );
