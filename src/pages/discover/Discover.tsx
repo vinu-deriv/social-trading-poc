@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { CopyRelationship } from '../../types/copy.types';
 import TabNavigation from '../../components/navigation/TabNavigation';
+import AILoader from '../../components/AILoader';
 import LeadersSection from './components/LeadersSection';
 import StrategiesSection from './components/StrategiesSection';
 import TrendingAssets from './components/TrendingAssets';
@@ -42,7 +43,7 @@ export default function Discover() {
   const [strategies, setStrategies] = useState<ExtendedStrategy[]>([]);
   const [assets, setAssets] = useState<Asset[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isLeader, setIsLeader] = useState(false);
+  const [isLeader, setIsLeader] = useState<boolean | null>(null);
 
   const JSON_SERVER_URL = import.meta.env.VITE_JSON_SERVER_URL;
   const LLM_SERVER_URL = import.meta.env.VITE_LLM_SERVER_URL;
@@ -55,7 +56,12 @@ export default function Discover() {
 
   const { user } = useAuth();
 
-  const tabs = isLeader ? ['Trending Assets'] : ['Leaders', 'Strategies', 'Trending Assets'];
+  const tabs =
+    isLeader === null
+      ? []
+      : isLeader
+        ? ['Trending Assets']
+        : ['Leaders', 'Strategies', 'Trending Assets'];
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -136,9 +142,16 @@ export default function Discover() {
   );
 
   useEffect(() => {
-    // Set initial active tab based on user type
-    setActiveTab(isLeader ? 'Trending Assets' : 'Leaders');
+    // Set initial active tab based on user type when isLeader is determined
+    if (isLeader !== null) {
+      setActiveTab(isLeader ? 'Trending Assets' : 'Leaders');
+    }
   }, [isLeader]);
+
+  // Set isLeader based on auth user
+  useEffect(() => {
+    setIsLeader(user?.userType === 'leader');
+  }, [user]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -152,12 +165,6 @@ export default function Discover() {
 
         const [users, strategiesData, accounts]: [User[], Strategy[], CurrencyAccount[]] =
           await Promise.all([usersRes.json(), strategiesRes.json(), currencyAccountsRes.json()]);
-
-        // Check if current user is a leader
-        if (user) {
-          const currentUser = users.find(u => u.id === user.id);
-          setIsLeader(currentUser?.userType === 'leader');
-        }
 
         // Get copy relationships for current user
         const copyRelationsRes = await fetch(
@@ -198,8 +205,10 @@ export default function Discover() {
       }
     };
 
-    fetchData();
-  }, [user]);
+    if (isLeader !== null && !isLeader) {
+      fetchData();
+    }
+  }, [user, isLeader]);
 
   // Fetch trending assets separately
   useEffect(() => {
@@ -225,7 +234,11 @@ export default function Discover() {
 
   return (
     <div className="discover">
-      <TabNavigation tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
+      {isLeader === null ? (
+        <AILoader />
+      ) : (
+        <TabNavigation tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
+      )}
       {activeTab === 'Leaders' ? (
         <LeadersSection />
       ) : activeTab === 'Strategies' ? (
