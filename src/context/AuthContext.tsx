@@ -1,16 +1,6 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from "react";
-import {
-  login as authLogin,
-  logout as authLogout,
-  getStoredAuth,
-} from "../services/authService";
-import type User from "@/types/user.types";
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { login as authLogin, logout as authLogout, getStoredAuth } from '../services/authService';
+import type User from '@/types/user.types';
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -27,6 +17,7 @@ interface AuthContextType {
   login: (username: string, password: string) => Promise<User>;
   logout: () => void;
   clearError: () => void;
+  updateUser: (updatedUser: User) => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -50,13 +41,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         error: null,
       });
     } else {
-      setState((prev) => ({ ...prev, loading: false }));
+      setState(prev => ({ ...prev, loading: false }));
     }
   }, []);
 
   const login = async (username: string, password: string): Promise<User> => {
     try {
-      setState((prev) => ({ ...prev, loading: true, error: null }));
+      setState(prev => ({ ...prev, loading: true, error: null }));
       const authData = await authLogin({ username, password });
       const user: User = {
         ...authData.user,
@@ -68,10 +59,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           winRate: 0,
           totalPnL: 0,
           monthlyReturn: 0,
-          totalTrades: 0
+          totalTrades: 0,
         },
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       };
       setState({
         isAuthenticated: true,
@@ -81,10 +72,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       return user;
     } catch (error) {
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
         loading: false,
-        error: error instanceof Error ? error.message : "Authentication failed",
+        error: error instanceof Error ? error.message : 'Authentication failed',
       }));
       throw error;
     }
@@ -101,7 +92,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const clearError = () => {
-    setState((prev) => ({ ...prev, error: null }));
+    setState(prev => ({ ...prev, error: null }));
+  };
+
+  const updateUser = (updatedUser: User) => {
+    if (state.user && state.user.id === updatedUser.id) {
+      // Update localStorage
+      const storedAuth = getStoredAuth();
+      if (storedAuth) {
+        localStorage.setItem(
+          'auth',
+          JSON.stringify({
+            ...storedAuth,
+            user: updatedUser,
+          })
+        );
+      }
+
+      // Update state
+      setState(prev => ({
+        ...prev,
+        user: updatedUser,
+      }));
+    }
   };
 
   const value = {
@@ -109,6 +122,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     login,
     logout,
     clearError,
+    updateUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -117,7 +131,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };

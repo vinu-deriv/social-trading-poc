@@ -16,6 +16,7 @@ const Profile = () => {
     error,
     handleFollow,
     handleUnfollow,
+    handleProfileUpdate,
     refetch,
   } = useProfile(username);
 
@@ -45,6 +46,7 @@ const Profile = () => {
         isFollowing={isFollowing}
         onFollow={handleFollow}
         onUnfollow={handleUnfollow}
+        onProfileUpdate={handleProfileUpdate}
       />
       <div className="profile-page__content">
         <div className="profile-page__feed">

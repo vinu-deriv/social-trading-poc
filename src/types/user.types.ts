@@ -1,4 +1,5 @@
 import type Strategy from './strategy.types';
+import type { TradingPreferences } from './trading';
 
 export enum UserType {
   LEADER = 'leader',
@@ -25,6 +26,7 @@ interface User {
   createdAt?: string;
   updatedAt?: string;
   isFirstLogin?: boolean;
+  tradingPreferences?: TradingPreferences;
 }
 
 export default User;
