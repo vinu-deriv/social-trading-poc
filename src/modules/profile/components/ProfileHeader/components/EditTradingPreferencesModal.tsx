@@ -5,6 +5,48 @@ import { RiskStep } from '@/pages/welcome/components/steps/RiskStep';
 import Modal from '@/components/modal/Modal';
 import { useAuth } from '@/context/AuthContext';
 
+const useUpdateTradingPreferences = () => {
+  const { user, updateUser } = useAuth();
+
+  const updateTradingPreferences = async (preferences: TradingPreferences) => {
+    if (!user?.id) {
+      throw new Error('User ID is required to update trading preferences');
+    }
+
+    try {
+      // Save preferences to backend
+      await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${user.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ tradingPreferences: preferences }),
+      });
+
+      // Update local storage and auth context
+      const authData = localStorage.getItem('auth');
+      if (authData) {
+        const parsed = JSON.parse(authData);
+        parsed.user.tradingPreferences = preferences;
+        localStorage.setItem('auth', JSON.stringify(parsed));
+      }
+
+      // Update auth context if updateUser is available
+      if (updateUser) {
+        updateUser({
+          ...user,
+          tradingPreferences: preferences,
+        });
+      }
+    } catch (error) {
+      console.error('Error updating trading preferences:', error);
+      throw error;
+    }
+  };
+
+  return { updateTradingPreferences };
+};
+
 interface EditTradingPreferencesModalProps {
   preferences: TradingPreferences;
   onSave: (preferences: TradingPreferences) => void;
@@ -16,9 +58,9 @@ const EditTradingPreferencesModal: React.FC<EditTradingPreferencesModalProps> = 
   onSave,
   onClose,
 }) => {
-  const { user } = useAuth();
   const [currentStep, setCurrentStep] = React.useState<'preferences' | 'risk'>('preferences');
   const [updatedPreferences, setUpdatedPreferences] = React.useState(preferences);
+  const { updateTradingPreferences } = useUpdateTradingPreferences();
 
   const handlePreferenceChange = (
     field: keyof TradingPreferences,
@@ -32,29 +74,12 @@ const EditTradingPreferencesModal: React.FC<EditTradingPreferencesModalProps> = 
 
   const handleSavePreferences = async () => {
     try {
-      // Save preferences to backend
-      await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/users/${user?.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          tradingPreferences: updatedPreferences,
-        }),
-      });
-
-      // Update local storage
-      const authData = localStorage.getItem('auth');
-      if (authData) {
-        const parsed = JSON.parse(authData);
-        parsed.user.tradingPreferences = updatedPreferences;
-        localStorage.setItem('auth', JSON.stringify(parsed));
-      }
-
-      // Call the onSave callback
+      await updateTradingPreferences(updatedPreferences);
       onSave(updatedPreferences);
+      onClose();
     } catch (error) {
-      console.error('Error updating trading preferences:', error);
+      console.error('Error saving preferences:', error);
+      // Here you might want to show an error message to the user
     }
   };
 
@@ -63,7 +88,6 @@ const EditTradingPreferencesModal: React.FC<EditTradingPreferencesModalProps> = 
       setCurrentStep('risk');
     } else {
       await handleSavePreferences();
-      onClose();
     }
   };
 
