@@ -78,10 +78,13 @@ export const useProfile = (username: string): UseProfileResult => {
 
   const handleProfileUpdate = (updatedProfile: User) => {
     setProfile(updatedProfile);
-    if (isOwnProfile && updateUser) {
-      updateUser(updatedProfile);
+    if (isOwnProfile) {
+      if (updateUser) {
+        updateUser(updatedProfile);
+        return; // Skip redundant fetching since updateUser updates the UI state
+      }
     }
-    fetchProfile(); // Refresh the profile data
+    fetchProfile(); // Refresh the profile data if updateUser isn't provided or it's not an own profile update
   };
 
   return {

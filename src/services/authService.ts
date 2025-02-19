@@ -8,8 +8,8 @@ interface RawUser {
   userType?: UserType;
   isFirstLogin?: boolean;
   tradingPreferences?: {
-    riskTolerance: string;
-    investmentStyle: string;
+    riskTolerance: 'medium' | 'low' | 'high';
+    investmentStyle: 'moderate' | 'conservative' | 'aggressive';
     preferredMarkets: string[];
     preferredTradeTypes: string[];
     tradingFrequency: string;
@@ -34,11 +34,11 @@ interface AuthResponse {
     userType: UserType;
     isFirstLogin?: boolean;
     tradingPreferences?: {
-      riskTolerance: string;
-      investmentStyle: string;
+      riskTolerance: 'medium' | 'low' | 'high';
+      investmentStyle: 'moderate' | 'conservative' | 'aggressive';
       preferredMarkets: string[];
       preferredTradeTypes: string[];
-      tradingFrequency: string;
+      tradingFrequency: 'weekly' | 'monthly' | 'daily';
       maxDrawdown: number;
       targetReturn: number;
       minStake: number;
