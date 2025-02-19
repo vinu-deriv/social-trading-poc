@@ -3,6 +3,7 @@ import Button from '@/components/input/Button';
 import { upgradeToLeader } from '@/services/userService';
 import UpgradeModal from '@/components/modals/UpgradeModal/UpgradeModal';
 import './ProfileActions.css';
+import User from '@/types/user.types';
 
 interface ProfileActionsProps {
   isOwnProfile: boolean;
@@ -11,7 +12,7 @@ interface ProfileActionsProps {
   userId: string;
   onFollow: () => Promise<void>;
   onUnfollow: () => Promise<void>;
-  onUpgrade?: () => void;
+  onUpgrade?: (updatedUser: User) => void;
 }
 
 const ProfileActions = ({
@@ -31,8 +32,10 @@ const ProfileActions = ({
 
   const handleUpgradeConfirm = async () => {
     try {
-      await upgradeToLeader(userId);
-      onUpgrade?.();
+      const updatedUser = await upgradeToLeader(userId);
+      if (onUpgrade) {
+        onUpgrade(updatedUser);
+      }
       setIsUpgradeModalOpen(false);
     } catch (error) {
       console.error('Error upgrading to leader:', error);
