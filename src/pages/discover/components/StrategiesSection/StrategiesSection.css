@@ -1,44 +1,35 @@
-.discover__compare-section {
-  position: fixed;
-  bottom: 80px;
-  left: 0;
-  right: 0;
+.top-strategies {
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
-  z-index: 2000;
-  padding: 16px;
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 100%);
-  padding-bottom: 24px;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0 2rem;
 }
 
-.discover__error {
-  margin: 20px 0;
-  padding: 12px;
-  background-color: #ffebee;
-  color: #c62828;
-  border-radius: 4px;
-  text-align: center;
+@media (max-width: 480px) {
+  .top-strategies {
+    gap: 1rem;
+    padding: unset;
+  }
 }
 
-/* Add to existing LeaderCard.css */
-.leader-card {
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+.strategies-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin: 0 auto 2rem;
+  max-width: 1400px;
+  padding: 0 2rem;
 }
 
-.leader-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.leader-card--selected {
-  border: 2px solid #69c0fa;
-  box-shadow: 0 0 0 2px rgba(105, 192, 250, 0.2), 0 4px 12px rgba(105, 192, 250, 0.2);
-  transform: translateY(-4px);
-  background-color: rgba(105, 192, 250, 0.05);
-}
-
-.leader-card--selected:hover {
-  transform: none;
+@media (max-width: 480px) {
+  .strategies-grid {
+    gap: 1rem;
+    padding: 0 1rem;
+  }
 }

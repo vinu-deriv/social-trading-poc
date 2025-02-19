@@ -1,16 +1,9 @@
-import Anthropic from "@anthropic-ai/sdk";
-import {
-  Post,
-  Comment,
-  AIInsight,
-  User,
-  TradingStrategy,
-  SymbolInsight,
-} from "../types";
-import { PostSentiment } from "../types/sentiment";
+import Anthropic from '@anthropic-ai/sdk';
+import { Post, Comment, AIInsight, User, TradingStrategy, SymbolInsight } from '../types';
+import { PostSentiment } from '../types/sentiment';
 
 interface CommentSentiment {
-  overallSentiment: "positive" | "neutral" | "negative";
+  overallSentiment: 'positive' | 'neutral' | 'negative';
   confidence: number;
   keyThemes: string[];
   riskIndicators: string[];
@@ -30,9 +23,29 @@ interface SymbolData {
 export class LLMService {
   private anthropic: Anthropic;
 
-  public async generateSymbolInsight(
-    symbolData: SymbolData
-  ): Promise<SymbolInsight | null> {
+  public async generateChatResponse(message: string): Promise<string> {
+    try {
+      const response = await this.anthropic.messages.create({
+        model: this.MODEL,
+        max_tokens: 1024,
+        messages: [{ role: 'user', content: message }],
+      });
+
+      if (
+        Array.isArray(response.content) &&
+        response.content.length > 0 &&
+        response.content[0].text
+      ) {
+        return response.content[0].text;
+      }
+      return "I apologize, but I'm having trouble generating a response.";
+    } catch (error) {
+      console.error('[LLM] Error generating chat response:', error);
+      throw error;
+    }
+  }
+
+  public async generateSymbolInsight(symbolData: SymbolData): Promise<SymbolInsight | null> {
     console.log(`[LLM] Analyzing symbol ${symbolData.symbol}`);
 
     const prompt = `
@@ -41,9 +54,7 @@ export class LLMService {
             Symbol: ${symbolData.symbol}
             Current Price: ${symbolData.currentPrice}
             Recent News:
-            ${symbolData.news
-              .map((n) => `- ${n.title} (${n.publishedAt})`)
-              .join("\n")}
+            ${symbolData.news.map(n => `- ${n.title} (${n.publishedAt})`).join('\n')}
 
             Provide analysis in JSON format with these exact fields:
             {
@@ -61,9 +72,7 @@ export class LLMService {
                         "url": "News article URL"
                     }
                 ],
-                "yahooFinanceUrl": "https://finance.yahoo.com/quote/${
-                  symbolData.symbol
-                }"
+                "yahooFinanceUrl": "https://finance.yahoo.com/quote/${symbolData.symbol}"
             }
 
             Consider:
@@ -80,10 +89,10 @@ export class LLMService {
       const response = await this.anthropic.messages.create({
         model: this.MODEL,
         max_tokens: 1024,
-        messages: [{ role: "user", content: prompt }],
+        messages: [{ role: 'user', content: prompt }],
       });
 
-      let content = "{}";
+      let content = '{}';
       if (
         Array.isArray(response.content) &&
         response.content.length > 0 &&
@@ -105,7 +114,7 @@ export class LLMService {
       // Add actual news URLs from the symbolData
       const enhancedData = {
         ...parsedData,
-        news: symbolData.news.map((item) => ({
+        news: symbolData.news.map(item => ({
           title: item.title,
           url: item.url,
         })),
@@ -117,7 +126,7 @@ export class LLMService {
         !enhancedData.postId ||
         !enhancedData.summary ||
         !enhancedData.sentiment ||
-        typeof enhancedData.isLegitimate !== "boolean" ||
+        typeof enhancedData.isLegitimate !== 'boolean' ||
         !enhancedData.riskLevel ||
         !enhancedData.recommendation ||
         !Array.isArray(enhancedData.news)
@@ -128,33 +137,30 @@ export class LLMService {
 
       return enhancedData;
     } catch (error) {
-      console.error(
-        `[LLM] Error analyzing symbol ${symbolData.symbol}:`,
-        error
-      );
+      console.error(`[LLM] Error analyzing symbol ${symbolData.symbol}:`, error);
       return null;
     }
   }
-  private readonly MODEL = "claude-3-5-sonnet-20241022";
+  private readonly MODEL = 'claude-3-5-sonnet-20241022';
 
   constructor() {
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
-      throw new Error("ANTHROPIC_API_KEY is required");
+      throw new Error('ANTHROPIC_API_KEY is required');
     }
     this.anthropic = new Anthropic({ apiKey });
   }
 
   private sanitizeText(text: string) {
     console.log(`[LLM] Sanitizing text (${text.length} chars)`);
-    const result = text.replace(/[^\x20-\x7E]/g, "").trim();
+    const result = text.replace(/[^\x20-\x7E]/g, '').trim();
     console.log(`[LLM] Sanitized result (${result.length} chars)`);
     return result;
   }
 
   private sanitizeJsonText(text: string) {
     console.log(`[LLM] Sanitizing JSON text (${text.length} chars)`);
-    const result = text.replace(/[^\x20-\x7E]/g, "");
+    const result = text.replace(/[^\x20-\x7E]/g, '');
     console.log(`[LLM] Sanitized JSON result (${result.length} chars)`);
     return result;
   }
@@ -172,7 +178,7 @@ export class LLMService {
 
   private trimComments(comments: Comment[]) {
     console.log(`[LLM] Trimming ${comments.length} comments`);
-    const result = comments.slice(0, 3).map((c) => ({
+    const result = comments.slice(0, 3).map(c => ({
       content: this.sanitizeText(c.content.slice(0, 200)),
       userId: c.userId,
       likes: c.likes.length,
@@ -189,7 +195,7 @@ export class LLMService {
     console.log(`[LLM] Preparing batch analysis for ${posts.length} posts`);
 
     // Prepare all posts data
-    const postsData = posts.map((post) => ({
+    const postsData = posts.map(post => ({
       id: post.id,
       content: this.trimPostContent(post),
       comments: this.trimComments(post.engagement.comments),
@@ -232,11 +238,11 @@ export class LLMService {
     const response = await this.anthropic.messages.create({
       model: this.MODEL,
       max_tokens: 4096,
-      messages: [{ role: "user", content: prompt }],
+      messages: [{ role: 'user', content: prompt }],
     });
     console.log(`[LLM] Received batch response from Anthropic`);
 
-    let content = "[]";
+    let content = '[]';
     if (
       Array.isArray(response.content) &&
       response.content.length > 0 &&
@@ -269,12 +275,12 @@ export class LLMService {
         return [];
       }
       // Validate each insight has required fields
-      parsedData = parsedData.filter((insight) => {
+      parsedData = parsedData.filter(insight => {
         const isValid =
           insight.postId &&
           insight.summary &&
           insight.sentiment &&
-          typeof insight.isLegitimate === "boolean" &&
+          typeof insight.isLegitimate === 'boolean' &&
           insight.riskLevel &&
           insight.recommendation;
         if (!isValid) {
@@ -345,11 +351,11 @@ export class LLMService {
     const response = await this.anthropic.messages.create({
       model: this.MODEL,
       max_tokens: 1024,
-      messages: [{ role: "user", content: prompt }],
+      messages: [{ role: 'user', content: prompt }],
     });
     console.log(`[LLM] Received response from Anthropic`);
 
-    let content = "{}";
+    let content = '{}';
     if (
       Array.isArray(response.content) &&
       response.content.length > 0 &&
@@ -382,7 +388,7 @@ export class LLMService {
         parsedData.postId === post.id &&
         parsedData.summary &&
         parsedData.sentiment &&
-        typeof parsedData.isLegitimate === "boolean" &&
+        typeof parsedData.isLegitimate === 'boolean' &&
         parsedData.riskLevel &&
         parsedData.recommendation;
 
@@ -435,20 +441,14 @@ export class LLMService {
     }
   }
 
-  private async analyzePostContent(
-    post: Post,
-    user: User,
-    strategies: TradingStrategy[]
-  ) {
+  private async analyzePostContent(post: Post, user: User, strategies: TradingStrategy[]) {
     console.log(`[LLM] Analyzing content for post ${post.id}`);
     const trimmedPost = this.trimPostContent(post);
     const prompt = `
             Analyze this trading-related post and provide insights based on the user's profile:
 
             Post Content: ${JSON.stringify(trimmedPost)}
-            Post Comments: ${JSON.stringify(
-              this.trimComments(post.engagement.comments)
-            )}
+            Post Comments: ${JSON.stringify(this.trimComments(post.engagement.comments))}
             User Type: ${user.userType}
             Related Strategies: ${JSON.stringify(strategies)}
 
@@ -466,11 +466,11 @@ export class LLMService {
     const response = await this.anthropic.messages.create({
       model: this.MODEL,
       max_tokens: 1024,
-      messages: [{ role: "user", content: prompt }],
+      messages: [{ role: 'user', content: prompt }],
     });
     console.log(`[LLM] Received response from Anthropic`);
 
-    let content = "{}";
+    let content = '{}';
     if (
       Array.isArray(response.content) &&
       response.content.length > 0 &&
@@ -481,7 +481,7 @@ export class LLMService {
 
     const sanitizedContent = this.sanitizeJsonText(content);
     const jsonMatch = sanitizedContent.match(/\{[\s\S]*\}/);
-    const jsonStr = jsonMatch ? jsonMatch[0] : "{}";
+    const jsonStr = jsonMatch ? jsonMatch[0] : '{}';
     let parsedData;
 
     try {
@@ -489,12 +489,11 @@ export class LLMService {
     } catch (e) {
       console.error(`[LLM] Error parsing JSON from Anthropic response:`, e);
       parsedData = {
-        summary: "Error analyzing post",
-        sentiment: "analysis",
+        summary: 'Error analyzing post',
+        sentiment: 'analysis',
         isLegitimate: true,
-        riskLevel: "medium",
-        recommendation:
-          "Unable to provide recommendation due to analysis error",
+        riskLevel: 'medium',
+        recommendation: 'Unable to provide recommendation due to analysis error',
       };
     }
 
@@ -508,14 +507,12 @@ export class LLMService {
     };
   }
 
-  private async analyzePostComments(
-    comments: Comment[]
-  ): Promise<CommentSentiment> {
+  private async analyzePostComments(comments: Comment[]): Promise<CommentSentiment> {
     console.log(`[LLM] Analyzing ${comments.length} comments`);
     if (comments.length === 0) {
       console.log(`[LLM] No comments to analyze, returning neutral`);
       return {
-        overallSentiment: "neutral",
+        overallSentiment: 'neutral',
         confidence: 0,
         keyThemes: [],
         riskIndicators: [],
@@ -540,11 +537,11 @@ export class LLMService {
     const response = await this.anthropic.messages.create({
       model: this.MODEL,
       max_tokens: 1024,
-      messages: [{ role: "user", content: prompt }],
+      messages: [{ role: 'user', content: prompt }],
     });
     console.log(`[LLM] Received comment analysis from Anthropic`);
 
-    let content = "{}";
+    let content = '{}';
     if (
       Array.isArray(response.content) &&
       response.content.length > 0 &&
@@ -555,7 +552,7 @@ export class LLMService {
 
     const sanitizedContent = this.sanitizeJsonText(content);
     const jsonMatch = sanitizedContent.match(/\{[\s\S]*\}/);
-    const jsonStr = jsonMatch ? jsonMatch[0] : "{}";
+    const jsonStr = jsonMatch ? jsonMatch[0] : '{}';
     let parsedData;
 
     try {
@@ -563,7 +560,7 @@ export class LLMService {
     } catch (e) {
       console.error(`[LLM] Error parsing JSON from Anthropic response:`, e);
       parsedData = {
-        overallSentiment: "neutral",
+        overallSentiment: 'neutral',
         confidence: 0,
         keyThemes: [],
         riskIndicators: [],
@@ -583,25 +580,19 @@ export class LLMService {
     );
 
     // If content is suspicious, prioritize that
-    if (
-      ["pump_and_dump", "spam", "misleading", "high_risk"].includes(
-        contentSentiment
-      )
-    ) {
-      console.log(
-        `[LLM] Using suspicious content sentiment: ${contentSentiment}`
-      );
+    if (['pump_and_dump', 'spam', 'misleading', 'high_risk'].includes(contentSentiment)) {
+      console.log(`[LLM] Using suspicious content sentiment: ${contentSentiment}`);
       return contentSentiment;
     }
 
     // If comments show strong negative sentiment, adjust accordingly
     if (
-      commentSentiment.overallSentiment === "negative" &&
+      commentSentiment.overallSentiment === 'negative' &&
       commentSentiment.confidence > 0.8 &&
       commentSentiment.riskIndicators.length > 0
     ) {
       console.log(`[LLM] Using negative comment sentiment: misleading`);
-      return "misleading";
+      return 'misleading';
     }
 
     console.log(`[LLM] Using default content sentiment: ${contentSentiment}`);

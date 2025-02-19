@@ -1,10 +1,10 @@
-import { useState, FormEvent } from "react";
-import { useNavigate, useLocation, Navigate } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
-import TextInput from "@/components/input/TextInput";
-import Button from "@/components/input/Button";
-import "./Login.css";
-import { UserType } from "@/types/user";
+import { useState, FormEvent } from 'react';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
+import TextInput from '@/components/input/TextInput';
+import Button from '@/components/input/Button';
+import './Login.css';
+import { UserType } from '@/types/user';
 
 interface LocationState {
   from: {
@@ -13,8 +13,8 @@ interface LocationState {
 }
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login, error, clearError, isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
@@ -23,13 +23,11 @@ const Login = () => {
   // If user is already authenticated, redirect to home
   if (isAuthenticated) {
     const redirectPath =
-      user?.userType === UserType.COPIER && user?.isFirstLogin
-        ? "/welcome"
-        : "/feed";
+      user?.userType === UserType.COPIER && user?.isFirstLogin ? '/welcome' : '/feed';
     return <Navigate to={redirectPath} replace />;
   }
 
-  const from = (location.state as LocationState)?.from?.pathname || "/";
+  const from = (location.state as LocationState)?.from?.pathname || '/';
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -41,7 +39,7 @@ const Login = () => {
       const user = await login(username, password);
       // Redirect to welcome page if it's a first-time copier user
       if (user?.userType === UserType.COPIER && user?.isFirstLogin) {
-        navigate("/welcome", { replace: true });
+        navigate('/welcome', { replace: true });
       } else {
         navigate(from, { replace: true });
       }
@@ -56,7 +54,7 @@ const Login = () => {
       <div className="login-content">
         <div className="login-branding">
           <div className="branding-content">
-            <img src="/champion_logo-white.svg" alt="Logo" className="logo" />
+            <img src="/champion_logo-blue.svg" alt="Logo" className="logo" />
             <h1>Champion Social Trade</h1>
             <p>Connect with expert traders and copy their strategies</p>
           </div>
@@ -70,22 +68,22 @@ const Login = () => {
                 id="username"
                 type="text"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={e => setUsername(e.target.value)}
                 placeholder="Enter your username"
                 required
                 disabled={isSubmitting}
-                error={error ? " " : undefined}
+                error={error ? ' ' : undefined}
                 className="login-input"
               />
               <TextInput
                 id="password"
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 required
                 disabled={isSubmitting}
-                error={error ? " " : undefined}
+                error={error ? ' ' : undefined}
                 className="login-input"
               />
               <Button
