@@ -1,0 +1,44 @@
+.discover__compare-section {
+  position: fixed;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 16px;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 100%);
+  padding-bottom: 24px;
+}
+
+.discover__error {
+  margin: 20px 0;
+  padding: 12px;
+  background-color: #ffebee;
+  color: #c62828;
+  border-radius: 4px;
+  text-align: center;
+}
+
+/* Add to existing LeaderCard.css */
+.leader-card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.leader-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.leader-card--selected {
+  border: 2px solid #69c0fa;
+  box-shadow: 0 0 0 2px rgba(105, 192, 250, 0.2), 0 4px 12px rgba(105, 192, 250, 0.2);
+  transform: translateY(-4px);
+  background-color: rgba(105, 192, 250, 0.05);
+}
+
+.leader-card--selected:hover {
+  transform: none;
+}

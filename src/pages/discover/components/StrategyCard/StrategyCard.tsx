@@ -4,23 +4,21 @@ import Trophy from '../../../../assets/icons/Trophy';
 import '../LeaderCard/LeaderCard.css';
 import PlusIcon from '@/assets/icons/PlusIcon';
 
-interface Strategy {
-  id: string;
-  leaderId: string;
-  accountId: string;
-  name: string;
-  description: string;
-  tradeType: string;
-  copiers: string[];
+import type { Strategy as BaseStrategy } from '../../../../types/strategy.types';
+
+interface UIStrategy extends BaseStrategy {
   leader?: {
     username: string;
     displayName: string;
     profilePicture?: string;
   };
-  currency?: string;
   isFollowing?: boolean;
   isCopying?: boolean;
+  tradeType?: string;
+  currency?: string;
 }
+
+type Strategy = UIStrategy;
 
 interface StrategyCardProps {
   strategy: Strategy;
@@ -28,9 +26,19 @@ interface StrategyCardProps {
   onFollow: (id: string) => void;
   onCopy: (id: string) => void;
   large?: boolean;
+  selected?: boolean;
+  onSelect?: () => void;
 }
 
-const StrategyCard: FC<StrategyCardProps> = ({ strategy, rank, onFollow, onCopy, large }) => {
+const StrategyCard: FC<StrategyCardProps> = ({
+  strategy,
+  rank,
+  onFollow,
+  onCopy,
+  large,
+  selected,
+  onSelect,
+}) => {
   const formatCopiers = (count: number) => {
     return new Intl.NumberFormat('en-US', {
       notation: 'compact',
@@ -39,7 +47,15 @@ const StrategyCard: FC<StrategyCardProps> = ({ strategy, rank, onFollow, onCopy,
   };
 
   return (
-    <div className={`leader-card ${large ? 'leader-card--large' : ''}`}>
+    <div
+      className={`leader-card ${large ? 'leader-card--large' : ''} ${selected ? 'leader-card--selected' : ''}`}
+      onClick={onSelect}
+    >
+      {selected && (
+        <div className="leader-card__selected-icon">
+          <Tick />
+        </div>
+      )}
       {rank && (
         <div className="leader-card__rank">
           {rank <= 3 && <Trophy className="leader-card__trophy" />}#{rank}
@@ -61,7 +77,10 @@ const StrategyCard: FC<StrategyCardProps> = ({ strategy, rank, onFollow, onCopy,
             )}
             <button
               className="leader-card__follow-icon"
-              onClick={() => onFollow(strategy.leaderId)}
+              onClick={e => {
+                e.stopPropagation();
+                onFollow(strategy.leaderId);
+              }}
             >
               {strategy.isFollowing ? <Tick /> : <PlusIcon />}
             </button>
@@ -73,18 +92,25 @@ const StrategyCard: FC<StrategyCardProps> = ({ strategy, rank, onFollow, onCopy,
         <p className="leader-card__leader-name">{strategy.leader?.displayName}</p>
         <span className="leader-card__trade-type">
           {strategy.tradeType
-            .split('_')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ')}
+            ? strategy.tradeType
+                .split('_')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ')
+            : strategy.timeframe}
         </span>
-        <button
-          className={`leader-card__copy-button ${
-            strategy.isCopying ? 'leader-card__copy-button--copied' : ''
-          }`}
-          onClick={() => onCopy(strategy.id)}
-        >
-          {strategy.isCopying ? 'Stop Copying' : 'Copy Strategy'}
-        </button>
+        {!selected && (
+          <button
+            className={`leader-card__copy-button ${
+              strategy.isCopying ? 'leader-card__copy-button--copied' : ''
+            }`}
+            onClick={e => {
+              e.stopPropagation();
+              onCopy(strategy.id);
+            }}
+          >
+            {strategy.isCopying ? 'Stop Copying' : 'Copy Strategy'}
+          </button>
+        )}
         <div className="leader-card__stats">
           <div className="leader-card__stat">
             <span className="leader-card__stat-label">Currency</span>

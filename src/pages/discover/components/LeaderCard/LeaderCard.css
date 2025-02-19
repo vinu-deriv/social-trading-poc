@@ -15,6 +15,62 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
+.leader-card--selected {
+  border: 2px solid #69c0fa;
+  background-color: rgba(105, 192, 250, 0.1);
+  box-shadow: 0 0 0 2px rgba(105, 192, 250, 0.2), 0 4px 12px rgba(105, 192, 250, 0.2);
+  transform: translateY(-4px);
+}
+
+.leader-card--selected:hover {
+  transform: translateY(-4px);
+}
+
+.leader-card__selected-icon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  background: #69c0fa;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  z-index: 2;
+  box-shadow: 0 4px 8px rgba(105, 192, 250, 0.4);
+  transform-origin: center;
+  animation: scaleIn 0.2s ease;
+}
+
+.leader-card__selected-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 3;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .leader-card--large .leader-card__avatar {
   width: 120px;
   height: 120px;
