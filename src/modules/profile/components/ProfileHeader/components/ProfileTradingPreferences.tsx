@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { TradingPreferences } from '@/types/trading';
+import EditTradingPreferencesModal from './EditTradingPreferencesModal';
+import EditIcon from '@/assets/icons/EditIcon';
 import './ProfileTradingPreferences.css';
 
 interface ProfileTradingPreferencesProps {
   preferences: TradingPreferences;
+  isOwnProfile?: boolean;
+  onUpdate?: (preferences: TradingPreferences) => void;
 }
 
 interface StatItemProps {
@@ -32,7 +36,12 @@ const formatCurrency = (value: number): string => {
 
 const formatPercentage = (value: number): string => `${value}%`;
 
-const ProfileTradingPreferences: React.FC<ProfileTradingPreferencesProps> = ({ preferences }) => {
+const ProfileTradingPreferences: React.FC<ProfileTradingPreferencesProps> = ({
+  preferences,
+  isOwnProfile = false,
+  onUpdate,
+}) => {
+  const [showEditModal, setShowEditModal] = useState(false);
   const stats: StatItemProps[] = [
     { label: 'Risk Tolerance', value: preferences.riskTolerance },
     { label: 'Investment Style', value: preferences.investmentStyle },
@@ -41,18 +50,55 @@ const ProfileTradingPreferences: React.FC<ProfileTradingPreferencesProps> = ({ p
     { label: 'Target Return', value: preferences.targetReturn, formatter: formatPercentage },
     { label: 'Min Stake', value: preferences.minStake, formatter: formatCurrency },
     { label: 'Max Stake', value: preferences.maxStake, formatter: formatCurrency },
+    {
+      label: 'Preferred Markets',
+      value:
+        preferences.preferredMarkets.length > 0 ? preferences.preferredMarkets.join(', ') : '-',
+    },
+    {
+      label: 'Preferred Trade Types',
+      value:
+        preferences.preferredTradeTypes.length > 0
+          ? preferences.preferredTradeTypes.join(', ')
+          : '-',
+    },
   ];
 
   return (
     <div className="profile-trading-preferences">
-      {stats.map(stat => (
-        <StatItem
-          key={stat.label}
-          label={stat.label}
-          value={stat.value}
-          formatter={stat.formatter}
+      <div className="profile-trading-preferences__header">
+        <h3>Trading Preferences</h3>
+        {isOwnProfile && (
+          <button
+            className="profile-trading-preferences__edit-button"
+            onClick={() => setShowEditModal(true)}
+            aria-label="Edit trading preferences"
+          >
+            <EditIcon />
+          </button>
+        )}
+      </div>
+      <div className="profile-trading-preferences__stats">
+        {stats.map(stat => (
+          <StatItem
+            key={stat.label}
+            label={stat.label}
+            value={stat.value}
+            formatter={stat.formatter}
+          />
+        ))}
+      </div>
+
+      {showEditModal && (
+        <EditTradingPreferencesModal
+          preferences={preferences}
+          onSave={newPreferences => {
+            onUpdate?.(newPreferences);
+            setShowEditModal(false);
+          }}
+          onClose={() => setShowEditModal(false)}
         />
-      ))}
+      )}
     </div>
   );
 };

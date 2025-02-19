@@ -68,7 +68,20 @@ const ProfileHeader = ({
         {userType === 'leader' && profile.performance && (
           <ProfilePerformance performance={profile.performance} />
         )}
-        {tradingPreferences && <ProfileTradingPreferences preferences={tradingPreferences} />}
+        {tradingPreferences && (
+          <ProfileTradingPreferences
+            preferences={tradingPreferences}
+            isOwnProfile={isOwnProfile}
+            onUpdate={newPreferences => {
+              if (onProfileUpdate) {
+                onProfileUpdate({
+                  ...profile,
+                  tradingPreferences: newPreferences,
+                });
+              }
+            }}
+          />
+        )}
       </div>
     </div>
   );
