@@ -40,6 +40,7 @@ export interface ExtendedStrategy extends Strategy {
   currency?: string;
   isFollowing?: boolean;
   isCopying?: boolean;
+  score?: number;
 }
 
 export default Strategy;

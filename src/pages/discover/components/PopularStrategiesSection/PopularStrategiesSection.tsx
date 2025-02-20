@@ -6,7 +6,7 @@ import '../shared.css';
 
 interface PopularStrategiesProps {
   strategies: ExtendedStrategy[];
-  onCopy: (strategyId: string) => Promise<void>;
+  onCopy: (strategyId: string) => Promise<boolean>;
 }
 
 const PopularStrategiesSection: FC<PopularStrategiesProps> = ({ strategies, onCopy }) => {

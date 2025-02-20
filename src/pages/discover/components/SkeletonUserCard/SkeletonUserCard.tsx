@@ -1,39 +1,38 @@
-import { FC } from 'react';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 import './SkeletonUserCard.css';
 
 interface SkeletonUserCardProps {
   rank?: number;
 }
 
-const SkeletonUserCard: FC<SkeletonUserCardProps> = ({ rank }) => {
+const SkeletonUserCard = ({ rank }: SkeletonUserCardProps) => {
   return (
-    <div className="skeleton-user-card">
-      <div className="skeleton-user-card__header">
+    <div className="user-card">
+      <div className="user-card__header">
         {rank && (
-          <div className="skeleton-user-card__rank">
-            <Skeleton width={30} height={24} />
+          <div className="user-card__rank">
+            <div className="skeleton skeleton-block skeleton-rank" />
           </div>
         )}
-        <div className="skeleton-user-card__avatar-container">
-          <Skeleton circle width={100} height={100} />
+        <div className="user-card__avatar-container">
+          <div className="user-card__avatar-wrapper">
+            <div className="skeleton skeleton-avatar" />
+          </div>
         </div>
-        <Skeleton width={120} height={20} />
+        <div className="user-card__details">
+          <div className="skeleton skeleton-block skeleton-name" />
+          <div className="skeleton skeleton-block skeleton-username" />
+          <div className="skeleton skeleton-block skeleton-badge" />
+        </div>
       </div>
 
-      <div className="skeleton-user-card__cta">
-        <div className="skeleton-user-card__stats">
-          <div className="skeleton-user-card__stat">
-            <Skeleton width={60} height={16} />
-            <Skeleton width={40} height={20} />
-          </div>
-          <div className="skeleton-user-card__stat">
-            <Skeleton width={80} height={16} />
-            <Skeleton width={100} height={20} />
+      <div className="user-card__cta">
+        <div className="user-card__stats">
+          <div className="user-card__stat">
+            <div className="skeleton skeleton-block skeleton-stat-label" />
+            {/* <div className="skeleton skeleton-block skeleton-stat-value" /> */}
           </div>
         </div>
-        <Skeleton width={100} height={36} borderRadius={18} />
+        <div className="skeleton skeleton-block skeleton-button" />
       </div>
     </div>
   );

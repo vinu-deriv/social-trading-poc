@@ -9,6 +9,7 @@ export interface User {
   followers: string[];
   following: string[];
   accounts: string[];
+  copiedStrategies: string[];
   performance?: {
     winRate: number;
     totalPnL: number;

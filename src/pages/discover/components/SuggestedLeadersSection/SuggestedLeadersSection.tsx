@@ -35,7 +35,6 @@ export default function SuggestedLeadersSection() {
   if (loading) {
     return (
       <>
-        <h2 className="section-title">AI Suggested Leaders</h2>
         <div className="leaders-grid">
           {[...Array(5)].map((_, index) => (
             <SkeletonUserCard key={`ai-${index}`} />
@@ -51,7 +50,6 @@ export default function SuggestedLeadersSection() {
 
   return (
     <>
-      <h2 className="section-title">✧ AI Suggested Leaders</h2>
       <div className="leaders-grid">
         {suggestions.map(suggestion => (
           <UserCard
@@ -61,11 +59,12 @@ export default function SuggestedLeadersSection() {
               username: suggestion.username,
               profilePicture: suggestion.profilePicture,
               copiers: suggestion.copiers,
-              totalProfit: suggestion.totalProfit,
+              totalProfit: suggestion.performance.totalPnL,
               winRate: suggestion.performance.winRate,
               isFollowing: false,
               displayName: suggestion.displayName,
             }}
+            context="leaders"
           />
         ))}
       </div>

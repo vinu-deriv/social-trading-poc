@@ -6,7 +6,7 @@
 
 .strategies-section__tabs {
   display: flex;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
   margin: var(--spacing-sm) 0;
 }
 

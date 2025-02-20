@@ -16,7 +16,7 @@ export default function LeadersSection() {
           Top Leaders
         </Chip>
         <Chip active={activeTab === 'suggested'} onClick={() => setActiveTab('suggested')}>
-          AI Suggested
+          ✧ AI Suggested
         </Chip>
       </div>
       {activeTab === 'top' ? <TopLeadersSection /> : <SuggestedLeadersSection />}

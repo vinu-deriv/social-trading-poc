@@ -9,8 +9,9 @@ import translationRouter from './routes/translation';
 import marketRouter from './routes/market';
 import chatRouter from './routes/chat';
 import leaderSuggestionsRouter from './routes/leaderSuggestions';
-import topLeadersRouter from './routes/top-leaders';
 import globalAIRouter from './routes/globalAI';
+import peopleSuggestionsRouter from './routes/people-suggestions';
+import strategySuggestionsRouter from './routes/strategy-suggestions';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -30,8 +31,9 @@ app.use('/api/translation', translationRouter);
 app.use('/api/market', marketRouter);
 app.use('/api/', chatRouter);
 app.use('/api/leader-suggestions', leaderSuggestionsRouter);
-app.use('/api/top-leaders', topLeadersRouter);
 app.use('/api/global-ai', globalAIRouter);
+app.use('/api/people-suggestions', peopleSuggestionsRouter);
+app.use('/api/strategy-suggestions', strategySuggestionsRouter);
 
 // Error handling middleware
 app.use(

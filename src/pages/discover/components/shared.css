@@ -27,6 +27,17 @@
   max-width: 1400px;
 }
 
+.users-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2xl);
+  margin: 0 auto var(--spacing-2xl);
+  max-width: 1400px;
+}
+
 @media (max-width: 480px) {
   .section-title {
     font-size: var(--font-size-xl);
@@ -39,6 +50,10 @@
   }
 
   .strategies-grid {
+    gap: var(--spacing-md);
+  }
+
+  .users-grid {
     gap: var(--spacing-md);
   }
 }

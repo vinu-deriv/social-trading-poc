@@ -94,6 +94,7 @@
   flex-direction: column;
   align-items: center;
   border-radius: var(--border-radius-md);
+  gap: var(--spacing-xs);
 }
 
 .strategy-list__stat-value {
@@ -167,4 +168,17 @@
 .strategy-list__copy-btn--secondary:hover {
   background-color: var(--border-color);
   transform: translateY(-1px);
+}
+
+.strategy-list__copy-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background-color: var(--background-secondary);
+  color: var(--text-tertiary);
+  transform: none;
+}
+
+.strategy-list__copy-btn:disabled:hover {
+  transform: none;
+  background-color: var(--background-secondary);
 }
