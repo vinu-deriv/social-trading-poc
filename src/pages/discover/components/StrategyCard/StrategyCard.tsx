@@ -28,7 +28,7 @@ interface Strategy {
 interface StrategyCardProps {
   strategy: Strategy;
   rank?: number;
-  onCopy: (id: string) => void;
+  onCopy: (id: string) => Promise<boolean>;
   large?: boolean;
 }
 
@@ -37,6 +37,7 @@ const StrategyCard: FC<StrategyCardProps> = ({ strategy, rank, onCopy, large }) 
   const { user: currentUser } = useAuth();
   const [isFollowing, setIsFollowing] = useState(strategy.isFollowing ?? false);
   const [loading, setLoading] = useState(false);
+  const [isCopying, setIsCopying] = useState(strategy.isCopying ?? false);
 
   const handleFollow = async () => {
     if (!currentUser?.id || !strategy.leaderId) return;
@@ -113,11 +114,22 @@ const StrategyCard: FC<StrategyCardProps> = ({ strategy, rank, onCopy, large }) 
         </span>
         <button
           className={`leader-card__copy-button ${
-            strategy.isCopying ? 'leader-card__copy-button--copied' : ''
+            isCopying ? 'leader-card__copy-button--copied' : ''
           }`}
-          onClick={() => onCopy(strategy.id)}
+          onClick={async () => {
+            setLoading(true);
+            try {
+              const newCopyingState = await onCopy(strategy.id);
+              setIsCopying(newCopyingState);
+            } catch (error) {
+              console.error('Error copying strategy:', error);
+            } finally {
+              setLoading(false);
+            }
+          }}
+          disabled={loading}
         >
-          {strategy.isCopying ? 'Stop Copying' : 'Copy Strategy'}
+          {loading ? 'Processing...' : isCopying ? 'Stop Copying' : 'Copy Strategy'}
         </button>
         <div className="leader-card__stats">
           <div className="leader-card__stat">

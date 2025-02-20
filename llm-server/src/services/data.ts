@@ -6,6 +6,18 @@ if (!JSON_SERVER_URL) {
 }
 
 export class DataService {
+  async getUsers(): Promise<User[]> {
+    try {
+      const response = await fetch(`${JSON_SERVER_URL}/users`);
+      if (!response.ok) throw new Error('Failed to fetch users');
+      const data = await response.json();
+      return data as User[];
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      return [];
+    }
+  }
+
   async getLeaders(): Promise<User[]> {
     try {
       const response = await fetch(`${JSON_SERVER_URL}/users?userType=leader`);
@@ -39,6 +51,18 @@ export class DataService {
     } catch (error) {
       console.error('Error fetching post:', error);
       return null;
+    }
+  }
+
+  async getStrategies(): Promise<TradingStrategy[]> {
+    try {
+      const response = await fetch(`${JSON_SERVER_URL}/tradingStrategies`);
+      if (!response.ok) throw new Error('Failed to fetch strategies');
+      const data = await response.json();
+      return data as TradingStrategy[];
+    } catch (error) {
+      console.error('Error fetching strategies:', error);
+      return [];
     }
   }
 

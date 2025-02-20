@@ -6,7 +6,7 @@ import '../shared.css';
 
 interface AIStrategiesProps {
   strategies: ExtendedStrategy[];
-  onCopy: (strategyId: string) => Promise<void>;
+  onCopy: (strategyId: string) => Promise<boolean>;
 }
 
 const AIStrategiesSection: FC<AIStrategiesProps> = ({ strategies, onCopy }) => {

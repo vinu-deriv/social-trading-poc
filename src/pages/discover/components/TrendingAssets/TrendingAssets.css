@@ -65,49 +65,6 @@
   margin-inline: auto;
 }
 
-.trending-assets-insights .insights-list {
-  padding: 0;
-}
-
-.trending-assets-insights .insights-list__title {
-  margin-bottom: var(--spacing-lg);
-  padding: 0 var(--spacing-lg);
-}
-
-.trending-assets-insights .post-ai-insights {
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-xl);
-  background: var(--background-primary);
-  transition:
-    transform var(--transition-fast),
-    box-shadow var(--transition-fast);
-  padding: var(--spacing-lg);
-  margin-bottom: 45px;
-}
-
-.trending-assets-insights .post-ai-insights:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.trending-assets-insights .post-ai-insights__close {
-  font-size: var(--font-size-2xl);
-  color: var(--text-tertiary);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: var(--spacing-sm);
-  transition: color var(--transition-fast);
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.trending-assets-insights .post-ai-insights__close:hover {
-  color: var(--text-primary);
-}
-
 @media (max-width: 1280px) {
   .trending-assets-insights {
     max-width: calc(280px * 2 + var(--spacing-xl));
@@ -192,35 +149,18 @@
     position: sticky;
     top: 0;
     background: var(--background-primary);
-    padding: var(--spacing-xl) 0 var(--spacing-lg);
+    padding: var(--spacing-lg) 0;
     margin: 0;
     z-index: 1;
     font-size: var(--font-size-lg);
     text-align: center;
-    border-bottom: 1px solid var(--border-color);
   }
 
   .trending-assets-insights.modal .insights-list__content {
     flex: 1;
     overflow-y: auto;
-    padding: var(--spacing-lg) var(--spacing-lg) 100px; /* Increased bottom padding to 100px */
-  }
-
-  .trending-assets-insights.modal .post-ai-insights {
-    margin: 0 0 45px 0;
-    background: var(--background-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-lg);
-    padding: var(--spacing-lg);
-  }
-
-  .trending-assets-insights.modal .post-ai-insights:last-child {
-    margin-bottom: 45px; /* Keep margin on last item to ensure visibility */
-  }
-
-  .trending-assets-insights.modal .post-ai-insights:hover {
-    transform: none;
-    background: var(--background-tertiary);
+    padding: 0 0 var(--spacing-2xl);
+    margin: unset;
   }
 
   .modal-close-button {

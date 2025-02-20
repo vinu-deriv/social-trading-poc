@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState, useEffect } from 'react';
 import type { Strategy } from '@/types/strategy.types';
 
 interface ExtendedStrategy extends Strategy {
@@ -15,7 +15,7 @@ interface StrategyListItemProps {
   strategy: ExtendedStrategy;
   showCopyButton?: boolean;
   isCopying?: boolean;
-  onCopy?: (strategyId: string, isCopying: boolean) => void;
+  onCopy?: (strategyId: string) => Promise<boolean>;
   onClick?: (strategyId: string) => void;
   rank?: number;
 }
@@ -28,6 +28,14 @@ const StrategyListItem: FC<StrategyListItemProps> = ({
   onClick,
   rank,
 }) => {
+  const [loading, setLoading] = useState(false);
+  const [isCurrentlyCopying, setIsCurrentlyCopying] = useState(isCopying);
+
+  // Update local state when prop changes
+  useEffect(() => {
+    setIsCurrentlyCopying(isCopying);
+  }, [isCopying]);
+
   const getRiskLevelClass = (riskLevel: string) => {
     const level = riskLevel.toLowerCase();
     return `strategy-list__risk strategy-list__risk--${level}`;
@@ -50,16 +58,27 @@ const StrategyListItem: FC<StrategyListItemProps> = ({
           {showCopyButton && onCopy && (
             <button
               className={`strategy-list__copy-btn ${
-                isCopying
+                isCurrentlyCopying
                   ? 'strategy-list__copy-btn--secondary'
                   : 'strategy-list__copy-btn--primary'
               }`}
-              onClick={e => {
+              onClick={async e => {
                 e.stopPropagation(); // Prevent navigation when clicking the button
-                onCopy(strategy.id, isCopying);
+                if (!onCopy) return;
+
+                setLoading(true);
+                try {
+                  const newCopyingState = await onCopy(strategy.id);
+                  setIsCurrentlyCopying(newCopyingState);
+                } catch (error) {
+                  console.error('Error copying strategy:', error);
+                } finally {
+                  setLoading(false);
+                }
               }}
+              disabled={loading}
             >
-              {isCopying ? 'Stop Copying' : 'COPY'}
+              {loading ? 'Processing...' : isCurrentlyCopying ? 'Stop Copying' : 'COPY'}
             </button>
           )}
         </div>

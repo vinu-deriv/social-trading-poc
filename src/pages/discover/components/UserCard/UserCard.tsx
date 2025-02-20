@@ -3,20 +3,26 @@ import { useAuth } from '@/context/AuthContext';
 import './UserCard.css';
 import Button from '@/components/input/Button/Button';
 import Trophy from '@/assets/icons/Trophy';
-import User from '@/types/user.types';
+import type User from '@/types/user.types';
 import { toggleUserFollow } from '@/services/userService';
 
-interface UserCardProps {
-  user: Partial<User> & {
-    copiers: number;
-    totalProfit: number;
-    isFollowing: boolean;
-    winRate: number;
-  };
-  rank?: number;
+export interface ExtendedUser extends Partial<User> {
+  copiers: number;
+  totalProfit: number;
+  winRate: number;
+  isFollowing: boolean;
+  matchScore?: number;
+  matchReason?: string;
+  profilePicture?: string;
 }
 
-const UserCard: FC<UserCardProps> = ({ user, rank }) => {
+interface UserCardProps {
+  user: ExtendedUser;
+  rank?: number;
+  context: 'leaders' | 'people';
+}
+
+const UserCard: FC<UserCardProps> = ({ user, rank, context }) => {
   const { user: currentUser } = useAuth();
   const [isFollowing, setIsFollowing] = useState(user.isFollowing);
   const [loading, setLoading] = useState(false);
@@ -37,25 +43,19 @@ const UserCard: FC<UserCardProps> = ({ user, rank }) => {
       setIsFollowing(newFollowingStatus);
     } catch (error) {
       console.error('Error following user:', error);
-      // Could add toast notification here
     } finally {
       setLoading(false);
     }
   };
-  const formatProfit = (profit: number) => {
+
+  const formatProfit = (profit: number | undefined) => {
+    if (profit === undefined || isNaN(profit)) return '$0';
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(profit);
-  };
-
-  const formatCopiers = (count: number) => {
-    return new Intl.NumberFormat('en-US', {
-      notation: 'compact',
-      compactDisplay: 'short',
-    }).format(count);
   };
 
   return (
@@ -77,36 +77,34 @@ const UserCard: FC<UserCardProps> = ({ user, rank }) => {
               />
             ) : (
               <div className="user-card__avatar-placeholder">
-                {!!user.username && user.username.slice(0, 2).toUpperCase()}
+                {user.username?.slice(0, 2).toUpperCase()}
               </div>
             )}
           </div>
         </div>
-        <h3 className="user-card__name">{user.username}</h3>
+        <div className="user-card__details">
+          <h3 className="user-card__name">{user.displayName || user.username}</h3>
+          <h5 className="user-card__username">@{user.username}</h5>
+          {user.userType === 'leader' && (
+            <span className="user-card__type user-card__type--leader">{user.userType}</span>
+          )}
+        </div>
       </div>
 
       <div className="user-card__cta">
         <div className="user-card__stats">
-          {!!user.copiers && (
-            <div className="user-card__stat">
-              <div className="user-card__stat-label">Copiers</div>
-              <div className="user-card__stat-value">{formatCopiers(user.copiers)}</div>
+          <div className="user-card__stat">
+            <div className="user-card__stat-label">
+              {context === 'leaders' ? 'Copiers - ' : 'Followers - '}
             </div>
-          )}
-          {!!user.totalProfit && (
-            <div className="user-card__stat">
-              <div className="user-card__stat-label">Total Profit</div>
-              <div className="user-card__stat-value">
-                {formatProfit(Math.abs(user.totalProfit))}
-              </div>
+            <div className="user-card__stat-value">
+              {context === 'leaders' ? user.copiers : user.followers?.length}
             </div>
-          )}
-          {!!user.winRate && (
-            <div className="user-card__stat">
-              <div className="user-card__stat-label">Win Rate</div>
-              <div className="user-card__stat-value">{user.winRate}</div>
-            </div>
-          )}
+          </div>
+          <div className="user-card__stat">
+            <div className="user-card__stat-label">Total Profit - </div>
+            <div className="user-card__stat-value">{formatProfit(user.totalProfit)}</div>
+          </div>
         </div>
         <Button
           className="user-card__follow-button"

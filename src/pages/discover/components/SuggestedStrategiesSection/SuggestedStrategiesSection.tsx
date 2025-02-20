@@ -4,21 +4,20 @@ import StrategyListItem from '@/components/strategy/StrategyListItem';
 import type { ExtendedStrategy } from '@/types/strategy.types';
 import '../shared.css';
 
-interface TopStrategiesProps {
+interface SuggestedStrategiesProps {
   strategies: ExtendedStrategy[];
   onCopy: (strategyId: string) => Promise<boolean>;
 }
 
-const TopStrategiesSection: FC<TopStrategiesProps> = ({ strategies, onCopy }) => {
+const SuggestedStrategiesSection: FC<SuggestedStrategiesProps> = ({ strategies, onCopy }) => {
   const navigate = useNavigate();
 
   return (
     <div className="strategies-grid">
-      {strategies.map((strategy, index) => (
+      {strategies.map(strategy => (
         <StrategyListItem
           key={strategy.id}
           strategy={strategy}
-          rank={index + 1}
           showCopyButton={true}
           isCopying={strategy.isCopying}
           onCopy={onCopy}
@@ -29,4 +28,4 @@ const TopStrategiesSection: FC<TopStrategiesProps> = ({ strategies, onCopy }) =>
   );
 };
 
-export default TopStrategiesSection;
+export default SuggestedStrategiesSection;

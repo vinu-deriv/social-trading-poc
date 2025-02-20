@@ -28,7 +28,7 @@ if (!JSON_SERVER_URL) {
 export interface Leader {
   id: string;
   username: string;
-  avatar?: string;
+  profilePicture?: string;
   copiers: number;
   totalProfit: number;
   winRate: number;
@@ -45,84 +45,57 @@ export interface ExtendedStrategy extends Omit<Strategy, 'tradeType'> {
   currency?: string;
   isFollowing?: boolean;
   isCopying?: boolean;
+  score?: number;
 }
 
 export const discoverService = {
-  async fetchAllData(userId?: string) {
+  async fetchUsers(userId?: string): Promise<User[]> {
     try {
-      const [usersRes, strategiesRes, currencyAccountsRes] = await Promise.all([
-        fetch(`${JSON_SERVER_URL}/users`),
+      const usersRes = await fetch(`${JSON_SERVER_URL}/users`);
+      const users = await usersRes.json();
+
+      if (userId) {
+        const currentUserRes = await fetch(`${JSON_SERVER_URL}/users/${userId}`);
+        const currentUser = await currentUserRes.json();
+        return users.map((user: User) => ({
+          ...user,
+          isFollowing: currentUser.following.includes(user.id),
+        }));
+      }
+
+      return users;
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      return [];
+    }
+  },
+
+  async fetchStrategies(userId?: string): Promise<ExtendedStrategy[]> {
+    try {
+      const [strategiesRes, usersRes] = await Promise.all([
         fetch(`${JSON_SERVER_URL}/tradingStrategies`),
-        fetch(`${JSON_SERVER_URL}/currencyAccounts`),
+        fetch(`${JSON_SERVER_URL}/users`),
       ]);
 
-      const [users, strategiesData, accounts]: [User[], Strategy[], CurrencyAccount[]] =
-        await Promise.all([usersRes.json(), strategiesRes.json(), currencyAccountsRes.json()]);
+      const [strategies, users] = await Promise.all([strategiesRes.json(), usersRes.json()]);
 
-      // Mock assets data since the endpoint doesn't exist
-      const assetsData: Asset[] = [
-        {
-          symbol: 'BTC-USD',
-          name: 'Bitcoin',
-          imageUrl: 'https://images.unsplash.com/photo-1519162584292-56dfc9eb5db4?w=400',
-          currentPrice: 62500.5,
-          changePercentage: 2.75,
-          direction: 'up',
-        },
-        {
-          symbol: 'ETH-USD',
-          name: 'Ethereum',
-          imageUrl: 'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=400',
-          currentPrice: 3050.25,
-          changePercentage: -1.5,
-          direction: 'down',
-        },
-        {
-          symbol: 'EUR-USD',
-          name: 'Euro/US Dollar',
-          imageUrl: 'https://images.unsplash.com/photo-1580048915913-4f8f5cb481c4?w=400',
-          currentPrice: 1.085,
-          changePercentage: 0.3,
-          direction: 'up',
-        },
-      ];
+      let copyRelations: CopyRelationship[] = [];
+      let currentUser: User | null = null;
 
-      // Get current user data to check following status
-      const currentUserData = userId
-        ? await fetch(`${JSON_SERVER_URL}/users/${userId}`).then(res => res.json())
-        : null;
+      if (userId) {
+        [copyRelations, currentUser] = await Promise.all([
+          fetch(`${JSON_SERVER_URL}/copyRelationships?copierId=${userId}`).then(res => res.json()),
+          fetch(`${JSON_SERVER_URL}/users/${userId}`).then(res => res.json()),
+        ]);
+      }
 
-      // Process leaders
-      const leaders = users
-        .filter(u => u.userType === 'leader')
-        .map(leader => ({
-          id: leader.id,
-          username: leader.username,
-          avatar: leader.profilePicture,
-          copiers: Math.floor(Math.random() * 2000) + 500,
-          totalProfit: Math.floor(Math.random() * 900000) + 100000,
-          winRate: Math.floor(Math.random() * 20) + 70,
-          isFollowing: currentUserData ? currentUserData.following.includes(leader.id) : false,
-        }));
-
-      // Get copy relationships for current user
-      const copyRelations = userId
-        ? await fetch(`${JSON_SERVER_URL}/copyRelationships?copierId=${userId}`).then(res =>
-            res.json()
-          )
-        : [];
-
-      // Process strategies
-      const processedStrategies = strategiesData.map(strategy => {
-        const leader = users.find(u => u.id === strategy.leaderId);
-        const account = accounts.find(a => a.id === strategy.accountId);
-        const isCopying = copyRelations.some(
-          (rel: CopyRelationship) => rel.strategyId === strategy.id
-        );
+      return strategies.map((strategy: Strategy) => {
+        const leader = users.find((u: User) => u.id === strategy.leaderId);
+        const isCopying = copyRelations.some(rel => rel.strategyId === strategy.id);
 
         return {
           ...strategy,
-          tradeType: 'multipliers', // Default trade type since it's required by the interface
+          tradeType: 'multipliers' as TradeType,
           leader: leader
             ? {
                 username: leader.username,
@@ -130,26 +103,23 @@ export const discoverService = {
                 profilePicture: leader.profilePicture,
               }
             : undefined,
-          currency: account?.currency,
-          isFollowing: currentUserData
-            ? currentUserData.following.includes(strategy.leaderId)
-            : false,
+          isFollowing: currentUser?.following?.includes(strategy.leaderId) ?? false,
           isCopying,
         };
       });
-
-      return {
-        leaders,
-        strategies: processedStrategies,
-        assets: assetsData,
-      };
     } catch (error) {
-      console.error('Error fetching discover data:', error);
-      return {
-        leaders: [],
-        strategies: [],
-        assets: [],
-      };
+      console.error('Error fetching strategies:', error);
+      return [];
+    }
+  },
+
+  async fetchAssets(): Promise<Asset[]> {
+    try {
+      const assetsRes = await fetch(`${JSON_SERVER_URL}/assets`);
+      return await assetsRes.json();
+    } catch (error) {
+      console.error('Error fetching assets:', error);
+      return [];
     }
   },
 
@@ -254,6 +224,87 @@ export const discoverService = {
     } catch (error) {
       console.error('Error copying strategy:', error);
       throw error;
+    }
+  },
+
+  async getTopStrategies(userId?: string): Promise<ExtendedStrategy[]> {
+    try {
+      const strategies = await this.fetchStrategies(userId);
+
+      // Calculate a composite score for each strategy
+      const strategiesWithScore = strategies.map(strategy => {
+        const maxReturn = Math.max(...strategies.map(s => Math.abs(s.performance.totalReturn)));
+        const maxProfit = Math.max(...strategies.map(s => s.performance.averageProfit));
+        const maxCopiers = Math.max(...strategies.map(s => s.copiers.length));
+
+        // Calculate normalized scores (0-1)
+        const returnScore = maxReturn ? Math.abs(strategy.performance.totalReturn) / maxReturn : 0;
+        const winRateScore = strategy.performance.winRate / 100;
+        const profitScore = maxProfit ? strategy.performance.averageProfit / maxProfit : 0;
+        const copiersScore = maxCopiers ? strategy.copiers.length / maxCopiers : 0;
+
+        // Risk level score
+        const riskScore =
+          strategy.riskLevel === 'low' ? 1 : strategy.riskLevel === 'medium' ? 0.66 : 0.33;
+
+        // Weighted composite score
+        const score =
+          returnScore * 0.25 + // 25% weight for total return
+          winRateScore * 0.25 + // 25% weight for win rate
+          profitScore * 0.2 + // 20% weight for average profit
+          riskScore * 0.15 + // 15% weight for risk level
+          copiersScore * 0.15; // 15% weight for number of copiers
+
+        return { ...strategy, score };
+      });
+
+      // Sort by composite score and return top 3
+      return strategiesWithScore.sort((a, b) => (b.score ?? 0) - (a.score ?? 0)).slice(0, 3);
+    } catch (error) {
+      console.error('Error getting top strategies:', error);
+      return [];
+    }
+  },
+
+  async getTopLeaders(userId?: string): Promise<Leader[]> {
+    try {
+      const users = await this.fetchUsers(userId);
+      const leaders = users
+        .filter(u => u.userType === 'leader')
+        .map(leader => ({
+          id: leader.id,
+          username: leader.username,
+          profilePicture: leader.profilePicture,
+          copiers: leader.followers?.length || 0,
+          totalProfit: leader.performance?.totalPnL || 0,
+          winRate: leader.performance?.winRate || 0,
+          isFollowing: 'isFollowing' in leader ? (leader.isFollowing as boolean) : false,
+        }));
+
+      // Calculate composite score and sort
+      const maxCopiers = Math.max(...leaders.map(l => l.copiers));
+      const maxPnL = Math.max(...leaders.map(l => Math.abs(l.totalProfit)));
+
+      const sortedLeaders = leaders.sort((a, b) => {
+        const aCopiersScore = maxCopiers ? a.copiers / maxCopiers : 0;
+        const bCopiersScore = maxCopiers ? b.copiers / maxCopiers : 0;
+
+        const aWinRateScore = a.winRate / 100;
+        const bWinRateScore = b.winRate / 100;
+
+        const aPnLScore = maxPnL ? Math.abs(a.totalProfit) / maxPnL : 0;
+        const bPnLScore = maxPnL ? Math.abs(b.totalProfit) / maxPnL : 0;
+
+        const aScore = (aCopiersScore + aWinRateScore + aPnLScore) / 3;
+        const bScore = (bCopiersScore + bWinRateScore + bPnLScore) / 3;
+
+        return bScore - aScore;
+      });
+
+      return sortedLeaders.slice(0, 3);
+    } catch (error) {
+      console.error('Error getting top leaders:', error);
+      return [];
     }
   },
 };

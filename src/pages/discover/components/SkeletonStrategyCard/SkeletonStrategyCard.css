@@ -1,0 +1,40 @@
+.skeleton-strategy__title {
+  width: 150px;
+  height: 24px;
+}
+
+.skeleton-strategy__username {
+  width: 100px;
+  height: 16px;
+  margin-top: var(--spacing-2xs);
+}
+
+.skeleton-strategy__description {
+  width: 100%;
+  height: 40px;
+}
+
+.skeleton-strategy__stats {
+  height: 60px;
+  background-color: color-mix(in srgb, var(--primary-color) 5%, transparent);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-sm);
+}
+
+.skeleton-strategy__button {
+  width: 80px;
+  height: 32px;
+  border-radius: var(--border-radius-full);
+}
+
+.skeleton-strategy__risk {
+  width: 80px;
+  height: 24px;
+  border-radius: var(--border-radius-full);
+}
+
+.skeleton-strategy__rank {
+  width: 60px;
+  height: 24px;
+  border-radius: var(--border-radius-full);
+}
