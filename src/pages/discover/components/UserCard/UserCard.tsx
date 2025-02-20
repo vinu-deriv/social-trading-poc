@@ -19,7 +19,7 @@ export interface ExtendedUser extends Partial<User> {
 interface UserCardProps {
   user: ExtendedUser;
   rank?: number;
-  context: 'leaders' | 'people';
+  context?: 'leaders' | 'people';
 }
 
 const UserCard: FC<UserCardProps> = ({ user, rank, context }) => {

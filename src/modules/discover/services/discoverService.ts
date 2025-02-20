@@ -11,15 +11,6 @@ export interface Asset {
   direction: 'up' | 'down';
 }
 
-interface CurrencyAccount {
-  id: string;
-  userId: string;
-  currency: string;
-  balance: number;
-  tradingStrategies: string[];
-  isActive: boolean;
-}
-
 const JSON_SERVER_URL = import.meta.env.VITE_JSON_SERVER_URL;
 if (!JSON_SERVER_URL) {
   throw new Error('VITE_JSON_SERVER_URL environment variable is not set');
