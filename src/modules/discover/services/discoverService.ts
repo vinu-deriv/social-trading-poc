@@ -222,12 +222,13 @@ export const discoverService = {
     try {
       const strategies = await this.fetchStrategies(userId);
 
-      // Calculate a composite score for each strategy
-      const strategiesWithScore = strategies.map(strategy => {
-        const maxReturn = Math.max(...strategies.map(s => Math.abs(s.performance.totalReturn)));
-        const maxProfit = Math.max(...strategies.map(s => s.performance.averageProfit));
-        const maxCopiers = Math.max(...strategies.map(s => s.copiers.length));
+      // Calculate maximum values once
+      const maxReturn = Math.max(...strategies.map(s => Math.abs(s.performance.totalReturn)));
+      const maxProfit = Math.max(...strategies.map(s => s.performance.averageProfit));
+      const maxCopiers = Math.max(...strategies.map(s => s.copiers.length));
 
+      // Calculate scores for each strategy
+      const strategiesWithScore = strategies.map(strategy => {
         // Calculate normalized scores (0-1)
         const returnScore = maxReturn ? Math.abs(strategy.performance.totalReturn) / maxReturn : 0;
         const winRateScore = strategy.performance.winRate / 100;
