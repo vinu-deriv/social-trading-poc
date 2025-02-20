@@ -8,7 +8,7 @@ import Header from '@/layouts/Header';
 import AppContent from '@/layouts/AppContent';
 import BottomNavigation from '@/components/navigation/BottomNavigation';
 import CreateContentSheet from '@/components/content/CreateContentSheet';
-import ChatBot from '@/components/ChatBot';
+import GlobalAIOverlay from '@/components/GlobalAIOverlay';
 import type { StrategyFormData } from '@/modules/strategy/components/StrategyForm/StrategyForm';
 import './MainLayout.css';
 
@@ -16,6 +16,7 @@ const MainLayout = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [showActionSheet, setShowActionSheet] = useState(false);
+  const [showGlobalAI, setShowGlobalAI] = useState(false);
 
   const handleCreatePost = async (content: { text: string; images: string[] }) => {
     if (!user) return;
@@ -45,7 +46,10 @@ const MainLayout = () => {
       <AppContent>
         <Outlet />
       </AppContent>
-      <BottomNavigation onCreateContent={() => setShowActionSheet(true)} />
+      <BottomNavigation
+        onCreateContent={() => setShowActionSheet(true)}
+        onGlobalAI={() => setShowGlobalAI(true)}
+      />
 
       {user && (
         <CreateContentSheet
@@ -57,7 +61,7 @@ const MainLayout = () => {
           currentUser={user}
         />
       )}
-      <ChatBot />
+      {showGlobalAI && <GlobalAIOverlay onClose={() => setShowGlobalAI(false)} />}
     </div>
   );
 };

@@ -1,0 +1,11 @@
+.data-attachments {
+  display: flex;
+  overflow-x: scroll;
+  gap: var(--spacing-md);
+  scrollbar-width: none;
+  padding: 10px 0;
+}
+
+.data-attachments > div {
+    /* transform: scale(0.5); */
+}
