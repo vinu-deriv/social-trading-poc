@@ -2,7 +2,6 @@ import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { CopyRelationship } from '../../types/copy.types';
 import TabNavigation from '../../components/navigation/TabNavigation';
-import Search from './components/Search';
 import LeadersSection from './components/LeadersSection';
 import StrategiesSection from './components/StrategiesSection';
 import TrendingAssets from './components/TrendingAssets';
@@ -226,7 +225,6 @@ export default function Discover() {
 
   return (
     <div className="discover">
-      <Search />
       <TabNavigation tabs={tabs} activeTab={activeTab} onTabChange={handleTabChange} />
       {activeTab === 'Leaders' ? (
         <LeadersSection />

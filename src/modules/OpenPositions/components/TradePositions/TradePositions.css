@@ -1,8 +1,7 @@
 .contract-card-container {
-  margin-top: 30px;
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: var(--spacing-md);
   justify-content: center;
-  align-items: center;
 }

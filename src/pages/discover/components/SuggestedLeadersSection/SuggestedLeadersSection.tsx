@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import './SuggestedLeadersSection.css';
 import '../shared.css';
 import { useAuth } from '../../../../context/AuthContext';
 import UserCard from '../UserCard';
@@ -25,7 +24,6 @@ export default function SuggestedLeadersSection() {
       setLoading(true);
       const { suggestions: leaderSuggestions } = await fetchLeaderSuggestions(user.id);
       setSuggestions(leaderSuggestions);
-      console.log(leaderSuggestions);
     } catch (err) {
       console.error('Error fetching suggestions:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch suggestions');
@@ -38,7 +36,7 @@ export default function SuggestedLeadersSection() {
     return (
       <>
         <h2 className="section-title">AI Suggested Leaders</h2>
-        <div className="suggested-leaders">
+        <div className="leaders-grid">
           {[...Array(5)].map((_, index) => (
             <SkeletonUserCard key={`ai-${index}`} />
           ))}
@@ -53,8 +51,8 @@ export default function SuggestedLeadersSection() {
 
   return (
     <>
-      <h2 className="section-title">AI Suggested Leaders</h2>
-      <div className="suggested-leaders">
+      <h2 className="section-title">✧ AI Suggested Leaders</h2>
+      <div className="leaders-grid">
         {suggestions.map(suggestion => (
           <UserCard
             key={suggestion.leaderId}

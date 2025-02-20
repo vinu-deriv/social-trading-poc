@@ -1,16 +1,15 @@
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { strategyService } from '@/services/strategy';
 import './StrategiesSection.css';
 import '../shared.css';
-import { useNavigate } from 'react-router-dom';
-import StrategyListItem from '@/components/strategy/StrategyListItem';
 import SkeletonCard from '../SkeletonCard';
 import AIButton from '@/components/AIButton/AIButton';
-import StrategyComparison from '../StrategyComparison/StrategyComparison';
-import type {
-  ExtendedStrategy,
-  StrategyComparison as ComparisonType,
-} from '@/types/strategy.types';
+import Chip from '@/components/Chip';
+import type { ExtendedStrategy } from '@/types/strategy.types';
+import TopStrategiesSection from '../TopStrategiesSection';
+import AIStrategiesSection from '../AIStrategiesSection';
+import PopularStrategiesSection from '../PopularStrategiesSection';
 
 interface StrategiesSectionProps {
   loading: boolean;
@@ -22,8 +21,7 @@ export default function StrategiesSection({ loading, strategies, onCopy }: Strat
   const navigate = useNavigate();
   const [selectedStrategies, setSelectedStrategies] = useState<string[]>([]);
   const [isComparing, setIsComparing] = useState(false);
-  const [comparisonData, setComparisonData] = useState<ComparisonType | null>(null);
-  const [showComparison, setShowComparison] = useState(false);
+  const [activeTab, setActiveTab] = useState<'top' | 'ai' | 'popular'>('top');
 
   const handleStrategyClick = (strategyId: string) => {
     if (selectedStrategies.length > 0) {
@@ -64,19 +62,14 @@ export default function StrategiesSection({ loading, strategies, onCopy }: Strat
         setIsComparing(true);
         const selectedStrategyObjects = strategies.filter(s => selectedStrategies.includes(s.id));
         const comparison = await strategyService.compareStrategies(selectedStrategyObjects);
-        setComparisonData(comparison);
-        setShowComparison(true);
+        navigate('/strategies/compare', { state: { comparison } });
+        setSelectedStrategies([]);
       } catch (error) {
         console.error('Error comparing strategies:', error);
       } finally {
         setIsComparing(false);
       }
     }
-  };
-
-  const handleCloseComparison = () => {
-    setShowComparison(false);
-    setSelectedStrategies([]);
   };
 
   if (loading) {
@@ -94,24 +87,29 @@ export default function StrategiesSection({ loading, strategies, onCopy }: Strat
             </AIButton>
           </div>
         )}
-        <h2 className="section-title">Top Strategies</h2>
-        <div className="top-strategies">
-          {[...Array(3)].map((_, index) => (
-            <SkeletonCard key={index} large showRank />
-          ))}
+
+        <div className="strategies-section__tabs">
+          <Chip active={activeTab === 'top'} onClick={() => setActiveTab('top')}>
+            Top Strategies
+          </Chip>
+          <Chip active={activeTab === 'ai'} onClick={() => setActiveTab('ai')}>
+            ✧ AI Suggested
+          </Chip>
+          <Chip active={activeTab === 'popular'} onClick={() => setActiveTab('popular')}>
+            Popular
+          </Chip>
         </div>
 
-        <h2 className="section-title">AI Suggested Strategies</h2>
-        <div className="strategies-grid">
-          {[...Array(5)].map((_, index) => (
-            <SkeletonCard key={`ai-${index}`} />
-          ))}
-        </div>
-
-        <h2 className="section-title">Popular Strategies</h2>
-        <div className="strategies-grid">
-          {[...Array(5)].map((_, index) => (
-            <SkeletonCard key={`popular-${index}`} />
+        <h2 className="section-title">
+          {activeTab === 'top'
+            ? 'Top Strategies'
+            : activeTab === 'ai'
+              ? 'AI Suggested Strategies'
+              : 'Popular Strategies'}
+        </h2>
+        <div className={activeTab === 'top' ? 'top-strategies' : 'strategies-grid'}>
+          {[...Array(activeTab === 'top' ? 3 : 5)].map((_, index) => (
+            <SkeletonCard key={index} large={activeTab === 'top'} showRank={activeTab === 'top'} />
           ))}
         </div>
       </div>
@@ -133,56 +131,45 @@ export default function StrategiesSection({ loading, strategies, onCopy }: Strat
         </div>
       )}
 
-      {comparisonData && (
-        <StrategyComparison
-          comparison={comparisonData}
-          isOpen={showComparison}
-          onClose={handleCloseComparison}
+      <div className="strategies-section__tabs">
+        <Chip active={activeTab === 'top'} onClick={() => setActiveTab('top')}>
+          Top Strategies
+        </Chip>
+        <Chip active={activeTab === 'ai'} onClick={() => setActiveTab('ai')}>
+          ✧ AI Suggested
+        </Chip>
+        <Chip active={activeTab === 'popular'} onClick={() => setActiveTab('popular')}>
+          Popular
+        </Chip>
+      </div>
+
+      {activeTab === 'top' && (
+        <TopStrategiesSection
+          strategies={topStrategies}
+          onCopy={onCopy}
+          onSelect={handleStrategySelect}
+          onStrategyClick={handleStrategyClick}
+          selectedStrategies={selectedStrategies}
         />
       )}
-
-      <h2 className="section-title">Top Strategies</h2>
-      <div className="top-strategies">
-        {topStrategies.map((strategy, index) => (
-          <StrategyListItem
-            key={strategy.id}
-            strategy={strategy}
-            rank={index + 1}
-            onCopy={(strategyId: string) => onCopy(strategyId)}
-            onClick={handleStrategyClick}
-            selected={selectedStrategies.includes(strategy.id)}
-            onSelect={() => handleStrategySelect(strategy.id)}
-          />
-        ))}
-      </div>
-
-      <h2 className="section-title">AI Suggested Strategies</h2>
-      <div className="strategies-grid">
-        {aiSuggestedStrategies.map(strategy => (
-          <StrategyListItem
-            key={strategy.id}
-            strategy={strategy}
-            onCopy={(strategyId: string) => onCopy(strategyId)}
-            onClick={handleStrategyClick}
-            selected={selectedStrategies.includes(strategy.id)}
-            onSelect={() => handleStrategySelect(strategy.id)}
-          />
-        ))}
-      </div>
-
-      <h2 className="section-title">Popular Strategies</h2>
-      <div className="strategies-grid">
-        {popularStrategies.map(strategy => (
-          <StrategyListItem
-            key={strategy.id}
-            strategy={strategy}
-            onCopy={(strategyId: string) => onCopy(strategyId)}
-            onClick={handleStrategyClick}
-            selected={selectedStrategies.includes(strategy.id)}
-            onSelect={() => handleStrategySelect(strategy.id)}
-          />
-        ))}
-      </div>
+      {activeTab === 'ai' && (
+        <AIStrategiesSection
+          strategies={aiSuggestedStrategies}
+          onCopy={onCopy}
+          onSelect={handleStrategySelect}
+          onStrategyClick={handleStrategyClick}
+          selectedStrategies={selectedStrategies}
+        />
+      )}
+      {activeTab === 'popular' && (
+        <PopularStrategiesSection
+          strategies={popularStrategies}
+          onCopy={onCopy}
+          onSelect={handleStrategySelect}
+          onStrategyClick={handleStrategyClick}
+          selectedStrategies={selectedStrategies}
+        />
+      )}
     </div>
   );
 }

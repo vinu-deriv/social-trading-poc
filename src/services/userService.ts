@@ -1,3 +1,5 @@
+import User from '@/types/user.types';
+
 const JSON_SERVER_URL = import.meta.env.VITE_JSON_SERVER_URL;
 if (!JSON_SERVER_URL) {
   throw new Error('VITE_JSON_SERVER_URL environment variable is not set');
@@ -83,5 +85,53 @@ export async function getUserRelationship(
   } catch (error) {
     console.error('Error getting user relationship:', error);
     throw error;
+  }
+}
+
+export async function upgradeToLeader(userId: string): Promise<User> {
+  try {
+    // Get user data
+    const response = await fetch(`${JSON_SERVER_URL}/users/${userId}`);
+    const user = await response.json();
+
+    // Update user type and add leader-specific fields
+    const updatedUser = {
+      ...user,
+      userType: 'leader',
+      performance: {
+        winRate: 0,
+        totalPnL: 0,
+        monthlyReturn: 0,
+        totalTrades: 0,
+      },
+      // Keep existing trading preferences or set defaults if none exist
+      tradingPreferences: user.tradingPreferences || {
+        riskTolerance: 'medium',
+        investmentStyle: 'moderate',
+        preferredMarkets: [],
+        preferredTradeTypes: [],
+        tradingFrequency: 'weekly',
+        maxDrawdown: 20,
+        targetReturn: 15,
+        minStake: 10,
+        maxStake: 100,
+      },
+    };
+
+    // Update user in database
+    const updateResponse = await fetch(`${JSON_SERVER_URL}/users/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedUser),
+    });
+
+    if (!updateResponse.ok) {
+      throw new Error('Failed to update user');
+    }
+
+    return updatedUser;
+  } catch (error) {
+    console.error('Error upgrading user to leader:', error);
+    throw new Error('Failed to upgrade user to leader');
   }
 }

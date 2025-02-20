@@ -1,47 +1,86 @@
-import Table from '../../components/Table/Table';
-import dbData from '../../../json-server/data/db.json';
-import { formatTimestamp } from '@/utils';
-import { useViewport } from '@/hooks';
-import { BREAKPOINTS } from '@/constants';
-import { ContractCard } from '../OpenPositions/components/TradePositions/ContractCard';
-
-interface StatementItem {
-  type: string;
-  reference_id: string | number;
-  currency: string;
-  transaction_time: string;
-  action_type: string;
-  amount: number;
-  balance_after: number;
-}
+import { useState, useEffect } from 'react';
+import { StatementCard } from './components/StatementCard';
+import Chip from '@/components/Chip';
+import { TradeType } from '@/modules/OpenPositions/types';
+import { StatementItem, getStatementsByType } from '@/services/statementService';
+import AILoader from '@/components/AILoader';
+import ErrorState from '@/components/feedback/ErrorState';
+import './Statement.css';
 
 const Statement = () => {
-  const statements = (dbData.statements || []) as StatementItem[];
-  const { width } = useViewport();
+  const [selectedTradeType, setSelectedTradeType] = useState<TradeType>(TradeType.Multipliers);
+  const [statements, setStatements] = useState<StatementItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Map each statement object to an array of values matching the column order
-  const data = statements.map((statement: StatementItem) => ({
-    Type: statement.type,
-    'Ref. ID': statement.reference_id,
-    Currency: statement.currency,
-    'Transaction time': formatTimestamp(statement.transaction_time.toString()),
-    Transaction: statement.action_type,
-    'Credit/Debit': statement.amount,
-    Balance: statement.balance_after,
-  }));
+  useEffect(() => {
+    const fetchStatements = async () => {
+      try {
+        setLoading(true);
+        const data = await getStatementsByType(selectedTradeType);
+        setStatements(data);
+        setError(null);
+      } catch (err) {
+        setError('Failed to fetch statements');
+        console.error('Error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  return width >= BREAKPOINTS.DESKTOP ? (
-    <Table data={data} />
-  ) : (
-    <div className="contract-card-container">
-      {data.map((item, index) => {
-        const items = Object.entries(item).map(([key, value]) => ({
-          title: key,
-          value,
-        }));
+    fetchStatements();
+  }, [selectedTradeType]);
 
-        return <ContractCard items={items} key={index} isStatement />;
-      })}
+  const handleTradeTypeChange = (selected: string) => {
+    setSelectedTradeType(selected as TradeType);
+  };
+
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <div className="statement-loader">
+          <AILoader />
+        </div>
+      );
+    }
+
+    if (error) {
+      return <ErrorState message={error} />;
+    }
+
+    if (statements.length === 0) {
+      return (
+        <ErrorState
+          message={`No statements found for ${selectedTradeType}. Try selecting a different trade type or check back later.`}
+        />
+      );
+    }
+
+    return (
+      <div className="statement-card-container">
+        {statements.map(item => (
+          <StatementCard key={item.referenceId} {...item} />
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <div>
+      <div className="statement-header">
+        <div className="statement-tabs">
+          {Object.values(TradeType).map(type => (
+            <Chip
+              key={type}
+              active={selectedTradeType === type}
+              onClick={() => handleTradeTypeChange(type)}
+            >
+              {type}
+            </Chip>
+          ))}
+        </div>
+      </div>
+      {renderContent()}
     </div>
   );
 };
