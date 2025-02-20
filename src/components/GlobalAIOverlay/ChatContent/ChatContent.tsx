@@ -8,9 +8,11 @@ import './ChatContent.css';
 interface ChatContentProps {
   messages: ChatMessageType[];
   isLoading: boolean;
+  hasError: boolean;
+  onRetry: () => void;
 }
 
-const ChatContent = ({ messages, isLoading }: ChatContentProps) => (
+const ChatContent = ({ messages, isLoading, hasError, onRetry }: ChatContentProps) => (
   <div className="chat-content">
     {messages.map((msg, index) => (
       <div key={msg.id} className="chat-content__message">
@@ -25,6 +27,16 @@ const ChatContent = ({ messages, isLoading }: ChatContentProps) => (
       </div>
     ))}
     {isLoading && <ThinkingLoader />}
+    {hasError && (
+      <div className="chat-content__error">
+        <div className="chat-content__error-message">
+          Sorry, I encountered an error. Please try again.
+        </div>
+        <button className="chat-content__retry-button" onClick={onRetry}>
+          Retry
+        </button>
+      </div>
+    )}
   </div>
 );
 
