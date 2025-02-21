@@ -1,0 +1,27 @@
+.profit-pie-chart {
+  background: var(--background-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.profit-pie-chart__title {
+  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-md);
+}
+
+.profit-pie-chart__container {
+  width: 100%;
+  height: 300px;
+}
+
+:global(.loss-cell) {
+  filter: brightness(0.9);
+}
+
+:global(.profit-cell) {
+  filter: brightness(1.1);
+}
