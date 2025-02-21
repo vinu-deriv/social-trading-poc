@@ -21,6 +21,7 @@ export interface Contract {
   payout?: number;
   purchaseTime?: string;
   userId: string;
+  referenceId?: number;
 }
 
 export interface ContractResponse {
@@ -40,6 +41,7 @@ export interface ContractResponse {
   expiryTime?: string;
   payout?: number;
   purchaseTime?: string;
+  referenceId?: number;
 }
 
 const transformContract = (contract: Contract): ContractResponse => ({
@@ -59,6 +61,7 @@ const transformContract = (contract: Contract): ContractResponse => ({
   expiryTime: contract.expiryTime,
   payout: contract.payout,
   purchaseTime: contract.purchaseTime,
+  referenceId: contract.referenceId,
 });
 
 export const contractService = {

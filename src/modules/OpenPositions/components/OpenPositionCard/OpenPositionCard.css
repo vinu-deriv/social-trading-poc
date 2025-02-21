@@ -85,11 +85,28 @@
 .open-position-card__section {
   display: flex;
   justify-content: space-around;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-md);
   background-color: color-mix(in srgb, var(--primary-color) 5%, transparent);
   border-radius: var(--border-radius-lg);
-  padding: var(--spacing-sm);
+  padding: var(--spacing-md);
   min-width: auto;
+  transition: background var(--transition-normal);
+}
+
+.open-position-card__section--profit {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--success-color) 5%, transparent),
+    color-mix(in srgb, var(--success-color) 15%, transparent)
+  );
+}
+
+.open-position-card__section--loss {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--error-color) 5%, transparent),
+    color-mix(in srgb, var(--error-color) 15%, transparent)
+  );
 }
 
 .open-position-card__section .open-position-card__row {

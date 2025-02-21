@@ -1474,7 +1474,8 @@
       "leaderDisplayName": "Sarah Johnson | FX Pro",
       "strategyId": "strat1",
       "strategyDisplayName": "USD Rise/Fall Strategy",
-      "currency": "USD"
+      "currency": "USD",
+      "referenceId": 543129132101
     },
     {
       "id": "CONTRACT_M2",
@@ -1487,7 +1488,8 @@
       "leaderDisplayName": "Sarah Johnson | FX Pro",
       "strategyId": "strat2",
       "strategyDisplayName": "USD Touch/No-Touch",
-      "currency": "USD"
+      "currency": "USD",
+      "referenceId": 543129132105
     },
     {
       "id": "CONTRACT_M3",
@@ -1500,7 +1502,8 @@
       "leaderDisplayName": "Sarah Johnson | FX Pro",
       "strategyId": "strat3",
       "strategyDisplayName": "EUR Accumulators",
-      "currency": "USD"
+      "currency": "USD",
+      "referenceId": 543129132107
     },
     {
       "id": "CONTRACT_A1",
@@ -1509,14 +1512,15 @@
       "stake": 20,
       "buyPrice": 98,
       "dateStart": "2025-02-13T04:00:00Z",
-      "expiryTime": "2025-02-14T04:00:00Z",
+      "expiryTime": "2026-02-14T04:00:00Z",
       "payout": 118,
       "purchaseTime": "2025-02-13T04:05:00Z",
       "leaderId": "leader1",
       "leaderDisplayName": "Sarah Johnson | FX Pro",
       "strategyId": "strat3",
       "strategyDisplayName": "EUR Accumulators",
-      "currency": "USD"
+      "currency": "USD",
+      "referenceId": 543129132103
     },
     {
       "id": "CONTRACT_A2",
@@ -1525,14 +1529,15 @@
       "stake": 30,
       "buyPrice": 102,
       "dateStart": "2025-02-13T05:00:00Z",
-      "expiryTime": "2025-02-14T05:00:00Z",
+      "expiryTime": "2026-02-14T05:00:00Z",
       "payout": 122,
       "purchaseTime": "2025-02-13T05:05:00Z",
       "leaderId": "leader2",
       "leaderDisplayName": "Michael Chen | Crypto Expert",
       "strategyId": "strat4",
       "strategyDisplayName": "USD Digits Trading",
-      "currency": "USD"
+      "currency": "USD",
+      "referenceId": 543129132105
     },
     {
       "id": "CONTRACT_M4",
@@ -1545,7 +1550,8 @@
       "leaderDisplayName": "Maria Garcia | Forex Master",
       "strategyId": "strat5",
       "strategyDisplayName": "GBP Multipliers",
-      "currency": "USD"
+      "currency": "USD",
+      "referenceId": 543129132109
     },
     {
       "id": "CONTRACT_M5",
@@ -1558,7 +1564,8 @@
       "leaderDisplayName": "James Wilson | Crypto King",
       "strategyId": "strat6",
       "strategyDisplayName": "Crypto Turbos",
-      "currency": "USD"
+      "currency": "USD",
+      "referenceId": 543129132111
     },
     {
       "id": "CONTRACT_M6",
@@ -1571,7 +1578,8 @@
       "leaderDisplayName": "Lisa Wang | Tech Analyst",
       "strategyId": "strat7",
       "strategyDisplayName": "ETH Rise/Fall",
-      "currency": "USD"
+      "currency": "USD",
+      "referenceId": 543129132113
     },
     {
       "id": "CONTRACT_M7",
@@ -1584,7 +1592,8 @@
       "leaderDisplayName": "Robert Brown | Swing Expert",
       "strategyId": "strat8",
       "strategyDisplayName": "AUD Touch/No-Touch",
-      "currency": "USD"
+      "currency": "USD",
+      "referenceId": 543129132115
     },
     {
       "id": "CONTRACT_M8",
@@ -1597,7 +1606,8 @@
       "leaderDisplayName": "Sophie Miller | Day Trading Pro",
       "strategyId": "strat9",
       "strategyDisplayName": "NZD Accumulators",
-      "currency": "USD"
+      "currency": "USD",
+      "referenceId": 543129132117
     }
   ],
   "statements": [
