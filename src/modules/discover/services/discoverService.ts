@@ -19,6 +19,7 @@ if (!JSON_SERVER_URL) {
 export interface Leader {
   id: string;
   username: string;
+  displayName: string;
   profilePicture?: string;
   copiers: number;
   totalProfit: number;
@@ -266,6 +267,7 @@ export const discoverService = {
         .map(leader => ({
           id: leader.id,
           username: leader.username,
+          displayName: leader.displayName || leader.username,
           profilePicture: leader.profilePicture,
           copiers: leader.followers?.length || 0,
           totalProfit: leader.performance?.totalPnL || 0,
