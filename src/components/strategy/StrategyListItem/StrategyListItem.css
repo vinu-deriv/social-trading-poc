@@ -17,7 +17,31 @@
   }
 }
 
-.strategy-list__item:hover {
+.strategy-list__item--selected {
+  border: 2px solid #00D0FF;
+  position: relative;
+}
+
+.strategy-list__tick {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  background: #00D0FF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.strategy-list__tick svg {
+  width: 16px;
+  height: 16px;
+}
+
+.strategy-list__item:not(.strategy-list__item--selected):hover {
   transform: translateY(-2px);
 }
 

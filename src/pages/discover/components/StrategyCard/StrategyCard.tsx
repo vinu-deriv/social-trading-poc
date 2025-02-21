@@ -1,38 +1,31 @@
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import Tick from '../../../../assets/icons/Tick';
-import Trophy from '../../../../assets/icons/Trophy';
-import '../UserCard/UserCard.css';
+import Tick from '@/assets/icons/Tick';
+import Trophy from '@/assets/icons/Trophy';
+import './StrategyCard.css';
 import PlusIcon from '@/assets/icons/PlusIcon';
 import { toggleUserFollow } from '@/services/userService';
-
-interface Strategy {
-  id: string;
-  leaderId: string;
-  accountId: string;
-  name: string;
-  description: string;
-  tradeType: string;
-  copiers: string[];
-  leader?: {
-    username: string;
-    displayName: string;
-    profilePicture?: string;
-  };
-  currency?: string;
-  isFollowing?: boolean;
-  isCopying?: boolean;
-}
+import { useLongPress } from '@/hooks/useLongPress';
+import type { ExtendedStrategy } from '@/types/strategy.types';
 
 interface StrategyCardProps {
-  strategy: Strategy;
+  strategy: ExtendedStrategy;
   rank?: number;
   onCopy: (id: string) => Promise<boolean>;
   large?: boolean;
+  selected?: boolean;
+  onSelect?: () => void;
 }
 
-const StrategyCard: FC<StrategyCardProps> = ({ strategy, rank, onCopy, large }) => {
+const StrategyCard: FC<StrategyCardProps> = ({
+  strategy,
+  rank,
+  onCopy,
+  large,
+  selected,
+  onSelect,
+}) => {
   const navigate = useNavigate();
   const { user: currentUser } = useAuth();
   const [isFollowing, setIsFollowing] = useState(strategy.isFollowing ?? false);
@@ -54,15 +47,17 @@ const StrategyCard: FC<StrategyCardProps> = ({ strategy, rank, onCopy, large }) 
     }
   };
 
-  const handleCardClick = (e: React.MouseEvent) => {
-    // Don't navigate if clicking on buttons
-    if (
-      (e.target as HTMLElement).tagName === 'BUTTON' ||
-      (e.target as HTMLElement).closest('button')
-    ) {
+  const handleInteraction = (e?: React.MouseEvent) => {
+    if (e && (e.target as HTMLElement).closest('button')) {
+      e.stopPropagation();
       return;
     }
-    navigate(`/strategies/${strategy.id}`);
+
+    if (onSelect) {
+      onSelect();
+    } else {
+      navigate(`/strategies/${strategy.id}`);
+    }
   };
 
   const formatCopiers = (count: number) => {
@@ -74,71 +69,85 @@ const StrategyCard: FC<StrategyCardProps> = ({ strategy, rank, onCopy, large }) 
 
   return (
     <div
-      className={`leader-card ${large ? 'leader-card--large' : ''}`}
-      onClick={handleCardClick}
+      className={`strategy-card ${large ? 'strategy-card--large' : ''} ${
+        selected ? 'strategy-card--selected' : ''
+      }`}
+      {...useLongPress({
+        onClick: handleInteraction,
+        onLongPress: onSelect,
+      })}
       style={{ cursor: 'pointer' }}
     >
       {rank && (
-        <div className="leader-card__rank">
-          {rank <= 3 && <Trophy className="leader-card__trophy" />}#{rank}
+        <div className="strategy-card__rank">
+          {rank <= 3 && <Trophy className="strategy-card__trophy" />}#{rank}
         </div>
       )}
-      <div className="leader-card__banner">
-        <div className="leader-card__avatar">
-          <div className="leader-card__avatar-wrapper">
+      <div className="strategy-card__banner">
+        <div className="strategy-card__avatar">
+          <div className="strategy-card__avatar-wrapper">
             {strategy.leader?.profilePicture ? (
               <img
                 src={strategy.leader.profilePicture}
                 alt={strategy.leader.displayName}
-                className="leader-card__avatar-img"
+                className="strategy-card__avatar-img"
               />
             ) : (
-              <div className="leader-card__avatar-placeholder">
+              <div className="strategy-card__avatar-placeholder">
                 {strategy.leader?.displayName.slice(0, 2).toUpperCase() || 'ST'}
               </div>
             )}
-            <button className="leader-card__follow-icon" onClick={handleFollow} disabled={loading}>
+            <button
+              className="strategy-card__follow-icon"
+              onClick={handleFollow}
+              disabled={loading}
+            >
               {isFollowing ? <Tick /> : <PlusIcon />}
             </button>
           </div>
         </div>
       </div>
-      <div className="leader-card__info">
-        <h3 className="leader-card__name">{strategy.name}</h3>
-        <p className="leader-card__leader-name">{strategy.leader?.displayName}</p>
-        <span className="leader-card__trade-type">
+      <div className="strategy-card__info">
+        <h3 className="strategy-card__name">{strategy.name}</h3>
+        <p className="strategy-card__leader-name">{strategy.leader?.displayName}</p>
+        <span className="strategy-card__trade-type">
           {strategy.tradeType
-            .split('_')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ')}
+            ? strategy.tradeType
+                .split('_')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ')
+            : strategy.timeframe}
         </span>
-        <button
-          className={`leader-card__copy-button ${
-            isCopying ? 'leader-card__copy-button--copied' : ''
-          }`}
-          onClick={async () => {
-            setLoading(true);
-            try {
-              const newCopyingState = await onCopy(strategy.id);
-              setIsCopying(newCopyingState);
-            } catch (error) {
-              console.error('Error copying strategy:', error);
-            } finally {
-              setLoading(false);
-            }
-          }}
-          disabled={loading}
-        >
-          {loading ? 'Processing...' : isCopying ? 'Stop Copying' : 'Copy Strategy'}
-        </button>
-        <div className="leader-card__stats">
-          <div className="leader-card__stat">
-            <span className="leader-card__stat-label">Currency</span>
-            <span className="leader-card__stat-value">{strategy.currency}</span>
+        {!selected && (
+          <button
+            className={`strategy-card__copy-button ${
+              isCopying ? 'strategy-card__copy-button--copied' : ''
+            }`}
+            onClick={async e => {
+              e.stopPropagation();
+              setLoading(true);
+              try {
+                const newCopyingState = await onCopy(strategy.id);
+                setIsCopying(newCopyingState);
+              } catch (error) {
+                console.error('Error copying strategy:', error);
+              } finally {
+                setLoading(false);
+              }
+            }}
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : isCopying ? 'Stop Copying' : 'Copy Strategy'}
+          </button>
+        )}
+        <div className="strategy-card__stats">
+          <div className="strategy-card__stat">
+            <span className="strategy-card__stat-label">Currency</span>
+            <span className="strategy-card__stat-value">{strategy.currency}</span>
           </div>
-          <div className="leader-card__stat">
-            <span className="leader-card__stat-label">Copiers</span>
-            <span className="leader-card__stat-value">
+          <div className="strategy-card__stat">
+            <span className="strategy-card__stat-label">Copiers</span>
+            <span className="strategy-card__stat-value">
               {formatCopiers(strategy.copiers.length)}
             </span>
           </div>
