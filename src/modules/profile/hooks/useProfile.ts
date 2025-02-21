@@ -7,6 +7,7 @@ import {
   followUser,
   unfollowUser,
 } from '../services/profileService';
+import { getStatistics } from '@/services/statisticsService';
 import { useAuth } from '@/context/AuthContext';
 
 interface UseProfileResult {
@@ -37,6 +38,31 @@ export const useProfile = (username: string): UseProfileResult => {
       setLoading(true);
       setError(null);
       const profileData = await getUserByUsername(username);
+
+      // If user is a leader, fetch their statistics
+      if (profileData.userType === 'leader') {
+        const statistics = await getStatistics(profileData.id, profileData.userType);
+        const totalStats = statistics.reduce(
+          (acc, curr) => ({
+            totalPnL: acc.totalPnL + curr.data.totalPnL,
+            winRate: acc.winRate + curr.data.winRate,
+            totalTrades: acc.totalTrades + (curr.data.strategyCount || 0),
+          }),
+          { totalPnL: 0, winRate: 0, totalTrades: 0 }
+        );
+
+        // Calculate average win rate
+        const avgWinRate = totalStats.winRate / statistics.length;
+
+        // Update profile with calculated performance
+        profileData.performance = {
+          winRate: avgWinRate,
+          totalPnL: totalStats.totalPnL,
+          monthlyReturn: avgWinRate, // Using win rate as monthly return for now
+          totalTrades: totalStats.totalTrades,
+        };
+      }
+
       setProfile(profileData);
 
       const userPosts = await getUserPosts(profileData.id);
@@ -81,10 +107,10 @@ export const useProfile = (username: string): UseProfileResult => {
     if (isOwnProfile) {
       if (updateUser) {
         updateUser(updatedProfile);
-        return; // Skip redundant fetching since updateUser updates the UI state
+        return;
       }
     }
-    fetchProfile(); // Refresh the profile data if updateUser isn't provided or it's not an own profile update
+    fetchProfile();
   };
 
   return {
