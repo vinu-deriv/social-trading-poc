@@ -16,7 +16,7 @@ app.use(middlewares);
 // Custom middleware to preserve original URLs and log image URLs
 router.render = (req, res) => {
   const data = res.locals.data;
-  
+
   // Log image URLs for debugging
   if (Array.isArray(data)) {
     data.forEach(item => {

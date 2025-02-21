@@ -10,7 +10,9 @@ import marketRouter from './routes/market';
 import compareStrategiesRouter from './routes/compare-strategies';
 import chatRouter from './routes/chat';
 import leaderSuggestionsRouter from './routes/leaderSuggestions';
-import topLeadersRouter from './routes/top-leaders';
+import globalAIRouter from './routes/globalAI';
+import peopleSuggestionsRouter from './routes/people-suggestions';
+import strategySuggestionsRouter from './routes/strategy-suggestions';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -31,7 +33,9 @@ app.use('/api/market', marketRouter);
 app.use('/api/compare-strategies', compareStrategiesRouter);
 app.use('/api/', chatRouter);
 app.use('/api/leader-suggestions', leaderSuggestionsRouter);
-app.use('/api/top-leaders', topLeadersRouter);
+app.use('/api/global-ai', globalAIRouter);
+app.use('/api/people-suggestions', peopleSuggestionsRouter);
+app.use('/api/strategy-suggestions', strategySuggestionsRouter);
 
 // Error handling middleware
 app.use(
@@ -55,4 +59,5 @@ app.listen(port, () => {
   console.log(`LLM Server running on port ${port}`);
   console.log(`- LLM API: http://localhost:${port}/api/ai`);
   console.log(`- Market API: http://localhost:${port}/api/market`);
+  console.log(`- Global AI API: http://localhost:${port}/api/global-ai`);
 });

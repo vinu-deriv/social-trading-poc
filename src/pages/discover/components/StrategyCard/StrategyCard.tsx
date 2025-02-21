@@ -1,19 +1,18 @@
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import Tick from '../../../../assets/icons/Tick';
-import Trophy from '../../../../assets/icons/Trophy';
+import Tick from '@/assets/icons/Tick';
+import Trophy from '@/assets/icons/Trophy';
 import './StrategyCard.css';
 import PlusIcon from '@/assets/icons/PlusIcon';
 import { toggleUserFollow } from '@/services/userService';
 import { useLongPress } from '@/hooks/useLongPress';
-
-import type { ExtendedStrategy } from '../../../../types/strategy.types';
+import type { ExtendedStrategy } from '@/types/strategy.types';
 
 interface StrategyCardProps {
   strategy: ExtendedStrategy;
   rank?: number;
-  onCopy: (id: string) => void;
+  onCopy: (id: string) => Promise<boolean>;
   large?: boolean;
   selected?: boolean;
   onSelect?: () => void;
@@ -31,6 +30,7 @@ const StrategyCard: FC<StrategyCardProps> = ({
   const { user: currentUser } = useAuth();
   const [isFollowing, setIsFollowing] = useState(strategy.isFollowing ?? false);
   const [loading, setLoading] = useState(false);
+  const [isCopying, setIsCopying] = useState(strategy.isCopying ?? false);
 
   const handleFollow = async () => {
     if (!currentUser?.id || !strategy.leaderId) return;
@@ -70,7 +70,9 @@ const StrategyCard: FC<StrategyCardProps> = ({
 
   return (
     <div
-      className={`strategy-card ${large ? 'strategy-card--large' : ''} ${selected ? 'strategy-card--selected' : ''}`}
+      className={`strategy-card ${large ? 'strategy-card--large' : ''} ${
+        selected ? 'strategy-card--selected' : ''
+      }`}
       {...useLongPress({
         onClick: onSelect ? undefined : handleCardClick,
         onLongPress: () => onSelect?.(),
@@ -121,14 +123,23 @@ const StrategyCard: FC<StrategyCardProps> = ({
         {!selected && (
           <button
             className={`strategy-card__copy-button ${
-              strategy.isCopying ? 'strategy-card__copy-button--copied' : ''
+              isCopying ? 'strategy-card__copy-button--copied' : ''
             }`}
-            onClick={e => {
+            onClick={async e => {
               e.stopPropagation();
-              onCopy(strategy.id);
+              setLoading(true);
+              try {
+                const newCopyingState = await onCopy(strategy.id);
+                setIsCopying(newCopyingState);
+              } catch (error) {
+                console.error('Error copying strategy:', error);
+              } finally {
+                setLoading(false);
+              }
             }}
+            disabled={loading}
           >
-            {strategy.isCopying ? 'Stop Copying' : 'Copy Strategy'}
+            {loading ? 'Processing...' : isCopying ? 'Stop Copying' : 'Copy Strategy'}
           </button>
         )}
         <div className="strategy-card__stats">

@@ -7,6 +7,7 @@ import YahooLogo from '../../../../assets/icons/yahoo.png';
 import { AIInsight } from '../../../../types/ai.types';
 import InsightsList from '../InsightsList/InsightsList';
 import CloseIcon from '../../../../assets/icons/CloseIcon';
+import SkeletonTrendingAsset from '../SkeletonTrendingAsset/SkeletonTrendingAsset';
 import './TrendingAssets.css';
 
 interface Asset {
@@ -157,17 +158,7 @@ export default function TrendingAssets({ assets, loading }: TrendingAssetsProps)
         <div className="trending-assets-section">
           <div className="trending-assets">
             {loading
-              ? [...Array(5)].map((_, index) => (
-                  <div key={index} className="asset-card skeleton">
-                    <div className="asset-card__image skeleton-image">
-                      <img src={YahooLogo} alt="Yahoo Finance" className="skeleton-yahoo-logo" />
-                    </div>
-                    <div className="asset-card__content">
-                      <div className="asset-card__title skeleton-text" />
-                      <div className="asset-card__price skeleton-text" />
-                    </div>
-                  </div>
-                ))
+              ? [...Array(5)].map((_, index) => <SkeletonTrendingAsset key={index} />)
               : sortedAssets.map(asset => (
                   <div key={asset.symbol} className="asset-card">
                     <img src={asset.imageUrl} alt={asset.name} className="asset-card__image" />

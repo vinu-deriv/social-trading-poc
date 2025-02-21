@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { Strategy } from '@/types/strategy.types';
+import type { ExtendedStrategy } from '@/types/strategy.types';
 import { useAuth } from '@/context/AuthContext';
 import StrategyListItem from '@/components/strategy/StrategyListItem';
 import './StrategyList.css';
 
 interface StrategyListProps {
-  strategies: Strategy[];
-  onCopyStrategy?: (strategyId: string, isCopying: boolean) => Promise<void>;
+  strategies: ExtendedStrategy[];
+  onCopyStrategy?: (strategyId: string, isCopying: boolean) => Promise<boolean>;
   isOwnProfile?: boolean;
 }
 
@@ -48,7 +48,14 @@ const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: Stra
           strategy={strategy}
           showCopyButton={onCopyStrategy && (!isOwnProfile || currentUser?.userType !== 'leader')}
           isCopying={copyRelations[strategy.id]}
-          onCopy={onCopyStrategy}
+          onCopy={
+            onCopyStrategy
+              ? async (strategyId: string) => {
+                  const currentState = copyRelations[strategyId];
+                  return onCopyStrategy(strategyId, !currentState);
+                }
+              : undefined
+          }
           onClick={handleStrategyClick}
         />
       ))}

@@ -1,19 +1,17 @@
-.leaders-section__tabs {
-  display: flex;
-  gap: var(--spacing-xs);
-  margin: var(--spacing-sm) 0;
-}
-
 .leaders-section {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-2xl);
-  padding: 0 var(--spacing-md);
+}
+
+.leaders-section__tabs {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-sm) 0;
 }
 
 @media (max-width: 480px) {
   .leaders-section {
     gap: var(--spacing-lg);
-    padding: 0 var(--spacing-xs);
   }
 }

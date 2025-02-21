@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type Strategy from '@/types/strategy.types';
+import type { ExtendedStrategy } from '@/types/strategy.types';
 import { useAuth } from '@/context/AuthContext';
 import FullscreenModal from '@/components/modal/FullscreenModal/FullscreenModal';
 import AILoader from '@/components/AILoader';
@@ -12,7 +12,7 @@ import './ProfileStats.css';
 interface ProfileStatsProps {
   followers: string[];
   following: string[];
-  strategies: Strategy[];
+  strategies: ExtendedStrategy[];
   onFollowAction: () => Promise<void>;
 }
 
@@ -37,8 +37,8 @@ const ProfileStats = ({ followers, following, strategies, onFollowAction }: Prof
     refetch: refetchFollowing,
   } = useFollowers(following);
 
-  const handleCopyStrategy = async (strategyId: string, isCopying: boolean) => {
-    if (!currentUser?.id) return;
+  const handleCopyStrategy = async (strategyId: string, isCopying: boolean): Promise<boolean> => {
+    if (!currentUser?.id) return isCopying;
 
     try {
       if (isCopying) {
@@ -46,36 +46,43 @@ const ProfileStats = ({ followers, following, strategies, onFollowAction }: Prof
         const response = await fetch(
           `${import.meta.env.VITE_JSON_SERVER_URL}/copyRelationships?copierId=${currentUser.id}&strategyId=${strategyId}`
         );
-        if (!response.ok) return;
+        if (!response.ok) return isCopying;
         const relations = await response.json();
 
         // Delete the copy relationship
         if (relations.length > 0) {
-          await fetch(
+          const deleteResponse = await fetch(
             `${import.meta.env.VITE_JSON_SERVER_URL}/copyRelationships/${relations[0].id}`,
             { method: 'DELETE' }
           );
+          if (!deleteResponse.ok) return isCopying;
         }
+        await onFollowAction();
+        return false;
       } else {
         // Start copying
-        await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/copyRelationships`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            copierId: currentUser.id,
-            strategyId,
-            status: 'active',
-            copySize: 1000, // Default copy size
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          }),
-        });
+        const createResponse = await fetch(
+          `${import.meta.env.VITE_JSON_SERVER_URL}/copyRelationships`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              copierId: currentUser.id,
+              strategyId,
+              status: 'active',
+              copySize: 1000, // Default copy size
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            }),
+          }
+        );
+        if (!createResponse.ok) return isCopying;
+        await onFollowAction();
+        return true;
       }
-
-      // Refetch profile data to update strategies
-      await onFollowAction();
     } catch (error) {
       console.error('Error handling strategy copy:', error);
+      return isCopying;
     }
   };
 
