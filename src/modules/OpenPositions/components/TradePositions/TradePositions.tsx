@@ -20,6 +20,7 @@ const TradePositions = ({ contracts }: PositionsTableProps) => {
         <OpenPositionCard
           key={contract.contractId}
           contractId={contract.contractId}
+          referenceId={contract.referenceId}
           contractType={contract.contractType}
           symbol={contract.symbol}
           currency={contract.currency}

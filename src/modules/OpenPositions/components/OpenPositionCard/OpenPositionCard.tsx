@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useMemo, useState } from 'react';
 import { TradeType } from '../../types';
 import { formatTimestamp } from '@/utils/time';
 import RandomValue from '@/components/RandomValue';
@@ -8,6 +8,7 @@ import './OpenPositionCard.css';
 
 interface OpenPositionCardProps {
   contractId: string;
+  referenceId?: number;
   contractType: TradeType;
   symbol: string;
   currency: string;
@@ -28,6 +29,7 @@ interface OpenPositionCardProps {
 export const OpenPositionCard: React.FC<OpenPositionCardProps> = memo(
   ({
     contractId,
+    referenceId,
     contractType,
     symbol,
     currency,
@@ -41,6 +43,8 @@ export const OpenPositionCard: React.FC<OpenPositionCardProps> = memo(
     payout,
     onClose,
   }) => {
+    const [currentValue, setCurrentValue] = useState<number>(stake);
+
     const getRemainingSeconds = (expiryTimeStr: string) => {
       try {
         const expiry = new Date(expiryTimeStr);
@@ -66,6 +70,17 @@ export const OpenPositionCard: React.FC<OpenPositionCardProps> = memo(
     const handleClose = () => {
       onClose(contractId);
     };
+
+    const sectionClassName = useMemo(() => {
+      const baseClass = 'open-position-card__section';
+      if (currentValue > stake) {
+        return `${baseClass} ${baseClass}--profit`;
+      }
+      if (currentValue < stake) {
+        return `${baseClass} ${baseClass}--loss`;
+      }
+      return baseClass;
+    }, [currentValue, stake]);
 
     return (
       <div className="open-position-card">
@@ -104,7 +119,7 @@ export const OpenPositionCard: React.FC<OpenPositionCardProps> = memo(
             </div>
           </div>
 
-          <div className="open-position-card__section">
+          <div className={sectionClassName}>
             {multiplier && (
               <div className="open-position-card__row">
                 <span className="open-position-card__label">Multiplier</span>
@@ -115,9 +130,21 @@ export const OpenPositionCard: React.FC<OpenPositionCardProps> = memo(
             <div className="open-position-card__row">
               <span className="open-position-card__label">Current Value</span>
               <span className="open-position-card__amount">
-                <RandomValue min={stake * 0.8} max={stake * 1.2} interval={1000} />
+                <RandomValue
+                  min={stake * 0.8}
+                  max={stake * 1.2}
+                  interval={1000}
+                  onChange={setCurrentValue}
+                />
               </span>
             </div>
+
+            {(buyPrice || payout) && (
+              <div className="open-position-card__row">
+                <span className="open-position-card__label">{payout ? 'Payout:' : 'Entry:'}</span>
+                <span className="open-position-card__value">{payout || buyPrice}</span>
+              </div>
+            )}
 
             {contractType === TradeType.Accumulators && expiryTime && (
               <div className="open-position-card__row">
@@ -136,19 +163,13 @@ export const OpenPositionCard: React.FC<OpenPositionCardProps> = memo(
 
         <div className="open-position-card__meta">
           <div className="open-position-card__meta-item">
-            <span className="open-position-card__label">Contract ID:</span>
-            <span className="open-position-card__value">{contractId || '-'}</span>
+            <span className="open-position-card__label">Reference ID:</span>
+            <span className="open-position-card__value">{referenceId || '-'}</span>
           </div>
           {dateStart && (
             <div className="open-position-card__meta-item">
               <span className="open-position-card__label">Start:</span>
               <span className="open-position-card__value">{formatTimestamp(dateStart)}</span>
-            </div>
-          )}
-          {(buyPrice || payout) && (
-            <div className="open-position-card__meta-item">
-              <span className="open-position-card__label">{payout ? 'Payout:' : 'Entry:'}</span>
-              <span className="open-position-card__value">{payout || buyPrice}</span>
             </div>
           )}
         </div>
@@ -158,3 +179,5 @@ export const OpenPositionCard: React.FC<OpenPositionCardProps> = memo(
 );
 
 OpenPositionCard.displayName = 'OpenPositionCard';
+
+export default OpenPositionCard;
