@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { ExtendedStrategy } from '@/types/strategy.types';
+import type Strategy from '@/types/strategy.types';
 import { useAuth } from '@/context/AuthContext';
 import FullscreenModal from '@/components/modal/FullscreenModal/FullscreenModal';
 import AILoader from '@/components/AILoader';
@@ -12,11 +12,18 @@ import './ProfileStats.css';
 interface ProfileStatsProps {
   followers: string[];
   following: string[];
-  strategies: ExtendedStrategy[];
+  strategies: Strategy[];
   onFollowAction: () => Promise<void>;
+  profileId: string;
 }
 
-const ProfileStats = ({ followers, following, strategies, onFollowAction }: ProfileStatsProps) => {
+const ProfileStats = ({
+  followers,
+  following,
+  strategies,
+  onFollowAction,
+  profileId,
+}: ProfileStatsProps) => {
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
   const [showStrategies, setShowStrategies] = useState(false);
@@ -37,8 +44,8 @@ const ProfileStats = ({ followers, following, strategies, onFollowAction }: Prof
     refetch: refetchFollowing,
   } = useFollowers(following);
 
-  const handleCopyStrategy = async (strategyId: string, isCopying: boolean): Promise<boolean> => {
-    if (!currentUser?.id) return isCopying;
+  const handleCopyStrategy = async (strategyId: string, isCopying: boolean) => {
+    if (!currentUser?.id) return false;
 
     try {
       if (isCopying) {
@@ -46,7 +53,7 @@ const ProfileStats = ({ followers, following, strategies, onFollowAction }: Prof
         const response = await fetch(
           `${import.meta.env.VITE_JSON_SERVER_URL}/copyRelationships?copierId=${currentUser.id}&strategyId=${strategyId}`
         );
-        if (!response.ok) return isCopying;
+        if (!response.ok) return false;
         const relations = await response.json();
 
         // Delete the copy relationship
@@ -55,34 +62,28 @@ const ProfileStats = ({ followers, following, strategies, onFollowAction }: Prof
             `${import.meta.env.VITE_JSON_SERVER_URL}/copyRelationships/${relations[0].id}`,
             { method: 'DELETE' }
           );
-          if (!deleteResponse.ok) return isCopying;
+          return deleteResponse.ok;
         }
-        await onFollowAction();
         return false;
       } else {
         // Start copying
-        const createResponse = await fetch(
-          `${import.meta.env.VITE_JSON_SERVER_URL}/copyRelationships`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              copierId: currentUser.id,
-              strategyId,
-              status: 'active',
-              copySize: 1000, // Default copy size
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-            }),
-          }
-        );
-        if (!createResponse.ok) return isCopying;
-        await onFollowAction();
-        return true;
+        const response = await fetch(`${import.meta.env.VITE_JSON_SERVER_URL}/copyRelationships`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            copierId: currentUser.id,
+            strategyId,
+            status: 'active',
+            copySize: 1000, // Default copy size
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          }),
+        });
+        return response.ok;
       }
     } catch (error) {
       console.error('Error handling strategy copy:', error);
-      return isCopying;
+      return false;
     }
   };
 
@@ -171,15 +172,15 @@ const ProfileStats = ({ followers, following, strategies, onFollowAction }: Prof
 
       <FullscreenModal
         isOpen={showStrategies}
-        onClose={() => setShowStrategies(false)}
+        onClose={() => {
+          setShowStrategies(false);
+          onFollowAction(); // Refetch profile data when modal closes
+        }}
         title="Strategies"
       >
         <StrategyList
           strategies={strategies}
-          isOwnProfile={
-            currentUser?.userType === 'leader' &&
-            strategies.some(s => s.leaderId === currentUser.id)
-          }
+          isOwnProfile={currentUser?.id === profileId}
           onCopyStrategy={handleCopyStrategy}
         />
       </FullscreenModal>
