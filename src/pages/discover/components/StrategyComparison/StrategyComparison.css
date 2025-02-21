@@ -144,7 +144,13 @@
   margin-bottom: var(--spacing-md);
 }
 
-@media (max-width: var(--breakpoint-mobile)) {
+@media (min-width: 768px) {
+  .strategy-comparison {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+  }
+
   .strategy-comparison__strategy-header {
     flex-direction: column;
     align-items: flex-start;

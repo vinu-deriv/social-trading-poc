@@ -40,21 +40,17 @@ export const StrategyComparison: FC<Props> = ({ comparison, isOpen, onClose }) =
         <div className="strategy-comparison__matrix">
           <h3>Risk Level Analysis</h3>
           <div className="strategy-comparison__matrix-grid">
-            <div className="strategy-comparison__matrix-item">
-              {(
-                Object.entries(comparison.comparisonMatrix.riskLevel) as [
-                  string,
-                  'low' | 'medium' | 'high',
-                ][]
-              ).map(([name, value]) => (
-                <div key={name} className="strategy-comparison__matrix-value">
-                  <span className="strategy-comparison__matrix-value-label">{name}</span>
-                  <span className={`strategy-comparison__matrix-value-score ${value}`}>
-                    {value}
-                  </span>
-                </div>
-              ))}
-            </div>
+            {(
+              Object.entries(comparison.comparisonMatrix.riskLevel) as [
+                string,
+                'low' | 'medium' | 'high',
+              ][]
+            ).map(([name, value]) => (
+              <div key={name} className="strategy-comparison__matrix-value">
+                <span className="strategy-comparison__matrix-value-label">{name}</span>
+                <span className={`strategy-comparison__matrix-value-score ${value}`}>{value}</span>
+              </div>
+            ))}
           </div>
         </div>
 

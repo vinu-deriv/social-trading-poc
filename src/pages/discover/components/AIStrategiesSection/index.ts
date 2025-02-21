@@ -1,4 +1,3 @@
-import AIStrategiesSection from './AIStrategiesSection';
 import type { ExtendedStrategy } from '@/types/strategy.types';
 
 export interface AIStrategiesProps {
@@ -8,5 +7,3 @@ export interface AIStrategiesProps {
   onStrategyClick: (strategyId: string) => void;
   selectedStrategies: string[];
 }
-
-export default AIStrategiesSection;
