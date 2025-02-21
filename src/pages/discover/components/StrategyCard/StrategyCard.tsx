@@ -47,17 +47,16 @@ const StrategyCard: FC<StrategyCardProps> = ({
     }
   };
 
-  const handleCardClick = () => {
-    navigate(`/strategies/${strategy.id}`);
-  };
-
-  const handleButtonClick = (e: React.MouseEvent) => {
-    // Don't navigate if clicking on buttons
-    if (
-      (e.target as HTMLElement).tagName === 'BUTTON' ||
-      (e.target as HTMLElement).closest('button')
-    ) {
+  const handleInteraction = (e?: React.MouseEvent) => {
+    if (e && (e.target as HTMLElement).closest('button')) {
       e.stopPropagation();
+      return;
+    }
+
+    if (onSelect) {
+      onSelect();
+    } else {
+      navigate(`/strategies/${strategy.id}`);
     }
   };
 
@@ -74,10 +73,9 @@ const StrategyCard: FC<StrategyCardProps> = ({
         selected ? 'strategy-card--selected' : ''
       }`}
       {...useLongPress({
-        onClick: onSelect ? undefined : handleCardClick,
-        onLongPress: () => onSelect?.(),
+        onClick: handleInteraction,
+        onLongPress: onSelect || (() => {}),
       })}
-      onClick={handleButtonClick}
       style={{ cursor: 'pointer' }}
     >
       {rank && (

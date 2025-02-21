@@ -1,13 +1,13 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { discoverService } from '@/modules/discover/services/discoverService';
+import { CompareBar } from '../CompareBar/CompareBar';
 import { strategySuggestionsService } from '@/services/strategySuggestionsService';
 import { strategyService } from '@/services/strategy';
 import '../shared.css';
 import './StrategiesSection.css';
 import Chip from '@/components/Chip';
-import AIButton from '@/components/AIButton/AIButton';
 import type {
   ExtendedStrategy,
   StrategyComparison as ComparisonType,
@@ -110,12 +110,15 @@ export default function StrategiesSection() {
     });
   };
 
+  const allStrategies = useMemo(
+    () => [...topStrategies, ...aiSuggestedStrategies, ...popularStrategies],
+    [topStrategies, aiSuggestedStrategies, popularStrategies]
+  );
+
   const handleCompare = async () => {
     if (selectedStrategies.length > 1) {
       try {
         setIsComparing(true);
-        // Get unique strategies by ID to avoid duplicates
-        const allStrategies = [...topStrategies, ...aiSuggestedStrategies, ...popularStrategies];
         const uniqueSelectedStrategies = selectedStrategies
           .map(id => allStrategies.find(s => s.id === id))
           .filter((s): s is ExtendedStrategy => s !== undefined);
@@ -134,18 +137,11 @@ export default function StrategiesSection() {
   if (loading) {
     return (
       <div className="strategies-section">
-        {selectedStrategies.length > 0 && (
-          <div className="strategies-compare-bar">
-            <AIButton
-              onClick={handleCompare}
-              disabled={selectedStrategies.length < 2}
-              isLoading={isComparing}
-              loadingText="Comparing..."
-            >
-              Compare ({selectedStrategies.length}/4)
-            </AIButton>
-          </div>
-        )}
+        <CompareBar
+          selectedStrategies={selectedStrategies}
+          isComparing={isComparing}
+          onCompare={handleCompare}
+        />
 
         <div className="strategies-section__tabs">
           <Chip active={activeTab === 'top'} onClick={() => setActiveTab('top')}>
@@ -170,18 +166,11 @@ export default function StrategiesSection() {
 
   return (
     <div className="strategies-section">
-      {selectedStrategies.length > 0 && (
-        <div className="strategies-compare-bar">
-          <AIButton
-            onClick={handleCompare}
-            disabled={selectedStrategies.length < 2}
-            isLoading={isComparing}
-            loadingText="Comparing..."
-          >
-            Compare ({selectedStrategies.length}/4)
-          </AIButton>
-        </div>
-      )}
+      <CompareBar
+        selectedStrategies={selectedStrategies}
+        isComparing={isComparing}
+        onCompare={handleCompare}
+      />
 
       <div className="strategies-section__tabs">
         <Chip active={activeTab === 'top'} onClick={() => setActiveTab('top')}>
