@@ -6,7 +6,7 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   try {
     const { strategies } = req.body;
-
+    console.log('strategies.length', strategies.length);
     if (!Array.isArray(strategies) || strategies.length < 2 || strategies.length > 4) {
       return res.status(400).json({
         error: 'Must provide between 2 and 4 strategies to compare',

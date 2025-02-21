@@ -8,8 +8,12 @@ import '../shared.css';
 import './StrategiesSection.css';
 import Chip from '@/components/Chip';
 import AIButton from '@/components/AIButton/AIButton';
-import type { ExtendedStrategy } from '@/types/strategy.types';
+import type {
+  ExtendedStrategy,
+  StrategyComparison as ComparisonType,
+} from '@/types/strategy.types';
 import TopStrategiesSection from '../TopStrategiesSection';
+import StrategyComparison from '../StrategyComparison/StrategyComparison';
 import SuggestedStrategiesSection from '../SuggestedStrategiesSection';
 import PopularStrategiesSection from '../PopularStrategiesSection';
 import SkeletonStrategyCard from '../SkeletonStrategyCard';
@@ -23,6 +27,8 @@ export default function StrategiesSection() {
   const [popularStrategies, setPopularStrategies] = useState<ExtendedStrategy[]>([]);
   const [selectedStrategies, setSelectedStrategies] = useState<string[]>([]);
   const [isComparing, setIsComparing] = useState(false);
+  const [showComparison, setShowComparison] = useState(false);
+  const [comparisonResult, setComparisonResult] = useState<ComparisonType | null>(null);
   type StrategyTab = 'top' | 'ai' | 'popular';
   const [activeTab, setActiveTab] = useState<StrategyTab>('top');
 
@@ -108,13 +114,14 @@ export default function StrategiesSection() {
     if (selectedStrategies.length > 1) {
       try {
         setIsComparing(true);
-        const selectedStrategyObjects = [
-          ...topStrategies,
-          ...aiSuggestedStrategies,
-          ...popularStrategies,
-        ].filter(s => selectedStrategies.includes(s.id));
-        const comparison = await strategyService.compareStrategies(selectedStrategyObjects);
-        navigate('/strategies/compare', { state: { comparison } });
+        // Get unique strategies by ID to avoid duplicates
+        const allStrategies = [...topStrategies, ...aiSuggestedStrategies, ...popularStrategies];
+        const uniqueSelectedStrategies = selectedStrategies
+          .map(id => allStrategies.find(s => s.id === id))
+          .filter((s): s is ExtendedStrategy => s !== undefined);
+        const comparison = await strategyService.compareStrategies(uniqueSelectedStrategies);
+        setComparisonResult(comparison);
+        setShowComparison(true);
         setSelectedStrategies([]);
       } catch (error) {
         console.error('Error comparing strategies:', error);
@@ -213,6 +220,13 @@ export default function StrategiesSection() {
           onSelect={handleStrategySelect}
           onStrategyClick={handleStrategyClick}
           selectedStrategies={selectedStrategies}
+        />
+      )}
+      {comparisonResult && (
+        <StrategyComparison
+          comparison={comparisonResult}
+          isOpen={showComparison}
+          onClose={() => setShowComparison(false)}
         />
       )}
     </div>
