@@ -4,7 +4,7 @@ type Timer = ReturnType<typeof setTimeout>;
 
 interface UseLongPressOptions {
   onClick?: () => void;
-  onLongPress: () => void;
+  onLongPress?: () => void;
   ms?: number;
 }
 
@@ -20,7 +20,7 @@ export const useLongPress = ({ onClick, onLongPress, ms = 300 }: UseLongPressOpt
       isLongPress.current = false;
       timerRef.current = setTimeout(() => {
         isLongPress.current = true;
-        onLongPress();
+        onLongPress?.();
       }, ms);
     },
     [onLongPress, ms]

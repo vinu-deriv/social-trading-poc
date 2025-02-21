@@ -74,7 +74,7 @@ const StrategyCard: FC<StrategyCardProps> = ({
       }`}
       {...useLongPress({
         onClick: handleInteraction,
-        onLongPress: onSelect || (() => {}),
+        onLongPress: onSelect,
       })}
       style={{ cursor: 'pointer' }}
     >
