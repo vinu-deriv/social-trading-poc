@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC } from 'react';
 import type { Strategy } from '@/types/strategy.types';
 import { useLongPress } from '@/hooks/useLongPress';
 import Trophy from '@/assets/icons/Trophy';
@@ -17,7 +17,7 @@ interface StrategyListItemProps {
   strategy: ExtendedStrategy;
   showCopyButton?: boolean;
   isCopying?: boolean;
-  onCopy?: (strategyId: string) => Promise<boolean>;
+  onCopy?: (strategyId: string, isCopying: boolean) => void;
   onClick?: (strategyId: string) => void;
   rank?: number;
   selected?: boolean;
@@ -34,14 +34,6 @@ const StrategyListItem: FC<StrategyListItemProps> = ({
   selected = false,
   onSelect,
 }) => {
-  const [loading, setLoading] = useState(false);
-  const [isCurrentlyCopying, setIsCurrentlyCopying] = useState(isCopying);
-
-  // Update local state when prop changes
-  useEffect(() => {
-    setIsCurrentlyCopying(isCopying);
-  }, [isCopying]);
-
   const getRiskLevelClass = (riskLevel: string) => {
     const level = riskLevel.toLowerCase();
     return `strategy-list__risk strategy-list__risk--${level}`;
@@ -95,27 +87,16 @@ const StrategyListItem: FC<StrategyListItemProps> = ({
           {!selected && showCopyButton && onCopy && (
             <button
               className={`strategy-list__copy-btn ${
-                isCurrentlyCopying
+                isCopying
                   ? 'strategy-list__copy-btn--secondary'
                   : 'strategy-list__copy-btn--primary'
               }`}
-              onClick={async e => {
+              onClick={e => {
                 e.stopPropagation(); // Prevent navigation when clicking the button
-                if (!onCopy) return;
-
-                setLoading(true);
-                try {
-                  const newCopyingState = await onCopy(strategy.id);
-                  setIsCurrentlyCopying(newCopyingState);
-                } catch (error) {
-                  console.error('Error copying strategy:', error);
-                } finally {
-                  setLoading(false);
-                }
+                onCopy(strategy.id, isCopying);
               }}
-              disabled={loading}
             >
-              {loading ? 'Processing...' : isCurrentlyCopying ? 'Stop Copying' : 'COPY'}
+              {isCopying ? 'Stop Copying' : 'COPY'}
             </button>
           )}
         </div>

@@ -3,6 +3,7 @@ import { TradeType } from '@/modules/OpenPositions/types';
 export interface BaseContract {
   symbol: string;
   contractId: string;
+  referenceId?: number;
   contractType: TradeType;
   currency: string;
   strategyName: string;

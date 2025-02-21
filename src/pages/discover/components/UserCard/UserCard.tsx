@@ -68,19 +68,13 @@ const UserCard: FC<UserCardProps> = ({ user, rank, context }) => {
           </div>
         )}
         <div className="user-card__avatar-container">
-          <div className="user-card__avatar-wrapper">
-            {user.profilePicture ? (
-              <img
-                src={user.profilePicture}
-                alt={user.username}
-                className="user-card__avatar-img"
-              />
-            ) : (
-              <div className="user-card__avatar-placeholder">
-                {user.username?.slice(0, 2).toUpperCase()}
-              </div>
-            )}
-          </div>
+          {user.profilePicture ? (
+            <img src={user.profilePicture} alt={user.username} className="user-card__avatar-img" />
+          ) : (
+            <div className="user-card__avatar-placeholder">
+              {user.username?.slice(0, 2).toUpperCase()}
+            </div>
+          )}
         </div>
         <div className="user-card__details">
           <h3 className="user-card__name">{user.displayName || user.username}</h3>
@@ -103,7 +97,9 @@ const UserCard: FC<UserCardProps> = ({ user, rank, context }) => {
           </div>
           <div className="user-card__stat">
             <div className="user-card__stat-label">Total Profit - </div>
-            <div className="user-card__stat-value">{formatProfit(user.totalProfit)}</div>
+            <div className="user-card__stat-value">
+              {formatProfit(user.totalProfit ?? user.performance?.totalPnL)}
+            </div>
           </div>
         </div>
         <Button
