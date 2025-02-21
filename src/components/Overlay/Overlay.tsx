@@ -55,10 +55,10 @@ const Overlay = ({
   return (
     <div className={`overlay ${animationState} ${className}`} onClick={handleBackdropClick}>
       <div className="overlay__header">
-        <div className="overlay__header-content">{header}</div>
         <button className="overlay__close" onClick={onClose}>
           <CloseIcon />
         </button>
+        <div className="overlay__header-content">{header}</div>
       </div>
       <div className="overlay__content" onAnimationEnd={handleAnimationEnd}>
         {children}
