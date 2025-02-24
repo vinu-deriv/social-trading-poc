@@ -3,9 +3,5 @@
 }
 
 .reports .tab-navigation {
-  max-width: 25rem;
   padding: 0 var(--spacing-md);
-}
-
-.reports-content {
 }

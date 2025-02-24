@@ -7,6 +7,7 @@ import cors from 'cors';
 import insightsRouter from './routes/insights';
 import translationRouter from './routes/translation';
 import marketRouter from './routes/market';
+import compareStrategiesRouter from './routes/compare-strategies';
 import chatRouter from './routes/chat';
 import leaderSuggestionsRouter from './routes/leaderSuggestions';
 import globalAIRouter from './routes/globalAI';
@@ -29,6 +30,7 @@ app.get('/health', (req, res) => {
 app.use('/api/ai', insightsRouter);
 app.use('/api/translation', translationRouter);
 app.use('/api/market', marketRouter);
+app.use('/api/compare-strategies', compareStrategiesRouter);
 app.use('/api/', chatRouter);
 app.use('/api/leader-suggestions', leaderSuggestionsRouter);
 app.use('/api/global-ai', globalAIRouter);

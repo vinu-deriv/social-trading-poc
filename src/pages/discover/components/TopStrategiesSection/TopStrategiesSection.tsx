@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 import StrategyListItem from '@/components/strategy/StrategyListItem';
 import type { ExtendedStrategy } from '@/types/strategy.types';
 import '../shared.css';
@@ -7,11 +6,18 @@ import '../shared.css';
 interface TopStrategiesProps {
   strategies: ExtendedStrategy[];
   onCopy: (strategyId: string) => Promise<boolean>;
+  onSelect: (strategyId: string) => void;
+  onStrategyClick: (strategyId: string) => void;
+  selectedStrategies: string[];
 }
 
-const TopStrategiesSection: FC<TopStrategiesProps> = ({ strategies, onCopy }) => {
-  const navigate = useNavigate();
-
+const TopStrategiesSection: FC<TopStrategiesProps> = ({
+  strategies,
+  onCopy,
+  onSelect,
+  onStrategyClick,
+  selectedStrategies,
+}) => {
   return (
     <div className="strategies-grid">
       {strategies.map((strategy, index) => (
@@ -22,7 +28,9 @@ const TopStrategiesSection: FC<TopStrategiesProps> = ({ strategies, onCopy }) =>
           showCopyButton={true}
           isCopying={strategy.isCopying}
           onCopy={onCopy}
-          onClick={id => navigate(`/strategies/${id}`)}
+          onClick={onStrategyClick}
+          onSelect={() => onSelect(strategy.id)}
+          selected={selectedStrategies.includes(strategy.id)}
         />
       ))}
     </div>
