@@ -17,6 +17,7 @@ import StrategyComparison from '../StrategyComparison/StrategyComparison';
 import SuggestedStrategiesSection from '../SuggestedStrategiesSection';
 import PopularStrategiesSection from '../PopularStrategiesSection';
 import SkeletonStrategyCard from '../SkeletonStrategyCard';
+import { CopyRelationship } from '@/types/copy.types';
 
 export default function StrategiesSection() {
   const navigate = useNavigate();
@@ -31,12 +32,29 @@ export default function StrategiesSection() {
   const [comparisonResult, setComparisonResult] = useState<ComparisonType | null>(null);
   type StrategyTab = 'top' | 'ai' | 'popular';
   const [activeTab, setActiveTab] = useState<StrategyTab>('top');
-
+  const [copyRelations, setCopyRelations] = useState<Record<string, boolean>>({});
   useEffect(() => {
-    const fetchStrategies = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
 
+        // Fetch copy relationships
+        if (user) {
+          const response = await fetch(
+            `${import.meta.env.VITE_JSON_SERVER_URL}/copyRelationships?copierId=${user.id}`
+          );
+          if (response.ok) {
+            const relations: CopyRelationship[] = await response.json();
+            const relationMap = relations.reduce((acc: Record<string, boolean>, rel) => {
+              acc[rel.strategyId] = rel.status === 'active';
+              return acc;
+            }, {});
+
+            setCopyRelations(relationMap);
+          }
+        }
+
+        // Fetch strategies based on active tab
         if (activeTab === 'top') {
           const topStrategies = await discoverService.getTopStrategies();
           setTopStrategies(topStrategies);
@@ -50,44 +68,33 @@ export default function StrategiesSection() {
 
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching strategies:', error);
+        console.error('Error fetching data:', error);
         setLoading(false);
       }
     };
 
-    fetchStrategies();
+    fetchData();
   }, [activeTab, user]);
 
   const handleCopyStrategy = useCallback(
     async (strategyId: string): Promise<boolean> => {
       if (!user) return false;
       try {
-        const isCopying = await discoverService.toggleCopyStrategy(user.id, strategyId);
-        // Only update the active tab's strategies
-        switch (activeTab) {
-          case 'top':
-            setTopStrategies(prev =>
-              prev.map(s => (s.id === strategyId ? { ...s, isCopying } : s))
-            );
-            break;
-          case 'ai':
-            setAiSuggestedStrategies(prev =>
-              prev.map(s => (s.id === strategyId ? { ...s, isCopying } : s))
-            );
-            break;
-          case 'popular':
-            setPopularStrategies(prev =>
-              prev.map(s => (s.id === strategyId ? { ...s, isCopying } : s))
-            );
-            break;
+        const isCopying = copyRelations[strategyId];
+        const success = await discoverService.toggleCopyStrategy(user.id, strategyId);
+        if (success) {
+          setCopyRelations(prev => ({
+            ...prev,
+            [strategyId]: !isCopying,
+          }));
         }
-        return isCopying;
+        return success;
       } catch (error) {
         console.error('Error copying strategy:', error);
         return false;
       }
     },
-    [user, activeTab]
+    [user, copyRelations]
   );
 
   const handleStrategyClick = (strategyId: string) => {
@@ -186,7 +193,10 @@ export default function StrategiesSection() {
 
       {activeTab === 'top' && (
         <TopStrategiesSection
-          strategies={topStrategies}
+          strategies={topStrategies.map(strategy => ({
+            ...strategy,
+            isCopying: copyRelations[strategy.id] || false,
+          }))}
           onCopy={handleCopyStrategy}
           onSelect={handleStrategySelect}
           onStrategyClick={handleStrategyClick}
@@ -195,7 +205,10 @@ export default function StrategiesSection() {
       )}
       {activeTab === 'ai' && (
         <SuggestedStrategiesSection
-          strategies={aiSuggestedStrategies}
+          strategies={aiSuggestedStrategies.map(strategy => ({
+            ...strategy,
+            isCopying: copyRelations[strategy.id] || false,
+          }))}
           onCopy={handleCopyStrategy}
           onSelect={handleStrategySelect}
           onStrategyClick={handleStrategyClick}
@@ -204,7 +217,10 @@ export default function StrategiesSection() {
       )}
       {activeTab === 'popular' && (
         <PopularStrategiesSection
-          strategies={popularStrategies}
+          strategies={popularStrategies.map(strategy => ({
+            ...strategy,
+            isCopying: copyRelations[strategy.id] || false,
+          }))}
           onCopy={handleCopyStrategy}
           onSelect={handleStrategySelect}
           onStrategyClick={handleStrategyClick}

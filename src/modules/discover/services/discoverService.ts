@@ -182,7 +182,7 @@ export const discoverService = {
           body: JSON.stringify(strategy),
         });
 
-        return false; // Not copying anymore
+        return true; // Not copying anymore
       } else {
         // Create new copy relationship
         const copyRelationship = {
@@ -215,7 +215,7 @@ export const discoverService = {
       }
     } catch (error) {
       console.error('Error copying strategy:', error);
-      throw error;
+      return false;
     }
   },
 
