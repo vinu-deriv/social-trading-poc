@@ -45,7 +45,6 @@ const StrategyListItem: FC<StrategyListItemProps> = ({
       (e.target as HTMLElement).closest('button')
     ) {
       e.stopPropagation();
-      e.preventDefault();
       return;
     }
     if (selected) {

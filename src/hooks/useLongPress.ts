@@ -3,8 +3,8 @@ import { useCallback, useRef } from 'react';
 type Timer = ReturnType<typeof setTimeout>;
 
 interface UseLongPressOptions {
-  onClick?: (event: EventType) => void;
-  onLongPress?: (event: EventType) => void;
+  onClick?: (event: any) => void;
+  onLongPress?: (event: any) => void;
   ms?: number;
 }
 
@@ -16,7 +16,9 @@ export const useLongPress = ({ onClick, onLongPress, ms = 300 }: UseLongPressOpt
 
   const start = useCallback(
     (event: EventType): void => {
-      event.preventDefault();
+      if (event.type === 'mousedown') {
+        event.preventDefault();
+      }
       isLongPress.current = false;
       timerRef.current = setTimeout(() => {
         isLongPress.current = true;
@@ -28,7 +30,9 @@ export const useLongPress = ({ onClick, onLongPress, ms = 300 }: UseLongPressOpt
 
   const stop = useCallback(
     (event: EventType, shouldTriggerClick: boolean = true): void => {
-      event.preventDefault();
+      if (event.type === 'mouseup' || event.type === 'mouseleave') {
+        event.preventDefault();
+      }
       if (timerRef.current) clearTimeout(timerRef.current);
       if (shouldTriggerClick && !isLongPress.current && onClick) {
         onClick(event);
