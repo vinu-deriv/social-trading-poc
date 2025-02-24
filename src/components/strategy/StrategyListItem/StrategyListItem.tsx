@@ -39,7 +39,15 @@ const StrategyListItem: FC<StrategyListItemProps> = ({
     return `strategy-list__risk strategy-list__risk--${level}`;
   };
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    if (
+      (e.target as HTMLElement).tagName === 'BUTTON' ||
+      (e.target as HTMLElement).closest('button')
+    ) {
+      e.stopPropagation();
+      e.preventDefault();
+      return;
+    }
     if (selected) {
       onSelect?.();
     } else {
