@@ -5,6 +5,7 @@ import type { CopyRelationship } from '@/types/copy.types';
 import { useAuth } from '@/context/AuthContext';
 import StrategyListItem from '@/components/strategy/StrategyListItem';
 import Chip from '@/components/Chip';
+import { useLongPress } from '@/hooks/useLongPress';
 import './StrategyList.css';
 
 interface StrategyListProps {
@@ -20,39 +21,6 @@ const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: Stra
   const [selectedStrategies, setSelectedStrategies] = useState<Set<string>>(new Set());
   const [activeFilter, setActiveFilter] = useState<'copying' | 'not-copying'>('not-copying');
   const [showCheckboxes, setShowCheckboxes] = useState(false);
-  const [longPressTimer, setLongPressTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
-
-  const [touchStartY, setTouchStartY] = useState<number | null>(null);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartY(e.touches[0].clientY);
-    const timer = setTimeout(() => {
-      setShowCheckboxes(true);
-    }, 500); // 500ms for long press
-    setLongPressTimer(timer);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (touchStartY === null) return;
-
-    // If scrolled more than 10px, cancel long press
-    const scrollDiff = Math.abs(e.touches[0].clientY - touchStartY);
-    if (scrollDiff > 10) {
-      if (longPressTimer) {
-        clearTimeout(longPressTimer);
-        setLongPressTimer(null);
-      }
-    }
-  };
-
-  const handleTouchEnd = () => {
-    setTouchStartY(null);
-    if (longPressTimer) {
-      clearTimeout(longPressTimer);
-      setLongPressTimer(null);
-    }
-  };
-
   useEffect(() => {
     const fetchCopyRelations = async () => {
       if (!currentUser) return;
@@ -73,20 +41,33 @@ const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: Stra
     fetchCopyRelations();
   }, [currentUser]);
 
-  const handleStrategyClick = (strategyId: string) => {
-    navigate(`/strategies/${strategyId}`);
+  const handleSelectStrategy = (strategyId: string) => {
+    if (showCheckboxes) {
+      // In selection mode, toggle selection
+      setSelectedStrategies(prev => {
+        const newSet = new Set(prev);
+        if (prev.has(strategyId)) {
+          newSet.delete(strategyId);
+        } else {
+          newSet.add(strategyId);
+        }
+        return newSet;
+      });
+    } else {
+      // Normal mode, navigate to strategy
+      navigate(`/strategies/${strategyId}`);
+    }
   };
 
-  const handleSelectStrategy = (strategyId: string, checked: boolean) => {
-    setSelectedStrategies(prev => {
-      const newSet = new Set(prev);
-      if (checked) {
+  const handleLongPressSelect = (strategyId: string) => {
+    if (!showCheckboxes) {
+      setShowCheckboxes(true);
+      setSelectedStrategies(prev => {
+        const newSet = new Set(prev);
         newSet.add(strategyId);
-      } else {
-        newSet.delete(strategyId);
-      }
-      return newSet;
-    });
+        return newSet;
+      });
+    }
   };
 
   const handleSelectedAction = async () => {
@@ -132,6 +113,20 @@ const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: Stra
       ? copyingStrategies
       : notCopyingStrategies;
 
+  const longPressHandlers = useLongPress({
+    onClick: () => {}, // Empty function since we handle clicks in StrategyListItem
+    onLongPress: event => {
+      const element = event.target as HTMLElement;
+      const strategyItem = element.closest('.strategy-item');
+      if (strategyItem) {
+        const strategyId = strategyItem.getAttribute('data-strategy-id');
+        if (strategyId) {
+          handleLongPressSelect(strategyId);
+        }
+      }
+    },
+  });
+
   // Render for leaders - simple list of all strategies
   if (isLeader) {
     return (
@@ -140,11 +135,16 @@ const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: Stra
           <div className="strategy-list--empty">No strategies found</div>
         ) : (
           strategies.map(strategy => (
-            <div key={strategy.id} className="strategy-item">
+            <div
+              key={strategy.id}
+              className="strategy-item"
+              data-strategy-id={strategy.id}
+              {...longPressHandlers}
+            >
               <StrategyListItem
                 strategy={strategy}
                 showCopyButton={false}
-                onClick={handleStrategyClick}
+                selected={selectedStrategies.has(strategy.id)}
               />
             </div>
           ))
@@ -204,20 +204,9 @@ const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: Stra
           <div
             key={strategy.id}
             className="strategy-item"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            onTouchCancel={handleTouchEnd}
+            data-strategy-id={strategy.id}
+            {...longPressHandlers}
           >
-            {(showCopyOptions || isOwnProfile) && showCheckboxes && (
-              <div className="strategy-item__checkbox">
-                <input
-                  type="checkbox"
-                  checked={selectedStrategies.has(strategy.id)}
-                  onChange={e => handleSelectStrategy(strategy.id, e.target.checked)}
-                />
-              </div>
-            )}
             <StrategyListItem
               strategy={strategy}
               showCopyButton={!isOwnProfile || copyRelations[strategy.id]}
@@ -233,7 +222,8 @@ const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: Stra
                   }
                 }
               }}
-              onClick={handleStrategyClick}
+              onClick={() => handleSelectStrategy(strategy.id)}
+              selected={selectedStrategies.has(strategy.id)}
             />
           </div>
         ))
