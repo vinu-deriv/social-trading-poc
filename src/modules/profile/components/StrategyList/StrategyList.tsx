@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import type { Strategy } from '@/types/strategy.types';
 import type { CopyRelationship } from '@/types/copy.types';
 import { useAuth } from '@/context/AuthContext';
@@ -12,15 +11,36 @@ interface StrategyListProps {
   strategies: Strategy[];
   onCopyStrategy?: (strategyId: string, isCopying: boolean) => Promise<boolean>;
   isOwnProfile?: boolean;
+  onSelect: (strategyId: string) => void;
+  onStrategyClick: (strategyId: string) => void;
+  selectedStrategies: string[];
+  showCheckboxes: boolean;
+  setShowCheckboxes: (show: boolean) => void;
+  activeFilter: 'copying' | 'not-copying';
+  setActiveFilter: (filter: 'copying' | 'not-copying') => void;
+  setSelectedStrategies: (strategies: string[]) => void;
 }
 
-const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: StrategyListProps) => {
-  const navigate = useNavigate();
+const StrategyList = ({
+  strategies,
+  onCopyStrategy,
+  isOwnProfile = false,
+  onSelect,
+  onStrategyClick,
+  selectedStrategies,
+  showCheckboxes,
+  setShowCheckboxes,
+  activeFilter,
+  setActiveFilter,
+  setSelectedStrategies,
+}: StrategyListProps) => {
   const { user: currentUser } = useAuth();
   const [copyRelations, setCopyRelations] = useState<Record<string, boolean>>({});
-  const [selectedStrategies, setSelectedStrategies] = useState<Set<string>>(new Set());
-  const [activeFilter, setActiveFilter] = useState<'copying' | 'not-copying'>('not-copying');
-  const [showCheckboxes, setShowCheckboxes] = useState(false);
+
+  useEffect(() => {
+    setSelectedStrategies([]);
+  }, [activeFilter]);
+
   useEffect(() => {
     const fetchCopyRelations = async () => {
       if (!currentUser) return;
@@ -41,35 +61,6 @@ const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: Stra
     fetchCopyRelations();
   }, [currentUser]);
 
-  const handleSelectStrategy = (strategyId: string) => {
-    if (showCheckboxes) {
-      // In selection mode, toggle selection
-      setSelectedStrategies(prev => {
-        const newSet = new Set(prev);
-        if (prev.has(strategyId)) {
-          newSet.delete(strategyId);
-        } else {
-          newSet.add(strategyId);
-        }
-        return newSet;
-      });
-    } else {
-      // Normal mode, navigate to strategy
-      navigate(`/strategies/${strategyId}`);
-    }
-  };
-
-  const handleLongPressSelect = (strategyId: string) => {
-    if (!showCheckboxes) {
-      setShowCheckboxes(true);
-      setSelectedStrategies(prev => {
-        const newSet = new Set(prev);
-        newSet.add(strategyId);
-        return newSet;
-      });
-    }
-  };
-
   const handleSelectedAction = async () => {
     if (!onCopyStrategy) return;
 
@@ -77,12 +68,12 @@ const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: Stra
       // Handle based on active filter
       const isCopying = isOwnProfile ? true : activeFilter === 'copying';
       const results = await Promise.all(
-        Array.from(selectedStrategies).map(strategyId => onCopyStrategy(strategyId, isCopying))
+        selectedStrategies.map(strategyId => onCopyStrategy(strategyId, isCopying))
       );
 
       // Update copyRelations for successful actions
       const newCopyRelations = { ...copyRelations };
-      Array.from(selectedStrategies).forEach((strategyId, index) => {
+      selectedStrategies.forEach((strategyId, index) => {
         if (results[index]) {
           newCopyRelations[strategyId] = !isCopying; // Toggle the copy status
         }
@@ -90,7 +81,6 @@ const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: Stra
       setCopyRelations(newCopyRelations);
 
       // Clear selections after action
-      setSelectedStrategies(new Set());
       setShowCheckboxes(false);
     } catch (error) {
       console.error('Error handling selected strategies:', error);
@@ -120,8 +110,9 @@ const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: Stra
       const strategyItem = element.closest('.strategy-item');
       if (strategyItem) {
         const strategyId = strategyItem.getAttribute('data-strategy-id');
-        if (strategyId) {
-          handleLongPressSelect(strategyId);
+        if (strategyId && !showCheckboxes) {
+          setShowCheckboxes(true);
+          onSelect(strategyId);
         }
       }
     },
@@ -144,7 +135,9 @@ const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: Stra
               <StrategyListItem
                 strategy={strategy}
                 showCopyButton={false}
-                selected={selectedStrategies.has(strategy.id)}
+                selected={selectedStrategies.includes(strategy.id)}
+                onClick={onStrategyClick}
+                onSelect={() => onSelect(strategy.id)}
               />
             </div>
           ))
@@ -152,7 +145,6 @@ const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: Stra
       </div>
     );
   }
-
   // Render for copiers - with copy functionality and filters
   return (
     <div className="strategy-list">
@@ -169,21 +161,19 @@ const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: Stra
           </Chip>
         </div>
       )}
-      {(showCopyOptions || isOwnProfile) && showCheckboxes && (
+      {(showCopyOptions || isOwnProfile) && showCheckboxes && selectedStrategies.length > 0 && (
         <div className="strategy-list__header">
           <div className="strategy-list__header-actions">
-            {selectedStrategies.size > 0 && (
-              <button className="copy-selected-button" onClick={handleSelectedAction}>
-                {isOwnProfile || activeFilter === 'copying'
-                  ? `Stop Copying Selected (${selectedStrategies.size})`
-                  : `Copy Selected Strategies (${selectedStrategies.size})`}
-              </button>
-            )}
+            <button className="copy-selected-button" onClick={handleSelectedAction}>
+              {isOwnProfile || activeFilter === 'copying'
+                ? `Stop Copying Selected (${selectedStrategies.length})`
+                : `Copy Selected Strategies (${selectedStrategies.length})`}
+            </button>
             <button
               className="cancel-selection-button"
               onClick={() => {
                 setShowCheckboxes(false);
-                setSelectedStrategies(new Set());
+                setSelectedStrategies([]);
               }}
             >
               Cancel
@@ -220,10 +210,12 @@ const StrategyList = ({ strategies, onCopyStrategy, isOwnProfile = false }: Stra
                       [strategyId]: !isCopying,
                     }));
                   }
+                  setSelectedStrategies([]);
                 }
               }}
-              onClick={() => handleSelectStrategy(strategy.id)}
-              selected={selectedStrategies.has(strategy.id)}
+              onClick={onStrategyClick}
+              onSelect={() => onSelect(strategy.id)}
+              selected={selectedStrategies.includes(strategy.id)}
             />
           </div>
         ))
