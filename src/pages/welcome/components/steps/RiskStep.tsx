@@ -1,4 +1,5 @@
 import React from 'react';
+import '../form/form.css';
 import { TradingPreferences } from '../../../../types/trading';
 import { RangeField } from '../form/RangeField';
 import { NumberField } from '../form/NumberField';

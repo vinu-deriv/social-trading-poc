@@ -1,6 +1,7 @@
-import React from "react";
-import { FormGroup } from "./FormGroup";
-import { TradingPreferences } from "../../../../types/trading";
+import React from 'react';
+import './NumberField.css';
+import { FormGroup } from './FormGroup';
+import { TradingPreferences } from '../../../../types/trading';
 
 type TRiskTolerance = TradingPreferences[keyof TradingPreferences];
 
@@ -27,16 +28,18 @@ export const NumberField: React.FC<NumberFieldProps> = ({
 }) => {
   return (
     <FormGroup label={label}>
-      {helperText && <span className="helper-text">{helperText}</span>}
-      <input
-        type="number"
-        min={min}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value) as TRiskTolerance)}
-        className={`${className || ""} ${error ? "error" : ""}`}
-      />
-      {error && <span className="error-text">{error}</span>}
+      <div className={`number-field ${className || ''} ${error ? 'number-field--error' : ''}`}>
+        <input
+          type="number"
+          min={min}
+          step={step}
+          value={value}
+          onChange={e => onChange(Number(e.target.value) as TRiskTolerance)}
+          className="number-field__input"
+        />
+        {helperText && !error && <span className="number-field__helper-text">{helperText}</span>}
+        {error && <span className="number-field__error">{error}</span>}
+      </div>
     </FormGroup>
   );
 };

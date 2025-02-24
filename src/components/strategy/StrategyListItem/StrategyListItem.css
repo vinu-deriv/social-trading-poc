@@ -18,18 +18,18 @@
 }
 
 .strategy-list__item--selected {
-  border: 2px solid #00D0FF;
+  border: var(--border-width-xs) solid var(--primary-color);
   position: relative;
 }
 
 .strategy-list__tick {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 24px;
-  height: 24px;
-  background: #00D0FF;
-  border-radius: 50%;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  width: var(--spacing-xl);
+  height: var(--spacing-xl);
+  background: var(--primary-color);
+  border-radius: var(--border-radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,8 +37,8 @@
 }
 
 .strategy-list__tick svg {
-  width: 16px;
-  height: 16px;
+  width: var(--spacing-md);
+  height: var(--spacing-md);
 }
 
 .strategy-list__item:not(.strategy-list__item--selected):hover {
@@ -59,14 +59,6 @@
   width: var(--spacing-md);
   height: var(--spacing-md);
   color: var(--warning-color);
-}
-
-.strategy-list__header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-  align-items: flex-start;
-  text-align: left;
 }
 
 .strategy-list__header-main {
