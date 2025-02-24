@@ -1,0 +1,66 @@
+.number-field {
+  width: 100%;
+  position: relative;
+}
+
+.number-field__input {
+  width: 100%;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  background: var(--background-primary);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  transition: border-color var(--transition-fast);
+}
+
+.number-field__input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.number-field__input::-webkit-inner-spin-button,
+.number-field__input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.number-field__input[type='number'] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.number-field__helper-text {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-xs);
+}
+
+.number-field__error {
+  color: var(--error);
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-xs);
+}
+
+.number-field--error .number-field__input {
+  border-color: var(--error);
+}
+
+.stake-input {
+  max-width: var(--size-200);
+}
+
+.stake-input .number-field__input {
+  padding-left: calc(var(--spacing-lg) + var(--spacing-sm));
+}
+
+.stake-input::before {
+  content: '$';
+  position: absolute;
+  left: var(--spacing-md);
+  top: 23px;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+  pointer-events: none;
+}

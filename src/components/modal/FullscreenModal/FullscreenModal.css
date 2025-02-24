@@ -56,9 +56,10 @@
 }
 
 .fullscreen-modal__body {
-  flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  padding: var(--spacing-md);
+  height: calc(100vh - 117px);
 }
 
 @keyframes slideIn {

@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
-import { TradingPreferences } from "../../../../types/trading";
-import { FormGroup } from "./FormGroup";
+import React, { useState, useRef, useEffect } from 'react';
+import './SelectField.css';
+import { TradingPreferences } from '../../../../types/trading';
+import { FormGroup } from './FormGroup';
 
 type TRiskTolerance = TradingPreferences[keyof TradingPreferences];
 
@@ -16,30 +17,22 @@ interface SelectFieldProps {
   onChange: (value: TRiskTolerance) => void;
 }
 
-export const SelectField: React.FC<SelectFieldProps> = ({
-  label,
-  value,
-  options,
-  onChange,
-}) => {
+export const SelectField: React.FC<SelectFieldProps> = ({ label, value, options, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
 
-  const selectedOption = options.find((opt) => opt.value === value);
+  const selectedOption = options.find(opt => opt.value === value);
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (
-      selectRef.current &&
-      !selectRef.current.contains(event.target as Node)
-    ) {
+    if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
       setIsOpen(false);
     }
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -54,23 +47,17 @@ export const SelectField: React.FC<SelectFieldProps> = ({
           aria-controls="custom-select-options"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {selectedOption?.label || "Select an option"}
+          {selectedOption?.label || 'Select an option'}
           <span className="select-arrow"></span>
         </div>
         {isOpen && (
-          <div
-            className="select-options"
-            role="listbox"
-            id="custom-select-options"
-          >
-            {options.map((option) => (
+          <div className="select-options" role="listbox" id="custom-select-options">
+            {options.map(option => (
               <div
                 key={option.value}
                 role="option"
                 aria-selected={option.value === value}
-                className={`select-option ${
-                  option.value === value ? "selected" : ""
-                }`}
+                className={`select-option ${option.value === value ? 'selected' : ''}`}
                 onClick={() => {
                   onChange(option.value as TRiskTolerance);
                   setIsOpen(false);

@@ -7,8 +7,17 @@
       "email": "expert@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330",
       "userType": "leader",
-      "followers": ["copier1", "copier2", "copier3", "leader1"],
-      "following": ["leader9", "leader8", "leader11", "leader6", "leader7", "leader10", "leader5"],
+      "followers": ["copier1", "copier2", "copier3"],
+      "following": [
+        "leader9",
+        "leader8",
+        "leader11",
+        "leader6",
+        "leader7",
+        "leader10",
+        "leader5",
+        "copier1"
+      ],
       "accounts": ["acc1", "acc2"],
       "performance": {
         "winRate": 78.5,
@@ -50,7 +59,7 @@
       "accounts": ["acc4"],
       "createdAt": "2024-01-03T00:00:00Z",
       "updatedAt": "2024-01-03T00:00:00Z",
-      "isFirstLogin": false,
+      "isFirstLogin": true,
       "tradingPreferences": {
         "riskTolerance": "medium",
         "investmentStyle": "moderate",
@@ -154,7 +163,7 @@
       "email": "day@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1534528741775-53994a69daeb",
       "userType": "leader",
-      "followers": ["copier10", "copier11", "leader1"],
+      "followers": ["leader1", "leader2"],
       "following": [],
       "accounts": ["acc12"],
       "createdAt": "2024-01-10T00:00:00Z",

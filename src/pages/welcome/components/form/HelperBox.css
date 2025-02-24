@@ -1,0 +1,33 @@
+.helper-box {
+  padding: 16px;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+}
+
+.helper-box p {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.helper-box p + p {
+  margin-top: 8px;
+}
+
+.helper-box--info {
+  border-left-color: var(--info);
+}
+
+.helper-box--warning {
+  border-left-color: var(--warning);
+}
+
+.helper-box--error {
+  border-left-color: var(--error);
+}
+
+.helper-box--success {
+  border-left-color: var(--success);
+}
