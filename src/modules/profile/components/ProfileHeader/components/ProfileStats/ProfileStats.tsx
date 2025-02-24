@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type Strategy from '@/types/strategy.types';
 import { useAuth } from '@/context/AuthContext';
 import FullscreenModal from '@/components/modal/FullscreenModal/FullscreenModal';
@@ -24,9 +25,13 @@ const ProfileStats = ({
   onFollowAction,
   profileId,
 }: ProfileStatsProps) => {
+  const navigate = useNavigate();
   const [showFollowers, setShowFollowers] = useState(false);
   const [showFollowing, setShowFollowing] = useState(false);
   const [showStrategies, setShowStrategies] = useState(false);
+  const [selectedStrategies, setSelectedStrategies] = useState<string[]>([]);
+  const [showCheckboxes, setShowCheckboxes] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<'copying' | 'not-copying'>('not-copying');
   const { user: currentUser } = useAuth();
 
   const followersCount = followers.filter(id => id !== currentUser?.id).length;
@@ -62,8 +67,12 @@ const ProfileStats = ({
             `${import.meta.env.VITE_JSON_SERVER_URL}/copyRelationships/${relations[0].id}`,
             { method: 'DELETE' }
           );
+          setSelectedStrategies([]);
+
           return deleteResponse.ok;
         }
+        setSelectedStrategies([]);
+
         return false;
       } else {
         // Start copying
@@ -79,11 +88,26 @@ const ProfileStats = ({
             updatedAt: new Date().toISOString(),
           }),
         });
+        setSelectedStrategies([]);
+
         return response.ok;
       }
     } catch (error) {
       console.error('Error handling strategy copy:', error);
       return false;
+    }
+  };
+
+  const handleStrategySelection = (strategyId: string) => {
+    if (selectedStrategies.length > 0) {
+      setSelectedStrategies(prev => {
+        const newSelection = prev.includes(strategyId)
+          ? prev.filter(id => id !== strategyId)
+          : [...prev, strategyId];
+        return newSelection;
+      });
+    } else {
+      setSelectedStrategies([strategyId]);
     }
   };
 
@@ -174,6 +198,8 @@ const ProfileStats = ({
         isOpen={showStrategies}
         onClose={() => {
           setShowStrategies(false);
+          setShowCheckboxes(false);
+          setSelectedStrategies([]);
           onFollowAction(); // Refetch profile data when modal closes
         }}
         title="Strategies"
@@ -182,6 +208,20 @@ const ProfileStats = ({
           strategies={strategies}
           isOwnProfile={currentUser?.id === profileId}
           onCopyStrategy={handleCopyStrategy}
+          onSelect={handleStrategySelection}
+          onStrategyClick={(strategyId: string) => {
+            if (!showCheckboxes) {
+              navigate(`/strategies/${strategyId}`);
+            } else {
+              handleStrategySelection(strategyId);
+            }
+          }}
+          selectedStrategies={selectedStrategies}
+          showCheckboxes={showCheckboxes}
+          setShowCheckboxes={setShowCheckboxes}
+          activeFilter={activeFilter}
+          setActiveFilter={setActiveFilter}
+          setSelectedStrategies={setSelectedStrategies}
         />
       </FullscreenModal>
     </>
