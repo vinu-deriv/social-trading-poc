@@ -16,7 +16,12 @@ export const useLongPress = ({ onClick, onLongPress, ms = 300 }: UseLongPressOpt
 
   const start = useCallback(
     (event: EventType): void => {
-      if (event.type === 'mousedown') {
+      if (
+        !(
+          (event.target as HTMLElement).tagName === 'BUTTON' ||
+          (event.target as HTMLElement).closest('button')
+        )
+      ) {
         event.preventDefault();
       }
       isLongPress.current = false;
@@ -30,7 +35,12 @@ export const useLongPress = ({ onClick, onLongPress, ms = 300 }: UseLongPressOpt
 
   const stop = useCallback(
     (event: EventType, shouldTriggerClick: boolean = true): void => {
-      if (event.type === 'mouseup' || event.type === 'mouseleave') {
+      if (
+        !(
+          (event.target as HTMLElement).tagName === 'BUTTON' ||
+          (event.target as HTMLElement).closest('button')
+        )
+      ) {
         event.preventDefault();
       }
       if (timerRef.current) clearTimeout(timerRef.current);
