@@ -35,7 +35,7 @@
       "email": "pro@trading.com",
       "profilePicture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
       "userType": "leader",
-      "followers": ["copier1", "copier3", "leader2"],
+      "followers": ["copier1", "copier3"],
       "following": ["copier1"],
       "accounts": ["acc3"],
       "performance": {
@@ -55,7 +55,7 @@
       "profilePicture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
       "userType": "copier",
       "followers": ["leader1", "leader2", "copier1"],
-      "following": ["leader1", "leader2", "leader5", "copier1"],
+      "following": ["leader1", "leader2", "leader5"],
       "accounts": ["acc4"],
       "createdAt": "2024-01-03T00:00:00Z",
       "updatedAt": "2024-01-03T00:00:00Z",

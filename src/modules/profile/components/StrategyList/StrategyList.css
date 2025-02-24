@@ -81,19 +81,6 @@
   border-color: var(--primary-color);
 }
 
-.strategy-list__header {
-  background: var(--background-primary);
-  padding: var(--spacing-sm) 0;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.strategy-list__header-actions {
-  display: flex;
-  gap: var(--spacing-md);
-  align-items: center;
-  justify-content: space-between;
-}
-
 .cancel-selection-button {
   padding: var(--spacing-sm) var(--spacing-md);
   background: none;
