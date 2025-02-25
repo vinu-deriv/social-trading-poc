@@ -8,7 +8,25 @@ const router = jsonServer.router(path.join(__dirname, 'data', 'db.json'));
 const middlewares = jsonServer.defaults();
 
 // Enable CORS for all routes
-app.use(cors());
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: [
+      'X-CSRF-Token',
+      'X-Requested-With',
+      'Accept',
+      'Accept-Version',
+      'Content-Length',
+      'Content-MD5',
+      'Content-Type',
+      'Date',
+      'X-Api-Version',
+      'Authorization',
+    ],
+    credentials: true,
+  })
+);
 
 // Use json-server defaults (logger, static, etc)
 app.use(middlewares);
