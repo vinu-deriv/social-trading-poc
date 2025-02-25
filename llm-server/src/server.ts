@@ -17,16 +17,26 @@ import strategySuggestionsRouter from './routes/strategy-suggestions';
 const app = express();
 const port = process.env.PORT || 3001;
 
-// CORS preflight
-app.options('*', cors());
+const allowedOrigins = [
+  'https://social-trading-poc-sooty.vercel.app',
+  'https://social-trading-poc-git-main-vinuderivs-projects.vercel.app',
+];
 
 // CORS configuration
 const corsOptions = {
-  origin: 'https://social-trading-poc-sooty.vercel.app',
+  origin: function (
+    origin: string | undefined,
+    callback: (err: Error | null, allow?: boolean) => void
+  ) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true,
-  preflightContinue: false,
   optionsSuccessStatus: 204,
 };
 
@@ -34,10 +44,13 @@ app.use(cors(corsOptions));
 
 // Add CORS headers to all responses
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://social-trading-poc-sooty.vercel.app');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-  res.header('Access-Control-Allow-Credentials', 'true');
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+    res.header('Access-Control-Allow-Credentials', 'true');
+  }
   next();
 });
 
