@@ -110,6 +110,10 @@ const StrategyList = ({
       const strategyItem = element.closest('.strategy-item');
       if (strategyItem) {
         const strategyId = strategyItem.getAttribute('data-strategy-id');
+        if (event && (event.target as HTMLElement).closest('button')) {
+          event.stopPropagation();
+          return;
+        }
         if (strategyId && !showCheckboxes) {
           setShowCheckboxes(true);
           onSelect(strategyId);
