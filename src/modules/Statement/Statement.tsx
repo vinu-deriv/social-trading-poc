@@ -39,7 +39,7 @@ const Statement = () => {
     if (loading) {
       return (
         <div className="statement-loader">
-          <AILoader showText={false} />
+          <AILoader />
         </div>
       );
     }

@@ -49,7 +49,7 @@ const PostPage = () => {
           <h1 className="post-page__title">Post</h1>
         </header>
         <div className="post-page__loading">
-          <AILoader size={40} showText={false} />
+          <AILoader size={40} />
         </div>
       </div>
     );

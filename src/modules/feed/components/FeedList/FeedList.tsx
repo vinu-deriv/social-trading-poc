@@ -89,7 +89,7 @@ const FeedList = ({
   }, [shouldRefresh]);
 
   if (loading) {
-    return <AILoader size={40} showText={false} />;
+    return <AILoader size={40} />;
   }
 
   if (error) {

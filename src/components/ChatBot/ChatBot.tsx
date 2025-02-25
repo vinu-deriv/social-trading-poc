@@ -178,7 +178,7 @@ const ChatBot: React.FC = () => {
           {isLoading && (
             <div className="message bot-message">
               <div className="message-content">
-                <AILoader />
+                <AILoader showText={true} />
               </div>
             </div>
           )}

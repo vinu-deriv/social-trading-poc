@@ -24,7 +24,7 @@ const Profile = () => {
     return (
       <div className="profile-page">
         <div className="profile-page__loading">
-          <AILoader size={40} showText={false} />
+          <AILoader size={40} />
         </div>
       </div>
     );

@@ -42,7 +42,7 @@ const Statistics: React.FC<StatisticsProps> = ({ userId, userType }) => {
   if (isLoading) {
     return (
       <div className="statistics-loader">
-        <AILoader showText={false} />
+        <AILoader />
       </div>
     );
   }
