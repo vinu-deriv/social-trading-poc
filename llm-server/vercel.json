@@ -14,15 +14,33 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/dist/server.js"
+      "dest": "/dist/server.js",
+      "headers": {
+        "Access-Control-Allow-Origin": "https://social-trading-poc-sooty.vercel.app",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": "true"
+      }
     },
     {
       "src": "/health",
-      "dest": "/dist/server.js"
+      "dest": "/dist/server.js",
+      "headers": {
+        "Access-Control-Allow-Origin": "https://social-trading-poc-sooty.vercel.app",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Credentials": "true"
+      }
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/server.js"
+      "dest": "/dist/server.js",
+      "headers": {
+        "Access-Control-Allow-Origin": "https://social-trading-poc-sooty.vercel.app",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": "true"
+      }
     }
   ]
 }
