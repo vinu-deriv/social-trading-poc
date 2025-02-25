@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "tsc --project tsconfig.json",
+  "buildCommand": "tsc",
   "installCommand": "npm install",
   "builds": [
     {
