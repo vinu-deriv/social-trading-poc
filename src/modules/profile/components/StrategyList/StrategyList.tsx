@@ -110,6 +110,10 @@ const StrategyList = ({
       const strategyItem = element.closest('.strategy-item');
       if (strategyItem) {
         const strategyId = strategyItem.getAttribute('data-strategy-id');
+        if (event && (event.target as HTMLElement).closest('button')) {
+          event.stopPropagation();
+          return;
+        }
         if (strategyId && !showCheckboxes) {
           setShowCheckboxes(true);
           onSelect(strategyId);
@@ -125,22 +129,24 @@ const StrategyList = ({
         {strategies.length === 0 ? (
           <div className="strategy-list--empty">No strategies found</div>
         ) : (
-          strategies.map(strategy => (
-            <div
-              key={strategy.id}
-              className="strategy-item"
-              data-strategy-id={strategy.id}
-              {...longPressHandlers}
-            >
-              <StrategyListItem
-                strategy={strategy}
-                showCopyButton={false}
-                selected={selectedStrategies.includes(strategy.id)}
-                onClick={onStrategyClick}
-                onSelect={() => onSelect(strategy.id)}
-              />
-            </div>
-          ))
+          <div className="strategy-list__grid">
+            {strategies.map(strategy => (
+              <div
+                key={strategy.id}
+                className="strategy-item"
+                data-strategy-id={strategy.id}
+                {...longPressHandlers}
+              >
+                <StrategyListItem
+                  strategy={strategy}
+                  showCopyButton={false}
+                  selected={selectedStrategies.includes(strategy.id)}
+                  onClick={onStrategyClick}
+                  onSelect={() => onSelect(strategy.id)}
+                />
+              </div>
+            ))}
+          </div>
         )}
       </div>
     );
@@ -190,35 +196,37 @@ const StrategyList = ({
               : 'No strategies available to copy'}
         </div>
       ) : (
-        displayStrategies.map(strategy => (
-          <div
-            key={strategy.id}
-            className="strategy-item"
-            data-strategy-id={strategy.id}
-            {...longPressHandlers}
-          >
-            <StrategyListItem
-              strategy={strategy}
-              showCopyButton={!isOwnProfile || copyRelations[strategy.id]}
-              isCopying={copyRelations[strategy.id]}
-              onCopy={async (strategyId: string, isCopying: boolean) => {
-                if (onCopyStrategy) {
-                  const success = await onCopyStrategy(strategyId, isCopying);
-                  if (success) {
-                    setCopyRelations(prev => ({
-                      ...prev,
-                      [strategyId]: !isCopying,
-                    }));
+        <div className="strategy-list__grid">
+          {displayStrategies.map(strategy => (
+            <div
+              key={strategy.id}
+              className="strategy-item"
+              data-strategy-id={strategy.id}
+              {...longPressHandlers}
+            >
+              <StrategyListItem
+                strategy={strategy}
+                showCopyButton={!isOwnProfile || copyRelations[strategy.id]}
+                isCopying={copyRelations[strategy.id]}
+                onCopy={async (strategyId: string, isCopying: boolean) => {
+                  if (onCopyStrategy) {
+                    const success = await onCopyStrategy(strategyId, isCopying);
+                    if (success) {
+                      setCopyRelations(prev => ({
+                        ...prev,
+                        [strategyId]: !isCopying,
+                      }));
+                    }
+                    setSelectedStrategies([]);
                   }
-                  setSelectedStrategies([]);
-                }
-              }}
-              onClick={onStrategyClick}
-              onSelect={() => onSelect(strategy.id)}
-              selected={selectedStrategies.includes(strategy.id)}
-            />
-          </div>
-        ))
+                }}
+                onClick={onStrategyClick}
+                onSelect={() => onSelect(strategy.id)}
+                selected={selectedStrategies.includes(strategy.id)}
+              />
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
