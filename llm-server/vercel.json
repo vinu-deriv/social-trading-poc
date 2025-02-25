@@ -34,18 +34,18 @@
       ]
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/dist/server.js"
+      "source": "/api/(.*)",
+      "destination": "/dist/server.js"
     },
     {
-      "src": "/health",
-      "dest": "/dist/server.js"
+      "source": "/health",
+      "destination": "/dist/server.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "/dist/server.js"
+      "source": "/(.*)",
+      "destination": "/dist/server.js"
     }
   ]
 }
