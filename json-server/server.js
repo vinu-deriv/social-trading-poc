@@ -8,25 +8,26 @@ const router = jsonServer.router(path.join(__dirname, 'data', 'db.json'));
 const middlewares = jsonServer.defaults();
 
 // Enable CORS for all routes
-app.use(
-  cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: [
-      'X-CSRF-Token',
-      'X-Requested-With',
-      'Accept',
-      'Accept-Version',
-      'Content-Length',
-      'Content-MD5',
-      'Content-Type',
-      'Date',
-      'X-Api-Version',
-      'Authorization',
-    ],
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: true, // this will allow all origins
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: [
+    'X-CSRF-Token',
+    'X-Requested-With',
+    'Accept',
+    'Accept-Version',
+    'Content-Length',
+    'Content-MD5',
+    'Content-Type',
+    'Date',
+    'X-Api-Version',
+    'Authorization',
+  ],
+};
+
+app.options('*', cors(corsOptions)); // enable pre-flight
+app.use(cors(corsOptions));
 
 // Use json-server defaults (logger, static, etc)
 app.use(middlewares);
