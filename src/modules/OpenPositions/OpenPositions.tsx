@@ -50,7 +50,7 @@ const OpenPositions = () => {
     if (loading) {
       return (
         <div className="open-positions-loader">
-          <AILoader />
+          <AILoader showText={false} />
         </div>
       );
     }

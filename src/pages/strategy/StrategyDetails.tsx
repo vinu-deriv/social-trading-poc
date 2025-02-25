@@ -30,7 +30,7 @@ const StrategyDetails = () => {
     fetchStrategy();
   }, [id]);
 
-  if (loading) return <AILoader />;
+  if (loading) return <AILoader showText={false} />;
   if (error) return <ErrorState message={error} />;
   if (!strategy) return <ErrorState message="Strategy not found" />;
 
