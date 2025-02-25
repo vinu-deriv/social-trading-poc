@@ -17,16 +17,29 @@ import strategySuggestionsRouter from './routes/strategy-suggestions';
 const app = express();
 const port = process.env.PORT || 3001;
 
+// CORS preflight
+app.options('*', cors());
+
 // CORS configuration
-app.use(
-  cors({
-    origin: 'https://social-trading-poc-sooty.vercel.app',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-    credentials: true,
-    optionsSuccessStatus: 200,
-  })
-);
+const corsOptions = {
+  origin: 'https://social-trading-poc-sooty.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+
+// Add CORS headers to all responses
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://social-trading-poc-sooty.vercel.app');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
 
 app.use(express.json());
 
