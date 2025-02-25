@@ -15,7 +15,7 @@ const Feed = () => {
   if (authLoading || !user || !userDetails) {
     return (
       <div className="feed-page__container">
-        <AILoader size={40} showText={false} />
+        <AILoader size={40} />
       </div>
     );
   }

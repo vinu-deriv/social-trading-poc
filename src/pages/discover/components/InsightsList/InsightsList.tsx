@@ -32,6 +32,7 @@ export default function InsightsList({
             symbol={`${loadingSymbol.name} (${loadingSymbol.symbol})`}
             size={60}
             variant="card"
+            showText={true}
           />
         )}
         {[...insights].reverse().map(insight => (

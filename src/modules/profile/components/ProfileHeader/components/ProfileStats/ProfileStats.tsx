@@ -138,7 +138,7 @@ const ProfileStats = ({
       >
         {loadingFollowers ? (
           <div className="user-list--loading">
-            <AILoader size={40} showText={false} />
+            <AILoader size={40} />
           </div>
         ) : (
           <UserList
@@ -171,7 +171,7 @@ const ProfileStats = ({
       >
         {loadingFollowing ? (
           <div className="user-list--loading">
-            <AILoader size={40} showText={false} />
+            <AILoader size={40} />
           </div>
         ) : (
           <UserList

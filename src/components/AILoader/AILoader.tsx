@@ -16,7 +16,7 @@ const AILoader: React.FC<AILoaderProps> = ({
   className = '',
   symbol,
   title,
-  showText = true,
+  showText = false,
   variant = 'default',
 }) => {
   const containerClass = variant === 'card' ? 'ai-loader--card' : 'ai-loader';

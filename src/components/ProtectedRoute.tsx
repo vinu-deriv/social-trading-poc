@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const location = useLocation();
 
   if (loading) {
-    return <AILoader size={100} showText={false} />;
+    return <AILoader size={100} />;
   }
 
   if (!isAuthenticated) {
