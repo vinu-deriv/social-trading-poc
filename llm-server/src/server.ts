@@ -17,8 +17,17 @@ import strategySuggestionsRouter from './routes/strategy-suggestions';
 const app = express();
 const port = process.env.PORT || 3001;
 
-// Middleware
-app.use(cors());
+// CORS configuration
+app.use(
+  cors({
+    origin: 'https://social-trading-poc-sooty.vercel.app',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    credentials: true,
+    optionsSuccessStatus: 200,
+  })
+);
+
 app.use(express.json());
 
 // Health check endpoint
