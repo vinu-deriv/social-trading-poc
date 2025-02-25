@@ -61,3 +61,5 @@ app.listen(port, () => {
   console.log(`- Market API: http://localhost:${port}/api/market`);
   console.log(`- Global AI API: http://localhost:${port}/api/global-ai`);
 });
+
+module.exports = app;
