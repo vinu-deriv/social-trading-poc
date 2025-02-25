@@ -1,18 +1,28 @@
 {
   "version": 2,
-  "buildCommand": "tsc",
+  "buildCommand": "npm run build",
   "installCommand": "npm install",
   "builds": [
     {
       "src": "dist/server.js",
       "use": "@vercel/node",
-      "config": { "includeFiles": ["dist/**"] }
+      "config": {
+        "includeFiles": ["dist/**"]
+      }
     }
   ],
   "routes": [
     {
-      "src": "(.*)",
-      "dest": "dist/server.js"
+      "src": "/api/(.*)",
+      "dest": "/dist/server.js"
+    },
+    {
+      "src": "/health",
+      "dest": "/dist/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/dist/server.js"
     }
   ]
 }
