@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express, { NextFunction } from 'express';
-import cors from 'cors';
 import insightsRouter from './routes/insights';
 import translationRouter from './routes/translation';
 import marketRouter from './routes/market';
@@ -17,40 +16,15 @@ import strategySuggestionsRouter from './routes/strategy-suggestions';
 const app = express();
 const port = process.env.PORT || 3001;
 
-const allowedOrigins = [
-  'https://social-trading-poc-sooty.vercel.app',
-  'https://social-trading-poc-git-main-vinuderivs-projects.vercel.app',
-];
-
-// CORS configuration
-const corsOptions = {
-  origin: function (
-    origin: string | undefined,
-    callback: (err: Error | null, allow?: boolean) => void
-  ) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
-
-app.use(cors(corsOptions));
-
-// Add CORS headers to all responses
+// Debug logging middleware
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (origin && allowedOrigins.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-    res.header('Access-Control-Allow-Credentials', 'true');
-  }
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  console.log('Headers:', req.headers);
+  console.log('Environment:', {
+    NODE_ENV: process.env.NODE_ENV,
+    ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY ? 'Set' : 'Not Set',
+    JSON_SERVER_URL: process.env.JSON_SERVER_URL,
+  });
   next();
 });
 
@@ -58,7 +32,12 @@ app.use(express.json());
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
+  res.json({
+    status: 'ok',
+    env: process.env.NODE_ENV,
+    hasAnthropicKey: !!process.env.ANTHROPIC_API_KEY,
+    jsonServerUrl: process.env.JSON_SERVER_URL,
+  });
 });
 
 // Mount routes
@@ -72,7 +51,7 @@ app.use('/api/global-ai', globalAIRouter);
 app.use('/api/people-suggestions', peopleSuggestionsRouter);
 app.use('/api/strategy-suggestions', strategySuggestionsRouter);
 
-// Error handling middleware
+// Error handling middleware with detailed logging
 app.use(
   (
     err: Error,
@@ -81,7 +60,19 @@ app.use(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     next: NextFunction
   ) => {
-    console.error(err.stack);
+    console.error('Error details:', {
+      message: err.message,
+      stack: err.stack,
+      url: req.url,
+      method: req.method,
+      headers: req.headers,
+      env: {
+        NODE_ENV: process.env.NODE_ENV,
+        hasAnthropicKey: !!process.env.ANTHROPIC_API_KEY,
+        jsonServerUrl: process.env.JSON_SERVER_URL,
+      },
+    });
+
     res.status(500).json({
       error: 'Internal Server Error',
       message: process.env.NODE_ENV === 'development' ? err.message : undefined,
@@ -92,6 +83,9 @@ app.use(
 // Start server
 app.listen(port, () => {
   console.log(`LLM Server running on port ${port}`);
+  console.log(`Environment: ${process.env.NODE_ENV}`);
+  console.log(`ANTHROPIC_API_KEY: ${process.env.ANTHROPIC_API_KEY ? 'Set' : 'Not Set'}`);
+  console.log(`JSON_SERVER_URL: ${process.env.JSON_SERVER_URL}`);
   console.log(`- LLM API: http://localhost:${port}/api/ai`);
   console.log(`- Market API: http://localhost:${port}/api/market`);
   console.log(`- Global AI API: http://localhost:${port}/api/global-ai`);
