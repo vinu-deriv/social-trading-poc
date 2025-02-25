@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express, { NextFunction } from 'express';
-import cors from 'cors';
 import insightsRouter from './routes/insights';
 import translationRouter from './routes/translation';
 import marketRouter from './routes/market';
@@ -17,15 +16,18 @@ import strategySuggestionsRouter from './routes/strategy-suggestions';
 const app = express();
 const port = process.env.PORT || 3001;
 
-// CORS configuration
-const corsOptions = {
-  origin: true, // reflects the request origin
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-};
+// Custom CORS middleware
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', '*');
 
-app.use(cors(corsOptions));
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  next();
+});
 
 // Debug logging middleware
 app.use((req, res, next) => {
